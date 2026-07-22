@@ -259,9 +259,11 @@ docker run --rm -p 8080:8080 -e HOLT_WEB_TOKEN=change-me -e OPENROUTER_API_KEY=s
 # open http://localhost:8080/?token=change-me
 ```
 
-Because it needs a persistent process and a real PTY it deploys to a container
-host (Railway, Fly.io, Render, any Docker/VPS) — **not** to serverless platforms
-like Vercel. It also hands visitors a live agent, so always set `HOLT_WEB_TOKEN`
+The static frontend in `cmd/holt-web/web/` deploys anywhere static (including
+Vercel); the `holt-web` **backend** holds the PTY and WebSocket and runs on a
+container host (Railway, Fly.io, Render, any Docker/VPS). Run them together or
+split them — a Vercel-hosted page just points its WebSocket at the backend with
+`?backend=wss://…`. It hands visitors a live agent, so always set `HOLT_WEB_TOKEN`
 and keep it isolated. See [docs/BROWSER_TERMINAL.md](docs/BROWSER_TERMINAL.md).
 
 ## Common Commands

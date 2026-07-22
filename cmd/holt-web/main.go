@@ -8,9 +8,10 @@
 // environment such as a container. Never point it at a directory you are not
 // willing to hand to arbitrary visitors.
 //
-// It needs a persistent process and a real PTY, so it CANNOT run on serverless
-// platforms such as Vercel. Deploy it to a container host (Railway, Fly.io,
-// Render, or any Docker/VPS) using the provided Dockerfile.
+// This backend needs a persistent process and a real PTY, so it runs on a
+// container host (Railway, Fly.io, Render, or any Docker/VPS) using the provided
+// Dockerfile — not on serverless. The static frontend in web/ can be hosted
+// separately (e.g. on Vercel) and pointed at this backend over the WebSocket.
 package main
 
 import (
@@ -34,7 +35,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-//go:embed index.html
+//go:embed web/index.html
 var indexHTML []byte
 
 type options struct {

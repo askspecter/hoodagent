@@ -94,9 +94,23 @@
     }
 
     // ---- WebSocket ----
-    const token = new URLSearchParams(location.search).get("token") || "";
-    const scheme = location.protocol === "https:" ? "wss" : "ws";
-    const wsURL = `${scheme}://${location.host}/ws${token ? "?token=" + encodeURIComponent(token) : ""}`;
+    // The frontend can be hosted anywhere (e.g. a static deploy on Vercel) and
+    // point at a holt-web backend running on a container host. Resolution order:
+    //   1. ?backend=wss://host  (per-visit override)
+    //   2. window.HOLT_BACKEND   (bake into the static deploy)
+    //   3. same origin           (all-in-one: holt-web serves this page itself)
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token") || "";
+    let wsBase;
+    const backend = params.get("backend") || window.HOLT_BACKEND || "";
+    if (backend) {
+      wsBase = backend.replace(/^http/i, "ws").replace(/\/+$/, "");
+      if (!/\/ws$/.test(wsBase)) wsBase += "/ws";
+    } else {
+      const scheme = location.protocol === "https:" ? "wss" : "ws";
+      wsBase = `${scheme}://${location.host}/ws`;
+    }
+    const wsURL = wsBase + (token ? (wsBase.includes("?") ? "&" : "?") + "token=" + encodeURIComponent(token) : "");
     let ws;
     function wsOpen() { return ws && ws.readyState === WebSocket.OPEN; }
     function sendResize() { if (wsOpen()) ws.send(MSG_RESIZE + JSON.stringify({ cols: term.cols, rows: term.rows })); }
