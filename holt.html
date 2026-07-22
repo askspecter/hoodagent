@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Zero — Orlix AI Terminal</title>
-<meta name="description" content="Zero terminal coding agent. Any model. Every tool. Zero limits.">
+<title>Holt — Orlix AI Terminal</title>
+<meta name="description" content="Holt terminal coding agent. Any model. Every tool. No limits.">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#000000">
-<meta property="og:title" content="Zero — Orlix AI Terminal">
+<meta property="og:title" content="Holt — Orlix AI Terminal">
 <meta property="og:description" content="A terminal coding agent you own. Runs in your browser.">
 <meta property="og:image" content="https://orlixai.xyz/og-image.png">
 <style>
@@ -117,7 +117,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 .thinking-content{display:none;margin:2px 0 6px 16px;padding:6px 10px;border-left:2px solid var(--dim2);font-size:10px;color:var(--dim);line-height:1.5}
 .thinking-line.open+.thinking-content{display:block}
 
-/* tool cards — ZERO-style ╭──╮ bordered blocks */
+/* tool cards — HOLT-style ╭──╮ bordered blocks */
 .tool-card{margin:4px 0;font-size:11px;line-height:1.5;font-family:'JetBrains Mono',monospace;white-space:pre;color:var(--dim)}
 .tool-card .tc-border{color:var(--dim2)}
 .tool-card .tc-inner{padding:0 0 0 2ch}
@@ -363,7 +363,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 <!-- ══════ LOADER ══════ -->
 <div id="loader">
   <canvas id="matrixCanvas"></canvas>
-  <div class="load-brand">orlix.xyz / zero</div>
+  <div class="load-brand">orlix.xyz / holt</div>
   <div class="load-box">
     <div class="load-ring"></div>
     <div class="load-bar"><div class="load-fill" id="loadFill"></div></div>
@@ -379,7 +379,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 
   <!-- sidebar -->
   <nav class="sidebar hidden" id="sidebar">
-    <div class="sb-hd"><span>ZERO</span><button class="sb-close" id="sbClose">&times;</button></div>
+    <div class="sb-hd"><span>HOLT</span><button class="sb-close" id="sbClose">&times;</button></div>
 
     <div class="sb-section">
       <div class="sb-label">Session</div>
@@ -432,7 +432,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
     <div class="sb-footer">
       <a href="/" style="color:var(--dim);font-size:9px;text-decoration:none">orlix.xyz</a>
       <span style="margin:0 4px">/</span>
-      <a href="https://github.com/Gitlawb/zero" target="_blank" rel="noopener" style="color:var(--dim);font-size:9px;text-decoration:none">zero</a>
+      <a href="https://github.com/askspecter/holt" target="_blank" rel="noopener" style="color:var(--dim);font-size:9px;text-decoration:none">holt</a>
     </div>
   </nav>
 
@@ -474,7 +474,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
       <div class="slash-menu" id="slashMenu"></div>
       <div class="input-area">
         <span class="input-prompt">❯</span>
-        <input type="text" class="input-field" id="inputField" placeholder="describe a task for zero..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <input type="text" class="input-field" id="inputField" placeholder="describe a task for holt..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
         <span class="input-model" id="modelLabel">claude-sonnet-5</span>
       </div>
     </div>
@@ -558,7 +558,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
     <!-- ═══ MAIN VIEW ═══ -->
     <div class="sp-view active" id="spMain">
       <div class="sp-header">
-        <div><span class="sp-title">Zero</span><span class="sp-ver">v1.0.0</span></div>
+        <div><span class="sp-title">Holt</span><span class="sp-ver">v1.0.0</span></div>
         <button class="sp-close" id="spClose">&times;</button>
       </div>
 
@@ -604,7 +604,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
       </div>
 
       <div class="sp-section">
-        <div class="sp-credit">Orlix AI &middot; Based on Gitlawb/zero</div>
+        <div class="sp-credit">Orlix AI &middot; Based on askspecter/holt</div>
       </div>
     </div>
 
@@ -715,13 +715,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
       <div style="font-size:11px;color:var(--dim);margin-bottom:14px">Set the bash code to be executed upon VM start.</div>
 
       <textarea class="sp-code" id="spBootCode" spellcheck="false">#!/bin/sh
-export ZERO_SANDBOXED=1
-export ZERO_SANDBOX_BACKEND=none
-/usr/local/bin/zero --skip-permissions-unsafe</textarea>
+export HOLT_SANDBOXED=1
+export HOLT_SANDBOX_BACKEND=none
+/usr/local/bin/holt --skip-permissions-unsafe</textarea>
       <div class="sp-code-count" id="spBootCount">112</div>
 
       <div class="sp-link-label">Generated Link</div>
-      <div class="sp-link-box" id="spBootLink">https://orlix.xyz/zero#run=...</div>
+      <div class="sp-link-box" id="spBootLink">https://orlix.xyz/holt#run=...</div>
 
       <div class="sp-btn-col">
         <button class="sp-btn danger" id="spBootClear">Clear</button>
@@ -738,7 +738,7 @@ export ZERO_SANDBOX_BACKEND=none
 /* ══════ ORLIX BOOT SEQUENCE ══════ */
 (function(){
   var c=document.getElementById('matrixCanvas'),ctx=c.getContext('2d'),W,H,cols,drops;
-  var chars='ORLIX0123456789ZERO<>{}[]=/|~^$';
+  var chars='ORLIX0123456789HOLT<>{}[]=/|~^$';
   var subEl=document.querySelector('.load-sub');
   var phases=['establishing connection','loading models','checking permissions','syncing terminal','ready'];
   function resize(){W=c.width=innerWidth;H=c.height=innerHeight;cols=Math.floor(W/16);drops=[];for(var i=0;i<cols;i++)drops[i]=Math.random()*-40|0;}
@@ -851,8 +851,8 @@ var SLASH_CMDS=[
   {cmd:'/theme',desc:'Pick a color theme',g:'meta'},
   {cmd:'/usage',desc:'Token usage report',g:'meta'},
   {cmd:'/export',desc:'Export session as JSON',g:'meta'},
-  {cmd:'/exit',desc:'Exit Zero',g:'meta'},
-  {cmd:'/quit',desc:'Exit Zero',g:'meta'},
+  {cmd:'/exit',desc:'Exit Holt',g:'meta'},
+  {cmd:'/quit',desc:'Exit Holt',g:'meta'},
   {cmd:'/reset',desc:'Reset conversation',g:'meta'},
 ];
 
@@ -899,14 +899,14 @@ function initShell(){
 
   // ASCII logo via canvas — pixel-grid with continuous path-traced outlines
   var AL=[
-    '███████╗███████╗██████╗  ██████╗',
-    '╚══███╔╝██╔════╝██╔══██╗██╔═══██╗',
-    '  ███╔╝ █████╗  ██████╔╝██║   ██║',
-    ' ███╔╝  ██╔══╝  ██╔══██╗██║   ██║',
-    '███████╗███████╗██║  ██║╚██████╔╝',
-    '╚══════╝╚══════╝╚═╝  ╚═╝ ╚═════╝'
+    '██╗  ██╗ ██████╗ ██╗     ████████╗',
+    '██║  ██║██╔═══██╗██║     ╚══██╔══╝',
+    '███████║██║   ██║██║        ██║   ',
+    '██╔══██║██║   ██║██║        ██║   ',
+    '██║  ██║╚██████╔╝███████╗   ██║   ',
+    '╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝   '
   ];
-  var oCol=24,cU=24,dpr=window.devicePixelRatio||1;
+  var oCol=8,oColEnd=17,cU=24,dpr=window.devicePixelRatio||1;
   var Rows=AL.length,Cols=0;
   AL.forEach(function(l){if(l.length>Cols)Cols=l.length;});
   var pw=Cols*cU,ph=Rows*cU;
@@ -918,7 +918,7 @@ function initShell(){
   // 1) draw solid blocks
   for(var r=0;r<Rows;r++)for(var c=0;c<Cols;c++){
     if(c<AL[r].length&&AL[r][c]==='█'){
-      cx.fillStyle=c>=oCol?'#caff3f':'#ececee';
+      cx.fillStyle=(c>=oCol&&c<oColEnd)?'#caff3f':'#ececee';
       cx.fillRect(c*cU,r*cU,cU,cU);
     }
   }
@@ -928,7 +928,7 @@ function initShell(){
   for(var r=0;r<Rows;r++)for(var c=0;c<Cols;c++){
     var ch=c<AL[r].length?AL[r][c]:' ';
     if(ch===' '||ch==='█')continue;
-    cx.fillStyle=c>=oCol?'#caff3f':'#ececee';
+    cx.fillStyle=(c>=oCol&&c<oColEnd)?'#caff3f':'#ececee';
     var x=c*cU,y=r*cU;
     switch(ch){
       case '═':
@@ -952,10 +952,10 @@ function initShell(){
 
   var logoImg=document.createElement('img');
   logoImg.src=cvs.toDataURL();
-  logoImg.className='ascii-logo';logoImg.alt='ZERO';
+  logoImg.className='ascii-logo';logoImg.alt='HOLT';
   ww.appendChild(logoImg);
 
-  var t1=document.createElement('div');t1.className='welcome-line tag';t1.innerHTML='Any model. Every tool. Zero limits.';ww.appendChild(t1);
+  var t1=document.createElement('div');t1.className='welcome-line tag';t1.innerHTML='Any model. Every tool. No limits.';ww.appendChild(t1);
   var sp1=document.createElement('div');sp1.innerHTML='';sp1.style.height='8px';ww.appendChild(sp1);
   var t2=document.createElement('div');t2.className='welcome-line';t2.innerHTML='<span style="color:var(--dim)">~  &middot;  <span style="color:var(--fg)">'+MODELS[currentModel]+'</span></span>';ww.appendChild(t2);
   var sp2=document.createElement('div');sp2.innerHTML='';sp2.style.height='6px';ww.appendChild(sp2);
@@ -1090,7 +1090,7 @@ function cycleEffort(){
 }
 
 /* ══════ SESSIONS ══════ */
-function getSessions(){try{return JSON.parse(localStorage.getItem('zero_sessions')||'[]');}catch(e){return[];}}
+function getSessions(){try{return JSON.parse(localStorage.getItem('holt_sessions')||'[]');}catch(e){return[];}}
 function saveSession(){
   if(!chatHistory.length)return;
   var sessions=getSessions();
@@ -1100,7 +1100,7 @@ function saveSession(){
   var entry={id:sessionId,preview:preview,model:currentModel,messages:chatHistory,tokens:totalTokens,ts:Date.now()};
   if(existing>=0)sessions[existing]=entry;else sessions.unshift(entry);
   if(sessions.length>20)sessions=sessions.slice(0,20);
-  localStorage.setItem('zero_sessions',JSON.stringify(sessions));
+  localStorage.setItem('holt_sessions',JSON.stringify(sessions));
   renderSessions();
 }
 function renderSessions(){
@@ -1141,9 +1141,9 @@ function applyTheme(id){
   r.setProperty('--orange',t.orange);r.setProperty('--cyan',t.cyan);r.setProperty('--purple',t.purple);
   r.setProperty('--yellow',t.yellow);r.setProperty('--blue',t.blue||t.cyan);
   document.body.style.background=t.bg;
-  localStorage.setItem('zero_theme',id);
+  localStorage.setItem('holt_theme',id);
 }
-function loadTheme(){var t=localStorage.getItem('zero_theme');if(t)applyTheme(t);}
+function loadTheme(){var t=localStorage.getItem('holt_theme');if(t)applyTheme(t);}
 
 /* ══════ HELPERS ══════ */
 function updateModelLabel(){
@@ -1201,7 +1201,7 @@ function rippleWorking(){
 var currentAbort=null;
 function cancelStream(){
   if(currentAbort){currentAbort.abort();currentAbort=null;}
-  isStreaming=false;stopWorking();inputField.placeholder='describe a task for zero...';
+  isStreaming=false;stopWorking();inputField.placeholder='describe a task for holt...';
   addLine('<span style="color:var(--orange)">^C interrupted</span>','system');
 }
 function runCmd(cmd){inputField.value=cmd;sendMessage();}
@@ -1242,7 +1242,7 @@ function sendMessage(){
         else addLine('<span class="warn">Theme "'+esc(arg)+'" not found.</span>','system');
       } else {
         addLine('<span class="hl">Themes:</span>','system');
-        var cur=localStorage.getItem('zero_theme')||'dark';
+        var cur=localStorage.getItem('holt_theme')||'dark';
         THEMES.forEach(function(t){addLine('  '+(t.id===cur?'<span class="hl">* '+t.n+'</span>':'<span class="val">  '+t.n+'</span>')+' <span style="color:var(--dim)">('+t.id+')</span>','system');});
         addLine('<span style="color:var(--dim)">Usage: /theme dracula</span>','system');
       }
@@ -1272,7 +1272,7 @@ function sendMessage(){
     }
     if(cmd==='/spec'){
       specMode=!specMode;
-      addLine('<span style="color:var(--dim)">Spec mode: <span class="'+(specMode?'hl':'val')+'">'+(specMode?'ON':'OFF')+'</span>'+(specMode?' — Zero will draft plans before executing':'')+'</span>','system');
+      addLine('<span style="color:var(--dim)">Spec mode: <span class="'+(specMode?'hl':'val')+'">'+(specMode?'ON':'OFF')+'</span>'+(specMode?' — Holt will draft plans before executing':'')+'</span>','system');
       return;
     }
     if(cmd==='/permissions'){
@@ -1307,7 +1307,7 @@ function sendMessage(){
     }
     if(cmd==='/doctor'){
       addBlock([
-        '<span class="hl">Zero Diagnostics</span>','',
+        '<span class="hl">Holt Diagnostics</span>','',
         '  Runtime        <span class="ok">browser/wasm</span>',
         '  API endpoint   <span class="ok">/api/chat reachable</span>',
         '  Model          <span class="val">'+MODELS[currentModel]+'</span>',
@@ -1315,7 +1315,7 @@ function sendMessage(){
         '  Messages       <span class="val">'+chatHistory.length+'</span>',
         '  Tokens used    <span class="val">'+totalTokens.toLocaleString()+'</span>',
         '  Permission     <span class="val">'+PERM_MODES[permModeIdx]+'</span>',
-        '  Theme          <span class="val">'+(localStorage.getItem('zero_theme')||'dark')+'</span>',
+        '  Theme          <span class="val">'+(localStorage.getItem('holt_theme')||'dark')+'</span>',
         '  Spec mode      <span class="val">'+(specMode?'ON':'OFF')+'</span>',
         '  Sessions saved <span class="val">'+getSessions().length+'</span>',
         '  Storage        <span class="ok">localStorage available</span>',
@@ -1336,7 +1336,7 @@ function sendMessage(){
       addBlock([
         '<span class="hl">Configuration</span>','',
         '  model          <span class="val">'+currentModel+'</span>',
-        '  theme          <span class="val">'+(localStorage.getItem('zero_theme')||'dark')+'</span>',
+        '  theme          <span class="val">'+(localStorage.getItem('holt_theme')||'dark')+'</span>',
         '  permission     <span class="val">'+PERM_MODES[permModeIdx]+'</span>',
         '  effort         <span class="val">'+effortLevel+'</span>',
         '  style          <span class="val">'+styleMode+'</span>',
@@ -1353,7 +1353,7 @@ function sendMessage(){
     }
     if(cmd==='/export'){
       var blob=new Blob([JSON.stringify({id:sessionId,model:currentModel,messages:chatHistory,tokens:totalTokens,ts:Date.now()},null,2)],{type:'application/json'});
-      var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='zero-session-'+sessionId+'.json';a.click();
+      var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='holt-session-'+sessionId+'.json';a.click();
       addLine('<span style="color:var(--dim)">Session exported.</span>','system');return;
     }
     if(cmd==='/image'){addLine('<span class="warn">Image input not available in browser mode.</span>','system');return;}
@@ -1413,7 +1413,7 @@ function sendMessage(){
     }
     if(cmd==='/plan'){
       planMode=!planMode;
-      addLine('<span style="color:var(--dim)">Plan mode: <span class="'+(planMode?'hl':'val')+'">'+(planMode?'ON':'OFF')+'</span>'+(planMode?' — Zero will plan before acting':'')+'</span>','system');
+      addLine('<span style="color:var(--dim)">Plan mode: <span class="'+(planMode?'hl':'val')+'">'+(planMode?'ON':'OFF')+'</span>'+(planMode?' — Holt will plan before acting':'')+'</span>','system');
       return;
     }
     if(cmd==='/selfcorrect'||cmd==='/sc'){
@@ -1520,9 +1520,9 @@ function sendMessage(){
   var responseLine=null;
   var thinkingLine=null;
 
-  var systemPrompt='You are Zero, an AI terminal coding agent integrated with Orlix AI (orlix.xyz). '+
+  var systemPrompt='You are Holt, an AI terminal coding agent integrated with Orlix AI (orlix.xyz). '+
     'You are a coding agent, NOT a chatbot. You help with code, terminal commands, debugging, and development. '+
-    'You are running in a web terminal at orlix.xyz/zero. '+
+    'You are running in a web terminal at orlix.xyz/holt. '+
     'Respond concisely like a terminal tool. Show what you did with concrete file paths and code. '+
     'When asked to do something, describe the actions you took (files read, edited, commands run). '+
     (specMode?'IMPORTANT: You are in SPEC MODE. Draft a plan first, listing steps numbered. Do NOT execute until the user approves. ':'');
@@ -1562,7 +1562,7 @@ function sendMessage(){
             var actualThink=((Date.now()-thinkStart)/1000).toFixed(1);
             if(thinkingLine)thinkingLine.innerHTML='<span class="think-arrow">▸</span> Thought for '+actualThink+'s';
             if(fullText){chatHistory.push({role:'assistant',content:fullText});totalTokens+=Math.ceil(fullText.length/4);updateUsage();saveSession();}
-            isStreaming=false;stopWorking();inputField.placeholder='describe a task for zero...';inputField.focus();return;
+            isStreaming=false;stopWorking();inputField.placeholder='describe a task for holt...';inputField.focus();return;
           }
           var data=decoder.decode(r.value,{stream:true});
           data.split('\n').forEach(function(line){
@@ -1581,13 +1581,13 @@ function sendMessage(){
         if(thinkingLine)thinkingLine.innerHTML='<span class="think-arrow">▸</span> Thought for '+actualThink+'s';
         chatHistory.push({role:'assistant',content:content});
         totalTokens+=Math.ceil(content.length/4);updateUsage();saveSession();
-        isStreaming=false;stopWorking();inputField.placeholder='describe a task for zero...';inputField.focus();
+        isStreaming=false;stopWorking();inputField.placeholder='describe a task for holt...';inputField.focus();
       });
     }
   }).catch(function(e){
     if(responseLine)responseLine.innerHTML='<span style="color:var(--red)">'+esc(e.message)+'</span>';
     else addLine('<span style="color:var(--red)">'+esc(e.message)+'</span>','error');
-    chatHistory.pop();isStreaming=false;stopWorking();inputField.placeholder='describe a task for zero...';
+    chatHistory.pop();isStreaming=false;stopWorking();inputField.placeholder='describe a task for holt...';
   });
 }
 
@@ -1647,7 +1647,7 @@ function updateTitleBar(){
 }
 
 /* ══════ SETTINGS PANEL ══════ */
-var fontSize=parseInt(localStorage.getItem('zero_fontsize')||'13');
+var fontSize=parseInt(localStorage.getItem('holt_fontsize')||'13');
 
 function openSettings(){
   document.getElementById('settingsOverlay').classList.add('open');
@@ -1664,7 +1664,7 @@ function showSettingsView(id){
 
 function updateSettingsUI(){
   document.getElementById('fontVal').textContent=fontSize+' pt';
-  var curTheme=localStorage.getItem('zero_theme')||'dark';
+  var curTheme=localStorage.getItem('holt_theme')||'dark';
   var t=THEMES.find(function(x){return x.id===curTheme;})||THEMES[0];
   document.getElementById('spThemeName').textContent=t.n;
   document.getElementById('spThemeDot').style.background=t.accent;
@@ -1673,7 +1673,7 @@ function updateSettingsUI(){
 
 function renderThemeCards(filter){
   var list=document.getElementById('spThemeList');
-  var curTheme=localStorage.getItem('zero_theme')||'dark';
+  var curTheme=localStorage.getItem('holt_theme')||'dark';
   var q=filter.toLowerCase();
   var filtered=THEMES.filter(function(t){return !q||t.n.toLowerCase().includes(q)||t.id.includes(q);});
   list.innerHTML=filtered.map(function(t){
@@ -1696,7 +1696,7 @@ function renderThemeCards(filter){
 
 function applyFontSize(s){
   fontSize=Math.max(8,Math.min(24,s));
-  localStorage.setItem('zero_fontsize',fontSize);
+  localStorage.setItem('holt_fontsize',fontSize);
   document.querySelector('.term-output').style.fontSize=fontSize+'px';
   document.querySelector('.input-field').style.fontSize=fontSize+'px';
   document.getElementById('fontVal').textContent=fontSize+' pt';
@@ -1758,18 +1758,18 @@ function applyFontSize(s){
     document.getElementById('spBootClear').addEventListener('click',function(){bootCode.value='';bootCount.textContent='0';});
     document.getElementById('spBootCopy').addEventListener('click',function(){navigator.clipboard.writeText(bootCode.value);});
     document.getElementById('spBootCopyLink').addEventListener('click',function(){
-      var link='https://orlix.xyz/zero#run='+btoa(bootCode.value);
+      var link='https://orlix.xyz/holt#run='+btoa(bootCode.value);
       document.getElementById('spBootLink').textContent=link;
       navigator.clipboard.writeText(link);
     });
     document.getElementById('spBootRun').addEventListener('click',function(){closeSettings();addLine('<span style="color:var(--dim)">Boot script executed.</span>','system');});
   }
 
-  var fs=localStorage.getItem('zero_fontsize');
+  var fs=localStorage.getItem('holt_fontsize');
   if(fs){fontSize=parseInt(fs);setTimeout(function(){applyFontSize(fontSize);},100);}
 })();
 
-/* ══════ TOOL CARDS — ZERO ╭──╮ STYLE ══════ */
+/* ══════ TOOL CARDS — HOLT ╭──╮ STYLE ══════ */
 function addToolCard(type, path, detail, status){
   var card=document.createElement('div');
   card.className='tool-card '+type;

@@ -3,7 +3,6 @@
   "framework": null,
   "installCommand": "echo skip-install",
   "buildCommand": "echo skip-build",
-  "outputDirectory": "cmd/holt-web/web",
   "cleanUrls": true,
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/holt.html" }]
 }
