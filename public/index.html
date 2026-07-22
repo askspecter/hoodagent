@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>HOLT — Trade &amp; Build from Your Terminal</title>
 <meta name="description" content="HOLT — a terminal agent you own, wired into a Robinhood trading MCP. Live stock quotes, portfolio, and buy/sell orders in plain English. Any model. You confirm every trade.">
-<link rel="icon" type="image/png" href="/holt-h.png">
-<meta property="og:image" content="/holt-h.png">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<meta property="og:image" content="/favicon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#000000">
@@ -108,7 +109,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 .lp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
 .lp-card{border:1px solid #1c2810;border-radius:10px;padding:20px;background:linear-gradient(180deg,#080a06,#050604);transition:all .15s}
 .lp-card:hover{border-color:#3c5218;background:linear-gradient(180deg,#0b0f07,#070905);transform:translateY(-2px)}
-.lp-card-ic{font-size:15px;color:var(--lime);margin-bottom:12px;font-weight:700;letter-spacing:.05em;display:inline-block;border:1px solid #2c3a12;border-radius:6px;padding:5px 9px;min-width:34px;text-align:center}
+.lp-card-ic{font-size:15px;color:var(--lime);margin-bottom:12px;font-weight:700;letter-spacing:.05em;display:inline-flex;align-items:center;justify-content:center;border:1px solid #2c3a12;border-radius:6px;padding:5px 9px;min-width:34px;height:29px;text-align:center}
+.lp-card-ic svg{width:16px;height:16px;display:block}
 .lp-card-t{font-size:14px;color:var(--lime);font-weight:600;margin-bottom:7px}
 .lp-card-t code{font-size:13px;background:rgba(191,255,0,.09);border:1px solid #2c3a12;padding:2px 8px;border-radius:5px;letter-spacing:.02em}
 .lp-card-d{font-size:12px;color:#7c8a4a;line-height:1.65}
@@ -130,9 +132,19 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 .lp-final{margin-top:74px;text-align:center;border:1px solid #1c2810;border-radius:14px;padding:46px 22px;background:radial-gradient(ellipse at top,rgba(191,255,0,.06),transparent 70%)}
 .lp-final .lp-sec-title{margin-bottom:10px}
 
-.lp-footer{margin-top:56px;text-align:center;font-size:11px;color:#3a4a1c;letter-spacing:.05em}
-.lp-footer a{color:#5a6a2a;text-decoration:none}
-.lp-footer a:hover{color:var(--lime)}
+.lp-foot{margin-top:64px;border-top:1px solid #16200b}
+.lp-foot-top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:26px 0 18px}
+.lp-foot-name{font-size:15px;font-weight:700;letter-spacing:.24em;color:var(--lime)}
+.lp-foot-tag{font-size:11px;color:#5a6a2a;letter-spacing:.04em;margin-top:5px}
+.lp-foot-nav{display:flex;align-items:center;gap:20px;font-size:11px;flex-wrap:wrap}
+.lp-foot-nav a{color:#7c8a4a;text-decoration:none;letter-spacing:.05em;transition:color .15s}
+.lp-foot-nav a:hover{color:var(--lime)}
+.lp-foot-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 0 4px;border-top:1px solid #10180a;font-size:10px;color:#3a4a1c;letter-spacing:.06em}
+.lp-foot-bar .dotsep{color:#28320f}
+@media(max-width:560px){
+  .lp-foot-top{flex-direction:column;align-items:flex-start;gap:16px}
+  .lp-foot-bar{justify-content:flex-start}
+}
 
 @media(max-width:600px){
   .lp-tag{font-size:13px}
@@ -145,7 +157,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 #loader{position:fixed;inset:0;z-index:999;background:#000;display:none;align-items:center;justify-content:center;flex-direction:column;transition:opacity .5s}
 #loader.show{display:flex}
 #loader.done{opacity:0;pointer-events:none}
-.load-logo{height:132px;width:auto;margin-bottom:30px;filter:drop-shadow(0 0 22px rgba(191,255,0,.5));animation:hmarkFloat 4.5s ease-in-out infinite}
 .load-console{width:min(440px,86vw);border:1px solid #1c2810;border-radius:8px;background:#050604;padding:16px 18px;font-size:12px;line-height:1.9;min-height:150px}
 .load-log{color:var(--lime);white-space:pre-wrap;min-height:120px}
 .load-log .lg-ok{color:var(--lime)}
@@ -506,6 +517,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
     <!-- hero -->
     <section class="lp-hero">
       <div class="lp-hero-glow"></div>
+      <img class="lp-logo" id="lpLogo" alt="HOLT">
       <div class="lp-tag">Trade the market from your terminal.</div>
       <div class="lp-sub">HOLT is a <span class="b">terminal agent you own</span>, wired into a <span class="b">Robinhood trading MCP</span>. Ask for a live quote, your portfolio, or a buy/sell order in plain English — right next to reading files and running commands. <span class="b">You</span> pick the model and the permission level, and orders only go live when you confirm.</div>
       <div class="lp-cta-row">
@@ -532,7 +544,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
       </div>
       <div class="lp-grid">
         <div class="lp-card"><div class="lp-card-ic">$</div><div class="lp-card-t">Trade via Robinhood</div><div class="lp-card-d">A built-in Robinhood MCP places market &amp; limit <span class="b">buy/sell</span> orders, lists positions, and cancels open orders — all from plain-English prompts in the terminal.</div></div>
-        <div class="lp-card"><div class="lp-card-ic">📈</div><div class="lp-card-t">Live quotes &amp; portfolio</div><div class="lp-card-d">Pull real-time <code>last / bid / ask</code> quotes for any ticker and read your equity, market value, and buying power at a glance.</div></div>
+        <div class="lp-card"><div class="lp-card-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 3 3 7-7"/><path d="M15 8h4v4"/></svg></div><div class="lp-card-t">Live quotes &amp; portfolio</div><div class="lp-card-d">Pull real-time <code>last / bid / ask</code> quotes for any ticker and read your equity, market value, and buying power at a glance.</div></div>
         <div class="lp-card"><div class="lp-card-ic">⛨</div><div class="lp-card-t">You confirm every order</div><div class="lp-card-d">Trades, file writes, and shell commands go through a permission policy — orders never fire without your explicit <code>confirm</code>. Cycle modes with <code>Shift+Tab</code>.</div></div>
         <div class="lp-card"><div class="lp-card-ic">◇</div><div class="lp-card-t">Use any model</div><div class="lp-card-d">Bring Anthropic, OpenAI, Gemini, xAI, DeepSeek, Kimi, Qwen, GLM and 25+ providers — or any OpenAI/Anthropic-compatible endpoint. Switch with <code>/model</code>.</div></div>
         <div class="lp-card"><div class="lp-card-ic">⚙</div><div class="lp-card-t">Real tool use</div><div class="lp-card-d">Read, write, edit, search, run shell, fetch URLs, and diff git alongside trading — every action rendered live as a tool card.</div></div>
@@ -589,9 +601,28 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
       <button class="lp-btn primary" id="lpLaunch2">Launch Terminal <span class="arr">❯</span></button>
     </section>
 
-    <div class="lp-footer">
-      HOLT <a class="lp-x" href="https://x.com/useHOLT" target="_blank" rel="noopener" aria-label="HOLT on X" style="vertical-align:middle;margin:0 4px"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a> MIT
-    </div>
+    <footer class="lp-foot">
+      <div class="lp-foot-top">
+        <div class="lp-foot-brand">
+          <div class="lp-foot-name">HOLT</div>
+          <div class="lp-foot-tag">Trade &amp; build from your terminal.</div>
+        </div>
+        <nav class="lp-foot-nav">
+          <a href="#features">Features</a>
+          <a href="#trading">Trading</a>
+          <a href="#providers">Providers</a>
+          <a href="#commands">Commands</a>
+          <a class="lp-x" href="https://x.com/useHOLT" target="_blank" rel="noopener" aria-label="HOLT on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        </nav>
+      </div>
+      <div class="lp-foot-bar">
+        <span>© 2026 HOLT</span>
+        <span class="dotsep">·</span>
+        <span>MIT License</span>
+        <span class="dotsep">·</span>
+        <span>Runs in your browser — no sign-up</span>
+      </div>
+    </footer>
   </div>
 </div>
 
@@ -1152,8 +1183,13 @@ function initShell(){
   var selHtml=PROVIDERS.map(function(p){return '<optgroup label="'+p.name+'">'+p.models.map(function(m){return '<option value="'+m.id+'"'+(m.id===currentModel?' selected':'')+'>'+m.n+'</option>';}).join('')+'</optgroup>';}).join('');
   document.getElementById('sbModelSel').innerHTML=selHtml;
 
-  // welcome wrap (no big logo — brand lives only in the top-left)
+  // welcome wrap — HOLT wordmark (the H emblem stays only in the top-left)
   var ww=document.createElement('div');ww.className='welcome-wrap';output.appendChild(ww);
+
+  var logoImg=document.createElement('img');
+  logoImg.src=holtLogoDataURL(24,'#BFFF00');
+  logoImg.className='ascii-logo';logoImg.alt='HOLT';
+  ww.appendChild(logoImg);
 
   var t1=document.createElement('div');t1.className='welcome-line tag';t1.innerHTML='Trade the market. Ship code. One terminal.';ww.appendChild(t1);
   var sp1=document.createElement('div');sp1.innerHTML='';sp1.style.height='8px';ww.appendChild(sp1);
@@ -2269,9 +2305,8 @@ function formatOutput(text){
 
 /* ══════ LANDING + LOADER BOOTSTRAP ══════ */
 (function(){
-  // logos — ASCII wordmark in hero, H emblem on the boot screen
+  // hero HOLT wordmark (the H emblem lives only in the top-left nav + favicon)
   var lpLogo=document.getElementById('lpLogo');if(lpLogo)lpLogo.src=holtLogoDataURL(26,'#BFFF00');
-  var loadLogo=document.getElementById('loadLogo');if(loadLogo)loadLogo.src='/holt-h.png';
 
   // provider chips
   var prov=document.getElementById('lpProv');
