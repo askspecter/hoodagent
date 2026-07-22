@@ -211,17 +211,21 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 .thinking-content{display:none;margin:2px 0 6px 16px;padding:6px 10px;border-left:2px solid var(--dim2);font-size:10px;color:var(--dim);line-height:1.5}
 .thinking-line.open+.thinking-content{display:block}
 
-/* tool cards — HOLT-style ╭──╮ bordered blocks */
-.tool-card{margin:4px 0;font-size:11px;line-height:1.5;font-family:'JetBrains Mono',monospace;white-space:pre;color:var(--dim)}
-.tool-card .tc-border{color:var(--dim2)}
-.tool-card .tc-inner{padding:0 0 0 2ch}
-.tool-card .tc-head{display:flex;align-items:center;gap:6px}
-.tool-card .tc-name{color:var(--accent);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.06em}
-.tool-card .tc-status{font-size:9px;padding:1px 6px;border-radius:3px}
-.tool-card .tc-status.running{color:var(--orange);background:rgba(240,120,48,.1)}
-.tool-card .tc-status.done{color:var(--green);background:rgba(74,222,128,.1)}
-.tool-card .tc-path{color:var(--dim);font-size:10px}
-.tool-card .tc-detail{color:var(--dim);font-size:10px}
+/* tool cards — clean CSS bordered cards */
+.tool-card{margin:6px 0;border:1px solid var(--dim2);border-left:2px solid var(--dim);border-radius:6px;padding:7px 12px;background:rgba(191,255,0,.02);font-size:11px;line-height:1.5;max-width:100%;overflow:hidden}
+.tool-card .tc-head{display:flex;align-items:center;gap:9px;min-width:0}
+.tool-card .tc-name{color:var(--accent);font-weight:700;font-size:9px;text-transform:uppercase;letter-spacing:.09em;flex-shrink:0}
+.tool-card .tc-status{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:4px;font-size:9px;flex-shrink:0;line-height:1}
+.tool-card .tc-status.running{color:var(--orange);background:rgba(240,120,48,.14);animation:tcPulse 1.2s ease-in-out infinite}
+.tool-card .tc-status.done{color:var(--green);background:rgba(74,222,128,.16)}
+@keyframes tcPulse{50%{opacity:.35}}
+.tool-card .tc-path{color:var(--fg);opacity:.9;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.tool-card .tc-detail{color:var(--dim);font-size:10px;margin-top:4px}
+.tool-card.read{border-left-color:var(--cyan)}
+.tool-card.write{border-left-color:var(--green)}
+.tool-card.edit{border-left-color:var(--yellow)}
+.tool-card.shell{border-left-color:var(--orange)}
+.tool-card.search{border-left-color:var(--purple)}
 .tool-card.read .tc-name{color:var(--cyan)}
 .tool-card.write .tc-name{color:var(--green)}
 .tool-card.edit .tc-name{color:var(--yellow)}
@@ -2021,24 +2025,20 @@ function applyFontSize(s){
   if(fs){fontSize=parseInt(fs);setTimeout(function(){applyFontSize(fontSize);},100);}
 })();
 
-/* ══════ TOOL CARDS — HOLT ╭──╮ STYLE ══════ */
+/* ══════ TOOL CARDS — clean CSS card ══════ */
 function addToolCard(type, path, detail, status){
   var card=document.createElement('div');
   card.className='tool-card '+type;
+  var typeLabel={read:'Read',write:'Write',edit:'Edit',shell:'Bash',search:'Grep'}[type]||type;
   var statusClass=status==='done'?'done':'running';
   var statusText=status==='done'?'✓':'⟳';
-  var typeLabel={read:'Read',write:'Write',edit:'Edit',shell:'Bash',search:'Grep'}[type]||type;
-  var pathEsc=esc(path);
-  var w=Math.max(pathEsc.length+4, typeLabel.length+statusText.length+6, 30);
-  var topBar='╭'+'─'.repeat(w)+'╮';
-  var bottomBar='╰'+'─'.repeat(w)+'╯';
-  var padLine=function(content,rawLen){var pad=w-rawLen;return '│ '+content+' '.repeat(Math.max(0,pad-1))+'│';};
   card.innerHTML=
-    '<span class="tc-border">'+topBar+'</span>\n'+
-    padLine('<span class="tc-name">'+typeLabel+'</span> <span class="tc-status '+statusClass+'">'+statusText+'</span>',typeLabel.length+1+statusText.length)+'\n'+
-    padLine('<span class="tc-path">'+pathEsc+'</span>',pathEsc.length)+'\n'+
-    (detail?padLine('<span class="tc-detail">'+esc(detail)+'</span>',detail.length)+'\n':'')+
-    '<span class="tc-border">'+bottomBar+'</span>';
+    '<div class="tc-head">'+
+      '<span class="tc-name">'+esc(typeLabel)+'</span>'+
+      '<span class="tc-status '+statusClass+'">'+statusText+'</span>'+
+      '<span class="tc-path">'+esc(path)+'</span>'+
+    '</div>'+
+    (detail?'<div class="tc-detail">'+esc(detail)+'</div>':'');
   output.appendChild(card);output.scrollTop=output.scrollHeight;
   return card;
 }
@@ -2047,7 +2047,8 @@ function updateToolCard(card, status, detail){
   if(badge){badge.className='tc-status '+(status==='done'?'done':'running');badge.textContent=status==='done'?'✓':'⟳';}
   if(detail){
     var d=card.querySelector('.tc-detail');
-    if(d)d.textContent=detail;
+    if(!d){d=document.createElement('div');d.className='tc-detail';card.appendChild(d);}
+    d.textContent=detail;
   }
 }
 
