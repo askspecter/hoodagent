@@ -506,8 +506,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
     <!-- hero -->
     <section class="lp-hero">
       <div class="lp-hero-glow"></div>
-      <img class="lp-hmark" src="/holt-h.png" alt="HOLT emblem">
-      <img class="lp-logo" id="lpLogo" alt="HOLT">
       <div class="lp-tag">Trade the market from your terminal.</div>
       <div class="lp-sub">HOLT is a <span class="b">terminal agent you own</span>, wired into a <span class="b">Robinhood trading MCP</span>. Ask for a live quote, your portfolio, or a buy/sell order in plain English — right next to reading files and running commands. <span class="b">You</span> pick the model and the permission level, and orders only go live when you confirm.</div>
       <div class="lp-cta-row">
@@ -599,7 +597,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 
 <!-- ══════ LOADER ══════ -->
 <div id="loader">
-  <img class="load-logo" id="loadLogo" alt="HOLT">
   <div class="load-console">
     <div class="load-log" id="loadLog"></div>
     <div class="load-bar"><div class="load-fill" id="loadFill"></div></div>
@@ -1155,14 +1152,8 @@ function initShell(){
   var selHtml=PROVIDERS.map(function(p){return '<optgroup label="'+p.name+'">'+p.models.map(function(m){return '<option value="'+m.id+'"'+(m.id===currentModel?' selected':'')+'>'+m.n+'</option>';}).join('')+'</optgroup>';}).join('');
   document.getElementById('sbModelSel').innerHTML=selHtml;
 
-  // welcome wrap (centered)
+  // welcome wrap (no big logo — brand lives only in the top-left)
   var ww=document.createElement('div');ww.className='welcome-wrap';output.appendChild(ww);
-
-  // ASCII logo — shared pixel-perfect canvas, full lime
-  var logoImg=document.createElement('img');
-  logoImg.src=holtLogoDataURL(24,'#BFFF00');
-  logoImg.className='ascii-logo';logoImg.alt='HOLT';
-  ww.appendChild(logoImg);
 
   var t1=document.createElement('div');t1.className='welcome-line tag';t1.innerHTML='Trade the market. Ship code. One terminal.';ww.appendChild(t1);
   var sp1=document.createElement('div');sp1.innerHTML='';sp1.style.height='8px';ww.appendChild(sp1);
