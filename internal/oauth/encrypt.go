@@ -114,7 +114,11 @@ func createSecretFile(path string) ([]byte, error) {
 			}
 			return writeNewSecretFile(path)
 		}
-		if !errors.Is(err, os.ErrExist) {
+		// On Windows a concurrent holder's os.Remove leaves the lock file in a
+		// "delete pending" state, so an O_EXCL create races it with
+		// ERROR_ACCESS_DENIED (os.ErrPermission) rather than ErrExist. Treat that
+		// as contention and retry, exactly like ErrExist (mirrors acquireFileLock).
+		if !errors.Is(err, os.ErrExist) && !errors.Is(err, os.ErrPermission) {
 			return nil, fmt.Errorf("oauth: create token secret lock: %w", err)
 		}
 		if data, rerr := readSecretFileRetry(path); rerr == nil {
