@@ -5,9 +5,9 @@ import (
 	"io"
 	"strings"
 
+	"github.com/askspecter/holt/internal/holtcommands"
 	"github.com/askspecter/holt/internal/redaction"
 	"github.com/askspecter/holt/internal/sessions"
-	"github.com/askspecter/holt/internal/holtcommands"
 )
 
 type sessionCommandOptions struct {

@@ -11,10 +11,10 @@ import (
 
 	"github.com/askspecter/holt/internal/agent"
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/sandbox"
 	"github.com/askspecter/holt/internal/sessions"
 	"github.com/askspecter/holt/internal/tools"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 // fakeProvider streams a canned assistant message and ends the turn — enough to

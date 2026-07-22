@@ -12,6 +12,7 @@ import (
 
 	"github.com/askspecter/holt/internal/agent"
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/imageinput"
 	"github.com/askspecter/holt/internal/lsp"
 	"github.com/askspecter/holt/internal/modelregistry"
@@ -26,7 +27,6 @@ import (
 	"github.com/askspecter/holt/internal/tools"
 	"github.com/askspecter/holt/internal/usage"
 	"github.com/askspecter/holt/internal/worktrees"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 const (

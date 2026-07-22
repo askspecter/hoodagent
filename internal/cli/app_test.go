@@ -16,11 +16,11 @@ import (
 
 	"github.com/askspecter/holt/internal/agent"
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/mcp"
 	"github.com/askspecter/holt/internal/tools"
 	"github.com/askspecter/holt/internal/tui"
 	"github.com/askspecter/holt/internal/update"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 var errWriteFailed = errors.New("write failed")

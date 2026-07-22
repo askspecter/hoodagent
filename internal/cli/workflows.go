@@ -7,12 +7,12 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/askspecter/holt/internal/holtgit"
 	"github.com/askspecter/holt/internal/redaction"
 	"github.com/askspecter/holt/internal/selfverify"
 	"github.com/askspecter/holt/internal/testrunner"
 	"github.com/askspecter/holt/internal/verify"
 	"github.com/askspecter/holt/internal/worktrees"
-	"github.com/askspecter/holt/internal/holtgit"
 )
 
 type worktreeCommandOptions struct {

@@ -16,9 +16,9 @@ import (
 
 	"github.com/askspecter/holt/internal/agent"
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/modelregistry"
 	"github.com/askspecter/holt/internal/sessions"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 func TestRunExecHelpDocumentsM1Flags(t *testing.T) {

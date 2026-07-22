@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/askspecter/holt/internal/usage"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/usage"
 )
 
 // The context-fill gauge is empty before any request, then shows

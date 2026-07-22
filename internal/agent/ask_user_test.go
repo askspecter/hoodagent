@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/askspecter/holt/internal/tools"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/tools"
 )
 
 // providerCallingAskUserThenAnswer returns a mock provider whose first turn calls

@@ -5,11 +5,11 @@ import (
 	"io"
 	"strings"
 
+	"github.com/askspecter/holt/internal/holtcommands"
 	"github.com/askspecter/holt/internal/hooks"
 	"github.com/askspecter/holt/internal/mcp"
 	"github.com/askspecter/holt/internal/plugins"
 	"github.com/askspecter/holt/internal/redaction"
-	"github.com/askspecter/holt/internal/holtcommands"
 )
 
 type backendStatusOptions struct {

@@ -17,11 +17,11 @@ import (
 
 	"github.com/askspecter/holt/internal/agent"
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/notify"
 	"github.com/askspecter/holt/internal/sandbox"
 	"github.com/askspecter/holt/internal/sessions"
 	"github.com/askspecter/holt/internal/tools"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 // execCmd runs a possibly-batched command synchronously and returns the first

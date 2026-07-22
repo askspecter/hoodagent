@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/askspecter/holt/internal/tools"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/tools"
 )
 
 func enabledSelfCorrector(t *testing.T) *SelfCorrector {

@@ -7,9 +7,9 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/imageinput"
 	"github.com/askspecter/holt/internal/modelregistry"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 // droppableImageExts are the image extensions a dragged-and-dropped file may

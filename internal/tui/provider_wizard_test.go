@@ -13,9 +13,9 @@ import (
 	tea "charm.land/bubbletea/v2"
 
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/providercatalog"
 	"github.com/askspecter/holt/internal/providermodeldiscovery"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 func TestProviderCommandOpensOnboardingWizard(t *testing.T) {

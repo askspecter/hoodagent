@@ -1,3 +1,7 @@
+//go:build !windows
+
+// These tests spawn a PTY running /bin/cat, so they run on Unix only; holt-web's
+// PTY backend is not supported on Windows.
 package main
 
 import (

@@ -12,11 +12,11 @@ import (
 
 	"github.com/askspecter/holt/internal/agent"
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/mcp"
 	"github.com/askspecter/holt/internal/sandbox"
 	"github.com/askspecter/holt/internal/sessions"
 	"github.com/askspecter/holt/internal/tools"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 func TestRunExecHelpDocumentsProtocolFlags(t *testing.T) {

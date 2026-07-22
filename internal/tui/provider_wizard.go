@@ -16,11 +16,11 @@ import (
 
 	"github.com/askspecter/holt/internal/browser"
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/oauth"
 	"github.com/askspecter/holt/internal/providercatalog"
 	"github.com/askspecter/holt/internal/provideroauth"
 	"github.com/askspecter/holt/internal/redaction"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 // providerWizardOAuthMsg carries the result of an in-wizard browser OAuth login.

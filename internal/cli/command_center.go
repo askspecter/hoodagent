@@ -9,8 +9,8 @@ import (
 	"unicode"
 
 	"github.com/askspecter/holt/internal/config"
-	"github.com/askspecter/holt/internal/modelregistry"
 	"github.com/askspecter/holt/internal/holtcommands"
+	"github.com/askspecter/holt/internal/modelregistry"
 )
 
 type commandCenterOptions struct {

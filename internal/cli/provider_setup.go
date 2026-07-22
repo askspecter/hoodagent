@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtcommands"
 	"github.com/askspecter/holt/internal/providercatalog"
 	"github.com/askspecter/holt/internal/providerhealth"
-	"github.com/askspecter/holt/internal/holtcommands"
 )
 
 type providerAddOptions struct {

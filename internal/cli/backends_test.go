@@ -14,11 +14,11 @@ import (
 	"testing"
 
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtcommands"
 	"github.com/askspecter/holt/internal/hooks"
 	"github.com/askspecter/holt/internal/mcp"
 	"github.com/askspecter/holt/internal/plugins"
 	"github.com/askspecter/holt/internal/tools"
-	"github.com/askspecter/holt/internal/holtcommands"
 )
 
 func TestRunBackendsJSONUsesLifecycleSnapshotWithoutConnectingMCP(t *testing.T) {

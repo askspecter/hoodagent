@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/askspecter/holt/internal/sandbox"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/sandbox"
 )
 
 const SchemaVersion = 2

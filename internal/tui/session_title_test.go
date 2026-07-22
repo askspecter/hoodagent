@@ -8,8 +8,8 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/askspecter/holt/internal/sessions"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/sessions"
 )
 
 // titleProvider is a fakeProvider that streams a single line of text as the

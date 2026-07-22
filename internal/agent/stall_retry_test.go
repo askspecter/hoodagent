@@ -5,8 +5,8 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/askspecter/holt/internal/tools"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/tools"
 )
 
 // stallProvider connects successfully (HTTP 200) but the stream emits a stall/idle

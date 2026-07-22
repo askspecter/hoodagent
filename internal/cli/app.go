@@ -16,6 +16,8 @@ import (
 
 	"github.com/askspecter/holt/internal/agent"
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtgit"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/hooks"
 	"github.com/askspecter/holt/internal/localcontrol"
 	"github.com/askspecter/holt/internal/mcp"
@@ -37,8 +39,6 @@ import (
 	"github.com/askspecter/holt/internal/update"
 	"github.com/askspecter/holt/internal/verify"
 	"github.com/askspecter/holt/internal/worktrees"
-	"github.com/askspecter/holt/internal/holtgit"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 var version = "dev"

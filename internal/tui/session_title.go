@@ -10,8 +10,8 @@ import (
 	tea "charm.land/bubbletea/v2"
 
 	"github.com/askspecter/holt/internal/agent"
-	"github.com/askspecter/holt/internal/sessions"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/sessions"
 )
 
 const (

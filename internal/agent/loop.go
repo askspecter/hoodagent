@@ -10,12 +10,12 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/hooks"
 	"github.com/askspecter/holt/internal/redaction"
 	"github.com/askspecter/holt/internal/sandbox"
 	"github.com/askspecter/holt/internal/streamjson"
 	"github.com/askspecter/holt/internal/tools"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 const maxTurnsAnswer = "Agent reached maximum number of turns without a final answer."

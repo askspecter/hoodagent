@@ -3,11 +3,11 @@ package agent
 import (
 	"context"
 
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/hooks"
 	"github.com/askspecter/holt/internal/sandbox"
 	"github.com/askspecter/holt/internal/streamjson"
 	"github.com/askspecter/holt/internal/tools"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 type Message = holtruntime.Message

@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/askspecter/holt/internal/holtgit"
 	"github.com/askspecter/holt/internal/modelregistry"
 	"github.com/askspecter/holt/internal/sessions"
 	"github.com/askspecter/holt/internal/usage"
-	"github.com/askspecter/holt/internal/holtgit"
 )
 
 type usageOptions struct {

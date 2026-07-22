@@ -10,10 +10,10 @@ import (
 	tea "charm.land/bubbletea/v2"
 
 	"github.com/askspecter/holt/internal/agent"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/sessions"
 	"github.com/askspecter/holt/internal/specmode"
 	"github.com/askspecter/holt/internal/tools"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 func TestSpecCommandCreatesDraftReview(t *testing.T) {

@@ -9,10 +9,10 @@ import (
 	tea "charm.land/bubbletea/v2"
 
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtcommands"
 	"github.com/askspecter/holt/internal/providercatalog"
 	"github.com/askspecter/holt/internal/sandbox"
 	"github.com/askspecter/holt/internal/tools"
-	"github.com/askspecter/holt/internal/holtcommands"
 )
 
 func (m model) toolsText() string {

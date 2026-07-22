@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/sandbox"
 	"github.com/askspecter/holt/internal/tools"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 func TestRequestPermissionsTurnGrantAllowsLaterToolAndCleansUp(t *testing.T) {

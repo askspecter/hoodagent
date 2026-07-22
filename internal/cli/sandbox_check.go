@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/askspecter/holt/internal/config"
-	holtSandbox "github.com/askspecter/holt/internal/sandbox"
 	"github.com/askspecter/holt/internal/holtcommands"
+	holtSandbox "github.com/askspecter/holt/internal/sandbox"
 )
 
 type sandboxCheckOptions struct {

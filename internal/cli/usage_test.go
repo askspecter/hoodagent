@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/askspecter/holt/internal/sessions"
 	"github.com/askspecter/holt/internal/holtgit"
+	"github.com/askspecter/holt/internal/sessions"
 )
 
 func seedUsageStore(t *testing.T) *sessions.Store {

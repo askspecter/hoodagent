@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/modelregistry"
 	"github.com/askspecter/holt/internal/sessions"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 func usageEvent(t *testing.T, sessionID string, sequence int, createdAt string, prompt int, completion int) sessions.Event {

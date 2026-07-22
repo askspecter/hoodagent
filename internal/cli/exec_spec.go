@@ -9,6 +9,7 @@ import (
 
 	"github.com/askspecter/holt/internal/agent"
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/modelregistry"
 	"github.com/askspecter/holt/internal/notify"
 	"github.com/askspecter/holt/internal/sandbox"
@@ -17,7 +18,6 @@ import (
 	"github.com/askspecter/holt/internal/streamjson"
 	"github.com/askspecter/holt/internal/tools"
 	"github.com/askspecter/holt/internal/usage"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 type execSpecDraftRun struct {

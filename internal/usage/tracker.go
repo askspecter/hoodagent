@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/askspecter/holt/internal/modelregistry"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/modelregistry"
 )
 
 type Normalized struct {

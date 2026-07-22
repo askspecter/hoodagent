@@ -5,9 +5,9 @@ import (
 	"math"
 	"testing"
 
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/modelregistry"
 	"github.com/askspecter/holt/internal/sessions"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 // The persistence round-trip is LOSSLESS for cost: a cache-heavy + reasoning turn

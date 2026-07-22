@@ -47,8 +47,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/askspecter/holt/internal/providers/providerio"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/providers/providerio"
 )
 
 // Codex Responses API event type names. Only the ones the Codex backend

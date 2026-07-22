@@ -10,10 +10,10 @@ import (
 
 	"github.com/askspecter/holt/internal/agent"
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/sandbox"
 	"github.com/askspecter/holt/internal/sessions"
 	"github.com/askspecter/holt/internal/specmode"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 func TestRunExecUseSpecCreatesDraftSession(t *testing.T) {

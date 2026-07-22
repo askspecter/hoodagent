@@ -8,8 +8,8 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 
-	"github.com/askspecter/holt/internal/tools"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/tools"
 )
 
 func TestEnterWhilePendingQueuesPromptWithoutStartingRun(t *testing.T) {

@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"github.com/askspecter/holt/internal/config"
-	"github.com/askspecter/holt/internal/providerhealth"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/providerhealth"
 )
 
 func TestRunProvidersCheckMissingKeyPrintsNextAction(t *testing.T) {

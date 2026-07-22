@@ -9,8 +9,8 @@ import (
 	"testing"
 
 	"github.com/askspecter/holt/internal/config"
-	"github.com/askspecter/holt/internal/oauth"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/oauth"
 )
 
 func TestNewCreatesOpenAIProviderWithFactoryOptions(t *testing.T) {

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/askspecter/holt/internal/config"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/modelregistry"
 	"github.com/askspecter/holt/internal/oauth"
 	"github.com/askspecter/holt/internal/providercatalog"
@@ -14,7 +15,6 @@ import (
 	"github.com/askspecter/holt/internal/providers/gemini"
 	"github.com/askspecter/holt/internal/providers/openai"
 	"github.com/askspecter/holt/internal/providers/providerio"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 // Options configures provider construction.

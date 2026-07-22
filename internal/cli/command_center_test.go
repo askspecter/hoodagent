@@ -11,9 +11,9 @@ import (
 	"testing"
 
 	"github.com/askspecter/holt/internal/config"
-	"github.com/askspecter/holt/internal/providerhealth"
 	"github.com/askspecter/holt/internal/holtcommands"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/providerhealth"
 )
 
 func TestRunConfigPrintsRedactedSummary(t *testing.T) {

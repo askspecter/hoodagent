@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/askspecter/holt/internal/tools"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/tools"
 )
 
 // emptyTurn is a stream that produces no visible text and no tool calls.

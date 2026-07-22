@@ -5,9 +5,9 @@ import (
 	"sort"
 	"time"
 
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/modelregistry"
 	"github.com/askspecter/holt/internal/sessions"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 // usageEventPayload mirrors the persisted EventUsage payload written by the exec

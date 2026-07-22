@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/askspecter/holt/internal/providers/providerio"
 	"github.com/askspecter/holt/internal/holtruntime"
+	"github.com/askspecter/holt/internal/providers/providerio"
 )
 
 const defaultBaseURL = "https://generativelanguage.googleapis.com"

@@ -19,6 +19,7 @@ import (
 	"github.com/askspecter/holt/internal/agent"
 	"github.com/askspecter/holt/internal/config"
 	"github.com/askspecter/holt/internal/doctor"
+	"github.com/askspecter/holt/internal/holtruntime"
 	"github.com/askspecter/holt/internal/lsp"
 	internalmcp "github.com/askspecter/holt/internal/mcp"
 	"github.com/askspecter/holt/internal/modelregistry"
@@ -32,7 +33,6 @@ import (
 	"github.com/askspecter/holt/internal/tools"
 	"github.com/askspecter/holt/internal/usage"
 	"github.com/askspecter/holt/internal/usercommands"
-	"github.com/askspecter/holt/internal/holtruntime"
 )
 
 const tuiToolOutputLimit = 240
