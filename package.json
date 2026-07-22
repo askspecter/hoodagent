@@ -15,7 +15,7 @@
     "scripts/postinstall.mjs"
   ],
   "engines": {
-    "node": ">=18"
+    "node": "22.x"
   },
   "dependencies": {
     "agent-browser": "^0.30.1",
