@@ -248,6 +248,22 @@ The npm package also includes browser and terminal helper packages used by local
 browser/terminal tools. Source builds can use the same helpers when they are on
 `PATH` or configured in Holt's local-control settings.
 
+## Run In A Browser
+
+`holt-web` serves the full holt TUI in a browser tab by bridging a real PTY to
+[xterm.js](https://xtermjs.org) over a WebSocket. It ships with a `Dockerfile`.
+
+```bash
+docker build -t holt-web .
+docker run --rm -p 8080:8080 -e HOLT_WEB_TOKEN=change-me -e OPENROUTER_API_KEY=sk-... holt-web
+# open http://localhost:8080/?token=change-me
+```
+
+Because it needs a persistent process and a real PTY it deploys to a container
+host (Railway, Fly.io, Render, any Docker/VPS) — **not** to serverless platforms
+like Vercel. It also hands visitors a live agent, so always set `HOLT_WEB_TOKEN`
+and keep it isolated. See [docs/BROWSER_TERMINAL.md](docs/BROWSER_TERMINAL.md).
+
 ## Common Commands
 
 ```text

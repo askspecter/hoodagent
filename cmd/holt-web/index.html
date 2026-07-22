@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>HOLT — browser terminal</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.min.css" />
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; background: #0b0e14; }
+    body {
+      font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
+      display: flex; flex-direction: column; color: #7d8590;
+    }
+    header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-bottom: 1px solid #1c2230;
+      background: #0d111a; user-select: none;
+    }
+    .brand { font-weight: 800; letter-spacing: 2px; color: #c9d1d9; }
+    .brand .o { color: #2dd4bf; }
+    .status { margin-left: auto; font-size: 12px; display: flex; align-items: center; gap: 7px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #f85149; transition: background .2s; }
+    .dot.up { background: #2dd4bf; }
+    #term { flex: 1; min-height: 0; padding: 8px 10px; }
+    .banner {
+      position: absolute; inset: auto 0 0 0; margin: 0 auto 14px; width: max-content;
+      max-width: 90%; padding: 8px 14px; border-radius: 8px;
+      background: #161b26; border: 1px solid #232a38; color: #adbac7; font-size: 13px;
+      box-shadow: 0 6px 24px rgba(0,0,0,.4); display: none;
+    }
+    .banner.show { display: block; }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="brand">H<span class="o">O</span>LT</span>
+    <span class="status"><span id="dot" class="dot"></span><span id="state">connecting…</span></span>
+  </header>
+  <div id="term"></div>
+  <div id="banner" class="banner"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/lib/addon-fit.min.js"></script>
+  <script>
+    const MSG_INPUT = "0";
+    const MSG_RESIZE = "1";
+
+    const term = new Terminal({
+      cursorBlink: true,
+      fontFamily: 'ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace',
+      fontSize: 14,
+      theme: {
+        background: "#0b0e14", foreground: "#c9d1d9", cursor: "#2dd4bf",
+        selectionBackground: "#2d3341",
+      },
+    });
+    const fit = new FitAddon.FitAddon();
+    term.loadAddon(fit);
+    term.open(document.getElementById("term"));
+    fit.fit();
+    term.focus();
+
+    const dot = document.getElementById("dot");
+    const state = document.getElementById("state");
+    const banner = document.getElementById("banner");
+    function setState(up, text) { dot.classList.toggle("up", up); state.textContent = text; }
+    function showBanner(text) { banner.textContent = text; banner.classList.add("show"); }
+
+    function sendResize() {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(MSG_RESIZE + JSON.stringify({ cols: term.cols, rows: term.rows }));
+      }
+    }
+
+    const token = new URLSearchParams(location.search).get("token") || "";
+    const scheme = location.protocol === "https:" ? "wss" : "ws";
+    const wsURL = `${scheme}://${location.host}/ws${token ? "?token=" + encodeURIComponent(token) : ""}`;
+
+    let ws;
+    function connect() {
+      setState(false, "connecting…");
+      ws = new WebSocket(wsURL);
+      ws.binaryType = "arraybuffer";
+
+      ws.onopen = () => { setState(true, "connected"); banner.classList.remove("show"); sendResize(); term.focus(); };
+      ws.onmessage = (ev) => {
+        const bytes = ev.data instanceof ArrayBuffer ? new Uint8Array(ev.data) : ev.data;
+        term.write(bytes);
+      };
+      ws.onclose = (ev) => {
+        setState(false, "disconnected");
+        if (ev.code === 1008 || ev.code === 4001) {
+          showBanner("Unauthorized — append ?token=YOUR_TOKEN to the URL.");
+          return;
+        }
+        showBanner("Session ended. Reconnecting in 2s…");
+        setTimeout(connect, 2000);
+      };
+      ws.onerror = () => { try { ws.close(); } catch (_) {} };
+    }
+
+    term.onData((d) => { if (ws && ws.readyState === WebSocket.OPEN) ws.send(MSG_INPUT + d); });
+
+    let resizeTimer;
+    const onResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { fit.fit(); sendResize(); }, 80);
+    };
+    window.addEventListener("resize", onResize);
+
+    connect();
+  </script>
+</body>
+</html>

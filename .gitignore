@@ -36,6 +36,7 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .cursor
 
 /holt
+/holt-web
 /holt.exe
 /snake-game.html
 
