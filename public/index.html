@@ -926,24 +926,13 @@ function holtLogoDataURL(cellPx,color){
   var cvs=document.createElement('canvas');
   cvs.width=Cols*cU*dpr;cvs.height=Rows*cU*dpr;
   var cx=cvs.getContext('2d');cx.scale(dpr,dpr);cx.fillStyle=color;
-  // solid blocks
+  // Render the solid block (█) cells only — the letters' front faces. Each face
+  // is one continuous lime shape (no thin double-lines, no internal seams,
+  // nothing "putus-putus") and the letters stay cleanly separated. A small
+  // overlap (ov) fuses adjacent cells so there are no sub-pixel gaps.
+  var ov=0.75;
   for(var r=0;r<Rows;r++)for(var c=0;c<Cols;c++){
-    if(c<AL[r].length&&AL[r][c]==='█')cx.fillRect(c*cU,r*cU,cU,cU);
-  }
-  // box-drawing chars as double lines (no gaps)
-  var bt=Math.max(2,Math.round(cU/6)),ba=(cU-bt)/2,bb=ba;
-  for(var r=0;r<Rows;r++)for(var c=0;c<Cols;c++){
-    var ch=c<AL[r].length?AL[r][c]:' ';
-    if(ch===' '||ch==='█')continue;
-    var x=c*cU,y=r*cU;
-    switch(ch){
-      case '═':cx.fillRect(x,y+ba,cU,bt);cx.fillRect(x,y+bb,cU,bt);break;
-      case '║':cx.fillRect(x+ba,y,bt,cU);cx.fillRect(x+bb,y,bt,cU);break;
-      case '╔':cx.fillRect(x+ba,y+ba,cU-ba,bt);cx.fillRect(x+ba,y+ba,bt,cU-ba);cx.fillRect(x+bb,y+bb,cU-bb,bt);cx.fillRect(x+bb,y+bb,bt,cU-bb);break;
-      case '╗':cx.fillRect(x,y+ba,cU-ba,bt);cx.fillRect(x+cU-ba-bt,y+ba,bt,cU-ba);cx.fillRect(x,y+bb,cU-bb,bt);cx.fillRect(x+cU-bb-bt,y+bb,bt,cU-bb);break;
-      case '╚':cx.fillRect(x+ba,y,bt,cU-ba);cx.fillRect(x+ba,y+cU-ba-bt,cU-ba,bt);cx.fillRect(x+bb,y,bt,cU-bb);cx.fillRect(x+bb,y+cU-bb-bt,cU-bb,bt);break;
-      case '╝':cx.fillRect(x,y+cU-ba-bt,cU-ba,bt);cx.fillRect(x+cU-ba-bt,y,bt,cU-ba);cx.fillRect(x,y+cU-bb-bt,cU-bb,bt);cx.fillRect(x+cU-bb-bt,y,bt,cU-bb);break;
-    }
+    if((c<AL[r].length?AL[r][c]:' ')==='█')cx.fillRect(c*cU-ov,r*cU-ov,cU+ov*2,cU+ov*2);
   }
   return cvs.toDataURL();
 }
