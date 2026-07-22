@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/zero-logo.png" alt="Zero" width="385">
+  <img src="docs/assets/holt-logo.svg" alt="Holt" width="385">
 </p>
 
 <p align="center"><strong>A terminal coding agent you own.</strong></p>
@@ -12,31 +12,31 @@
   <strong>English</strong> | <a href="README_ZH.md">中文</a>
 </p>
 
-Zero is an AI coding agent for your local terminal. It can inspect a repository,
+Holt is an AI coding agent for your local terminal. It can inspect a repository,
 edit files, run commands, use browser/terminal helpers, and keep durable local
 sessions while you choose the model and the permission level.
 
 ```bash
-zero
-zero exec "fix the failing test in ./pkg"
-zero exec --output-format stream-json < turns.jsonl
+holt
+holt exec "fix the failing test in ./pkg"
+holt exec --output-format stream-json < turns.jsonl
 ```
 
-## Why Zero
+## Why Holt
 
 - **Use the model you want.** Bring OpenAI, Anthropic, Gemini, Groq, OpenRouter,
   DeepSeek, Mistral, xAI, Qwen, Kimi, GitHub Models, Ollama, LM Studio, or any
   OpenAI-/Anthropic-compatible endpoint.
 - **Stay in control.** File writes, shell commands, network access, and
-  out-of-workspace writes go through Zero's permission and sandbox policy.
+  out-of-workspace writes go through Holt's permission and sandbox policy.
 - **Works in the terminal.** The TUI has model/provider pickers, image input,
   slash commands, live plan/tool rendering, scrollback, themes, and resume/fork
   support.
-- **Works without the TUI.** `zero exec` is scriptable, supports text/JSON/
+- **Works without the TUI.** `holt exec` is scriptable, supports text/JSON/
   stream-JSON I/O, isolated worktrees, spec-first runs, and meaningful exit
   codes for CI.
 - **Keeps context local.** Sessions are stored on disk, searchable, resumable,
-  and never uploaded as telemetry by Zero.
+  and never uploaded as telemetry by Holt.
 - **Extensible when you need it.** Use MCP servers, skills, plugins, hooks, and
   specialist subagents from the same CLI.
 
@@ -45,33 +45,33 @@ zero exec --output-format stream-json < turns.jsonl
 ### npm
 
 ```bash
-npm install -g @gitlawb/zero
-zero
+npm install -g @askspecter/holt
+holt
 ```
 
-The npm package installs a small wrapper plus the matching Zero binary for your
+The npm package installs a small wrapper plus the matching Holt binary for your
 platform from GitHub Releases. It supports Linux, macOS, and Windows on x64 and
 arm64.
 
 ### Bun
 
 Bun does not run dependency lifecycle scripts by default, so the `postinstall`
-that fetches the Zero binary is skipped and the first run fails with
+that fetches the Holt binary is skipped and the first run fails with
 `No native binary found next to the npm wrapper`.
 
 Install with Bun, then fetch the binary in one of two ways:
 
 ```bash
 # Option A: run the installer manually
-bun add @gitlawb/zero
-node node_modules/@gitlawb/zero/scripts/postinstall.mjs
+bun add @askspecter/holt
+node node_modules/@askspecter/holt/scripts/postinstall.mjs
 
 # Option B: allow the postinstall to run on install
-# add to your package.json:  "trustedDependencies": ["@gitlawb/zero"]
-bun add @gitlawb/zero
+# add to your package.json:  "trustedDependencies": ["@askspecter/holt"]
+bun add @askspecter/holt
 ```
 
-For global installs (`bun add -g @gitlawb/zero`), use Option A against the
+For global installs (`bun add -g @askspecter/holt`), use Option A against the
 global install path, or prefer the install scripts below.
 
 ### Install scripts
@@ -79,13 +79,13 @@ global install path, or prefer the install scripts below.
 Linux/macOS:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Gitlawb/zero/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/askspecter/holt/main/scripts/install.sh | bash
 ```
 
 Windows PowerShell:
 
 ```powershell
-irm https://raw.githubusercontent.com/Gitlawb/zero/main/scripts/install.ps1 | iex
+irm https://raw.githubusercontent.com/askspecter/holt/main/scripts/install.ps1 | iex
 ```
 
 ### From source
@@ -93,28 +93,28 @@ irm https://raw.githubusercontent.com/Gitlawb/zero/main/scripts/install.ps1 | ie
 Source builds require Go 1.25+.
 
 ```bash
-git clone https://github.com/Gitlawb/zero.git
-cd zero
-go run ./cmd/zero
+git clone https://github.com/askspecter/holt.git
+cd holt
+go run ./cmd/holt
 ```
 
 Release installers and the npm wrapper require published GitHub Release assets.
 If you are testing before the first public release, build from source:
 
 ```bash
-go build -o zero ./cmd/zero
+go build -o holt ./cmd/holt
 ```
 
 On Linux, build the sandbox helper too if you want native sandboxing:
 
 ```bash
-go build -o zero-linux-sandbox ./cmd/zero-linux-sandbox
-go build -o zero-seccomp ./cmd/zero-seccomp   # optional compatibility wrapper
+go build -o holt-linux-sandbox ./cmd/holt-linux-sandbox
+go build -o holt-seccomp ./cmd/holt-seccomp   # optional compatibility wrapper
 ```
 
-Put `zero` and `zero-linux-sandbox` in the same directory on `PATH`
+Put `holt` and `holt-linux-sandbox` in the same directory on `PATH`
 (`~/.local/bin` is a good default). macOS does not need an extra helper binary.
-Windows source builds can use the main `zero.exe` as their sandbox helper; release
+Windows source builds can use the main `holt.exe` as their sandbox helper; release
 archives still ship standalone Windows helper executables.
 
 More install details: [docs/INSTALL.md](docs/INSTALL.md).
@@ -124,17 +124,17 @@ More install details: [docs/INSTALL.md](docs/INSTALL.md).
 Start the TUI:
 
 ```bash
-zero
+holt
 ```
 
 The setup wizard helps you pick a provider and model. You can also configure
 providers from the command line:
 
 ```bash
-zero setup
-zero providers list
-zero models list
-zero doctor
+holt setup
+holt providers list
+holt models list
+holt doctor
 ```
 
 For API providers, set the matching environment variable before setup or enter
@@ -150,18 +150,18 @@ export LONGCAT_API_KEY=...
 To configure Meituan LongCat (LongCat-2.0) directly, run:
 
 ```bash
-zero providers setup longcat --set-active
+holt providers setup longcat --set-active
 ```
 
-For local models, run Ollama or LM Studio and then use `zero setup` or
-`zero providers detect`.
+For local models, run Ollama or LM Studio and then use `holt setup` or
+`holt providers detect`.
 
 ## Daily Use
 
 ### Interactive TUI
 
 ```bash
-zero
+holt
 ```
 
 Useful controls:
@@ -190,18 +190,18 @@ Common slash commands:
 ### Headless `exec`
 
 ```bash
-zero exec "explain internal/agent/loop.go"
-zero exec --model claude-sonnet-4.5 "refactor the config loader"
-zero exec --use-spec "add rate limiting to the API client"
-zero exec --worktree "try the migration in an isolated worktree"
-zero exec --resume
-zero exec --fork <session-id> "try the other approach"
+holt exec "explain internal/agent/loop.go"
+holt exec --model claude-sonnet-4.5 "refactor the config loader"
+holt exec --use-spec "add rate limiting to the API client"
+holt exec --worktree "try the migration in an isolated worktree"
+holt exec --resume
+holt exec --fork <session-id> "try the other approach"
 ```
 
 Programmatic use:
 
 ```bash
-zero exec --input-format stream-json --output-format stream-json < turns.jsonl
+holt exec --input-format stream-json --output-format stream-json < turns.jsonl
 ```
 
 The stream-JSON contract is documented in
@@ -209,7 +209,7 @@ The stream-JSON contract is documented in
 
 ## Safety Model
 
-Zero is designed to make side effects visible.
+Holt is designed to make side effects visible.
 
 - Workspace reads are allowed by default.
 - File writes are limited to the workspace unless you grant another directory.
@@ -218,25 +218,25 @@ Zero is designed to make side effects visible.
 - `--add-dir <path>` and `/add-dir <path>` grant additional write roots without
   giving the agent the whole filesystem.
 - Unsafe/autonomous modes are explicit opt-ins.
-- Secrets are redacted from tool output and logs where Zero controls the surface.
+- Secrets are redacted from tool output and logs where Holt controls the surface.
 
 Example:
 
 ```bash
-zero --add-dir ../docs-site
-zero exec --add-dir ../shared "update both repos"
+holt --add-dir ../docs-site
+holt exec --add-dir ../shared "update both repos"
 ```
 
 Sandbox behavior can be inspected with:
 
 ```bash
-zero sandbox policy
-zero sandbox grants list
+holt sandbox policy
+holt sandbox grants list
 ```
 
 ## Web And Local Control
 
-Zero includes local file/search/edit/shell tools, `web_fetch` for public URLs,
+Holt includes local file/search/edit/shell tools, `web_fetch` for public URLs,
 and MCP support for additional tools.
 
 For local dev servers, use shell commands such as `curl` through `exec_command`
@@ -246,37 +246,37 @@ TUI.
 
 The npm package also includes browser and terminal helper packages used by local
 browser/terminal tools. Source builds can use the same helpers when they are on
-`PATH` or configured in Zero's local-control settings.
+`PATH` or configured in Holt's local-control settings.
 
 ## Common Commands
 
 ```text
-zero                  interactive TUI
-zero exec             one-shot or scripted agent run
-zero setup            first-run provider setup
-zero auth             OAuth/login helpers for supported providers
-zero models           model registry and capabilities
-zero providers        provider profiles and detection
-zero doctor           setup, key, and connectivity checks
-zero context          context-budget report
-zero repo-map         deterministic repository map
-zero repo-info        local repository summary
-zero search | find    search local session history
-zero sessions         inspect, resume, fork, and rewind sessions
-zero spec             manage spec-mode drafts
-zero specialist       manage specialist subagents
-zero skills           manage markdown instruction skills
-zero plugins          manage plugins
-zero hooks            manage lifecycle hooks
-zero mcp              manage MCP servers and tools
-zero serve --mcp      expose Zero tools over MCP stdio
-zero sandbox          inspect sandbox policy and grants
-zero worktrees        prepare isolated git worktrees
-zero verify           detect and run local verification checks
-zero changes          inspect and commit local git changes
-zero usage            token usage and estimated cost
-zero cron             scheduled agent jobs
-zero update           check for newer releases
+holt                  interactive TUI
+holt exec             one-shot or scripted agent run
+holt setup            first-run provider setup
+holt auth             OAuth/login helpers for supported providers
+holt models           model registry and capabilities
+holt providers        provider profiles and detection
+holt doctor           setup, key, and connectivity checks
+holt context          context-budget report
+holt repo-map         deterministic repository map
+holt repo-info        local repository summary
+holt search | find    search local session history
+holt sessions         inspect, resume, fork, and rewind sessions
+holt spec             manage spec-mode drafts
+holt specialist       manage specialist subagents
+holt skills           manage markdown instruction skills
+holt plugins          manage plugins
+holt hooks            manage lifecycle hooks
+holt mcp              manage MCP servers and tools
+holt serve --mcp      expose Holt tools over MCP stdio
+holt sandbox          inspect sandbox policy and grants
+holt worktrees        prepare isolated git worktrees
+holt verify           detect and run local verification checks
+holt changes          inspect and commit local git changes
+holt usage            token usage and estimated cost
+holt cron             scheduled agent jobs
+holt update           check for newer releases
 ```
 
 ## Appearance And Accessibility
@@ -284,10 +284,10 @@ zero update           check for newer releases
 | Control | Effect |
 |---|---|
 | `NO_COLOR=<anything>` | disables color output |
-| `ZERO_THEME=<name>` | selects the startup theme (`auto`, `dark`, `light`, or a color theme like `dracula`, `nord`, `gruvbox`, `tokyo-night`, `catppuccin`, `one-dark`, `solarized-dark`, `rose-pine`, `everforest`, `solarized-light`) |
+| `HOLT_THEME=<name>` | selects the startup theme (`auto`, `dark`, `light`, or a color theme like `dracula`, `nord`, `gruvbox`, `tokyo-night`, `catppuccin`, `one-dark`, `solarized-dark`, `rose-pine`, `everforest`, `solarized-light`) |
 | `--theme <name>` | selects the TUI theme from the CLI (same names) |
 | `/theme` | opens the theme picker inside the TUI (live preview; `/theme <name>` switches directly) |
-| `ZERO_NO_FADE=1` | disables streaming fade animation |
+| `HOLT_NO_FADE=1` | disables streaming fade animation |
 
 Meaning does not rely on color alone; diffs, permissions, and statuses also use
 text or glyph markers.
@@ -296,16 +296,16 @@ text or glyph markers.
 
 ```bash
 go test ./...
-go run ./cmd/zero-release build
-go run ./cmd/zero-release smoke
-go run ./cmd/zero-perf-bench
+go run ./cmd/holt-release build
+go run ./cmd/holt-release smoke
+go run ./cmd/holt-perf-bench
 ```
 
 Cross-compile examples:
 
 ```bash
-go run ./cmd/zero-release build --goos linux --goarch amd64
-go run ./cmd/zero-release build --goos windows --goarch amd64 --output dist/zero.exe
+go run ./cmd/holt-release build --goos linux --goarch amd64
+go run ./cmd/holt-release build --goos windows --goarch amd64 --output dist/holt.exe
 ```
 
 ## Documentation
@@ -328,4 +328,4 @@ Security reports should follow [SECURITY.md](SECURITY.md).
 
 ## License
 
-Zero is released under the [MIT License](LICENSE).
+Holt is released under the [MIT License](LICENSE).

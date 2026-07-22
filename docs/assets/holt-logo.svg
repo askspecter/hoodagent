@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="385" height="120" viewBox="0 0 385 120" role="img" aria-label="HOLT">
+  <title>HOLT</title>
+  <style>
+    .mark { font-family: "SFMono-Regular", "JetBrains Mono", "Fira Mono", Consolas, monospace; font-weight: 800; font-size: 92px; letter-spacing: 2px; }
+    .ink { fill: #7d8590; }
+    .accent { fill: #2dd4bf; }
+  </style>
+  <text x="50%" y="88" text-anchor="middle" class="mark">
+    <tspan class="ink">H</tspan><tspan class="accent">O</tspan><tspan class="ink">LT</tspan>
+  </text>
+</svg>

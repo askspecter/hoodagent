@@ -1,34 +1,34 @@
 ---
-description: Extending Zero — how to write AGENTS.md files, custom specialists, skills, hooks, MCP servers, and plugins for the open-source CLI coding agent.
+description: Extending Holt — how to write AGENTS.md files, custom specialists, skills, hooks, MCP servers, and plugins for the open-source CLI coding agent.
 globs: "*.go, *.js, *.md, *.json, *.toml, *.yaml, *.yml"
 alwaysApply: false
 ---
 
-# Extending Zero
+# Extending Holt
 
-Zero is an open-source terminal coding agent. Out of the box it does the obvious things — read, edit, run, search — but the design point of the project is that **every surface is configurable**. This document is the user-facing guide for that configuration.
+Holt is an open-source terminal coding agent. Out of the box it does the obvious things — read, edit, run, search — but the design point of the project is that **every surface is configurable**. This document is the user-facing guide for that configuration.
 
-If you only want to *use* Zero, the [README](README.md) is enough. This page is for the other three jobs:
+If you only want to *use* Holt, the [README](README.md) is enough. This page is for the other three jobs:
 
 1. Tell the agent about *your* project (drop an `AGENTS.md` in your repo).
 2. Add new specialist sub-agents.
-3. Wire Zero into the rest of your toolchain (MCP, skills, hooks, plugins).
+3. Wire Holt into the rest of your toolchain (MCP, skills, hooks, plugins).
 
 ## 1. Drop a project `AGENTS.md`
 
-When Zero starts in a directory, it looks for project-level instructions and injects them into the system prompt. The lookup walks from your current working directory **up to the nearest git root** and reads the first matching file at each level — general rules at the repo root, more specific rules in sub-trees. Files are labeled with their directory in the prompt (e.g. `## Project guidelines (services/api/AGENTS.md)`).
+When Holt starts in a directory, it looks for project-level instructions and injects them into the system prompt. The lookup walks from your current working directory **up to the nearest git root** and reads the first matching file at each level — general rules at the repo root, more specific rules in sub-trees. Files are labeled with their directory in the prompt (e.g. `## Project guidelines (services/api/AGENTS.md)`).
 
 Accepted file names, in priority order at each level:
 
 | Path | Notes |
 | --- | --- |
 | `./AGENTS.md` | The classic spot — committed to your repo, shared with the team. |
-| `./ZERO.md` | Brand-specific alias. Same format, lower priority. |
-| `./.zero/AGENTS.md` | Project-local, hidden, gitignored. Personal notes that stay out of git. |
+| `./HOLT.md` | Brand-specific alias. Same format, lower priority. |
+| `./.holt/AGENTS.md` | Project-local, hidden, gitignored. Personal notes that stay out of git. |
 
 Matching is **case-insensitive** on the basename, so `AGENTS.md`, `Agents.md`, and `agents.md` resolve to the same file on Windows and macOS. The git-tracked filename in this repo is `AGENTS.md` — keep that on case-sensitive filesystems (Linux, the WSL filesystem, or a CI runner) to match what the loader looks for.
 
-Both files use the same format. YAML frontmatter is optional; the markdown body is loaded as instructions for the agent. Zero reads the file once at session start, so changes take effect on the next `zero` launch — not mid-session.
+Both files use the same format. YAML frontmatter is optional; the markdown body is loaded as instructions for the agent. Holt reads the file once at session start, so changes take effect on the next `holt` launch — not mid-session.
 
 ```markdown
 # Project conventions for <your project>
@@ -41,21 +41,21 @@ Both files use the same format. YAML frontmatter is optional; the markdown body 
 
 Tips:
 
-- Keep each file under ~8 KiB. Zero caps the **total** across all matched files at 32 KiB; everything past the cap is dropped.
+- Keep each file under ~8 KiB. Holt caps the **total** across all matched files at 32 KiB; everything past the cap is dropped.
 - Re-state rules in the imperative voice: "Run `make lint`", not "you should consider running the linter".
 - Don't put secrets, model IDs, or environment-specific paths in `AGENTS.md`. Use `config.json` for those.
-- In a monorepo, drop a narrower `AGENTS.md` in each sub-tree (e.g. `services/api/AGENTS.md`). Zero picks those up automatically when you launch from inside the sub-tree.
+- In a monorepo, drop a narrower `AGENTS.md` in each sub-tree (e.g. `services/api/AGENTS.md`). Holt picks those up automatically when you launch from inside the sub-tree.
 - A YAML frontmatter block (`---\n...\n---`) at the top is preserved verbatim in the injected prompt but is not parsed for `globs:` or `alwaysApply:` scoping today — keep the body self-contained.
 
 ## 2. Custom specialists
 
-Specialists are Zero's sub-agents. Three scopes, in priority order:
+Specialists are Holt's sub-agents. Three scopes, in priority order:
 
 | Scope | Path | Shared? |
 | --- | --- | --- |
-| Built-in | compiled into Zero | yes — `worker`, `explorer`, `code-review` |
-| User | `~/.config/zero/specialists/*.md` | no — your machine only |
-| Project | `./.zero/specialists/*.md` | yes — the repo team |
+| Built-in | compiled into Holt | yes — `worker`, `explorer`, `code-review` |
+| User | `~/.config/holt/specialists/*.md` | no — your machine only |
+| Project | `./.holt/specialists/*.md` | yes — the repo team |
 
 Project overrides user overrides built-in when names collide.
 
@@ -82,30 +82,30 @@ Reply with one JSON object per finding: `{"file", "line", "severity", "message",
 CLI management (the prompt is passed inline via `--prompt`):
 
 ```bash
-zero specialist list
-zero specialist show api-reviewer
-zero specialist create api-reviewer \
+holt specialist list
+holt specialist show api-reviewer
+holt specialist create api-reviewer \
     --project \
     --description "Reviews API changes" \
     --tools read-only,plan \
     --prompt "$(cat api-reviewer.md)"
-zero specialist edit api-reviewer --project
-zero specialist delete api-reviewer --project
-zero specialist path                       # prints the resolved specialists directory
+holt specialist edit api-reviewer --project
+holt specialist delete api-reviewer --project
+holt specialist path                       # prints the resolved specialists directory
 ```
 
 The full format spec (frontmatter fields, tool scopes, prompt conventions) is in [`docs/SPECIALISTS.md`](docs/SPECIALISTS.md).
 
-> **Roadmap.** An in-UI specialist manager (create / edit / delete / preview) is on the backlog. Today you use the `zero specialist` CLI subcommands above.
+> **Roadmap.** An in-UI specialist manager (create / edit / delete / preview) is on the backlog. Today you use the `holt specialist` CLI subcommands above.
 
 ## 3. Skills
 
 Skills are markdown instruction packs the agent can pull in on demand. Each skill is a directory containing a `SKILL.md`. Skills are **user-level only** in this version — there's no project-scoped skill directory yet, so anything you want shared with the team goes in `AGENTS.md` (section 1) or as a hook (section 4).
 
-Discovery root: `$ZERO_SKILLS_DIR` → `$XDG_DATA_HOME/zero/skills` → `~/.local/share/zero/skills/`. A missing directory is fine — Zero just reports "no skills".
+Discovery root: `$HOLT_SKILLS_DIR` → `$XDG_DATA_HOME/holt/skills` → `~/.local/share/holt/skills/`. A missing directory is fine — Holt just reports "no skills".
 
 ```
-~/.local/share/zero/skills/
+~/.local/share/holt/skills/
   run-benchmarks/
     SKILL.md
   write-changelog/
@@ -134,8 +134,8 @@ The `skill` core tool lets the agent load any discovered skill by name.
 
 Hooks fire shell commands on lifecycle events. Configure them in JSON:
 
-- User: `~/.config/zero/hooks.json`
-- Project: `./.zero/hooks.json`
+- User: `~/.config/holt/hooks.json`
+- Project: `./.holt/hooks.json`
 
 ```json
 {
@@ -145,13 +145,13 @@ Hooks fire shell commands on lifecycle events. Configure them in JSON:
       "id": "block-rm-rf",
       "event": "beforeTool",
       "matcher": "bash",
-      "command": "/usr/local/bin/zero-hook-block-rmrf.sh",
+      "command": "/usr/local/bin/holt-hook-block-rmrf.sh",
       "enabled": true
     },
     {
       "id": "log-session",
       "event": "sessionStart",
-      "command": "/usr/local/bin/zero-hook-log.sh",
+      "command": "/usr/local/bin/holt-hook-log.sh",
       "enabled": true
     }
   ]
@@ -162,7 +162,7 @@ The `args` array (when present) is passed verbatim to `exec.CommandContext`. The
 
 ```bash
 #!/usr/bin/env bash
-# /usr/local/bin/zero-hook-block-rmrf.sh
+# /usr/local/bin/holt-hook-block-rmrf.sh
 set -euo pipefail
 payload="$(cat)"
 if printf '%s' "$payload" | grep -q '"input":"[^"]*rm[[:space:]]+-rf'; then
@@ -182,13 +182,13 @@ Events the agent emits (in dispatch order):
 | `specialistStart` | A sub-agent is spawned | yes (specialist name) |
 | `specialistStop` | A sub-agent ends | yes (specialist name) |
 
-A hook's exit code decides what happens next: `0` continues, non-zero blocks the tool call (`beforeTool`) or surfaces an error (`afterTool`). Hook execution is recorded in the audit log; the audit is reachable from the agent's view of past actions, not from a dedicated `zero doctor` check.
+A hook's exit code decides what happens next: `0` continues, non-zero blocks the tool call (`beforeTool`) or surfaces an error (`afterTool`). Hook execution is recorded in the audit log; the audit is reachable from the agent's view of past actions, not from a dedicated `holt doctor` check.
 
 > **Roadmap.** An in-UI hooks manager is on the backlog. Today you edit the JSON directly.
 
 ## 5. MCP — Model Context Protocol
 
-Zero is both an **MCP client** (it can call external MCP servers) and an **MCP server** (other agents can call its tools).
+Holt is both an **MCP client** (it can call external MCP servers) and an **MCP server** (other agents can call its tools).
 
 ### As a client — configure MCP servers in `config.json`
 
@@ -214,13 +214,13 @@ Zero is both an **MCP client** (it can call external MCP servers) and an **MCP s
 Manage via CLI:
 
 ```bash
-zero mcp add docs --type stdio -- docs-mcp --port 7777
-zero mcp add github --type http --url https://api.example.com/mcp \
+holt mcp add docs --type stdio -- docs-mcp --port 7777
+holt mcp add github --type http --url https://api.example.com/mcp \
     --header "Authorization=Bearer YOUR_TOKEN_HERE"
-zero mcp list
-zero mcp check docs
-zero mcp remove github
-zero mcp oauth login github
+holt mcp list
+holt mcp check docs
+holt mcp remove github
+holt mcp oauth login github
 ```
 
 Servers are merged from user and project configs (project wins on conflicts). Token-bearing values in `config.json` are sent verbatim — there is no `${env:...}` expansion — so prefer one of:
@@ -229,20 +229,20 @@ Servers are merged from user and project configs (project wins on conflicts). To
 - A `--header` value produced by command substitution (`"Authorization=Bearer $(print-token)"`) in a private shell config that you keep out of git.
 - A secret manager that injects the env var your MCP server reads on its own (the `command` and `args` then run inside that environment).
 
-### As a server — expose Zero's tools to another agent
+### As a server — expose Holt's tools to another agent
 
 ```bash
-zero serve --mcp
+holt serve --mcp
 ```
 
-The server speaks MCP over stdio. Configure it from the receiving side as a `stdio` server whose command is `zero serve --mcp`.
+The server speaks MCP over stdio. Configure it from the receiving side as a `stdio` server whose command is `holt serve --mcp`.
 
 ## 6. Plugins
 
 A plugin is a self-contained directory that bundles tools, hooks, and skills for one capability. Plugins live at:
 
-- User: `~/.config/zero/plugins/<id>/`
-- Project: `./.zero/plugins/<id>/`
+- User: `~/.config/holt/plugins/<id>/`
+- Project: `./.holt/plugins/<id>/`
 
 Each plugin has a `plugin.json` manifest:
 
@@ -267,16 +267,16 @@ Each plugin has a `plugin.json` manifest:
 Install and manage:
 
 ```bash
-zero plugins add ./github-pr-review      # copy into ~/.config/zero/plugins/ or ./.zero/plugins/
-zero plugins list
-zero plugins remove github-pr-review    # alias: rm
+holt plugins add ./github-pr-review      # copy into ~/.config/holt/plugins/ or ./.holt/plugins/
+holt plugins list
+holt plugins remove github-pr-review    # alias: rm
 ```
 
 A plugin is enabled by being present in the plugins directory and disabled by removing it (or by the user setting `"enabled": false` in its `plugin.json`). Plugins are not enabled or disabled by a CLI subcommand today.
 
 Plugin commands run with the plugin directory as their working directory. Use relative paths; the loader resolves them at activation time.
 
-> **Roadmap.** An in-UI plugins manager (browse, install, enable / disable) is on the backlog. Today you use the `zero plugins` CLI subcommands above. Skills declared inside a plugin's `plugin.json` are not yet merged into the `skill` tool's discovery (see section 3).
+> **Roadmap.** An in-UI plugins manager (browse, install, enable / disable) is on the backlog. Today you use the `holt plugins` CLI subcommands above. Skills declared inside a plugin's `plugin.json` are not yet merged into the `skill` tool's discovery (see section 3).
 
 ## 7. Configuration locations
 
@@ -285,10 +285,10 @@ Three layers, applied in order (later layers override earlier ones):
 | Layer | Path | Notes |
 | --- | --- | --- |
 | Built-in defaults | compiled in | Lowest priority. |
-| User config | `~/.config/zero/config.json` | Your machine. Never committed. |
-| Project config | `./.zero/config.json` | The repo. Committed (or not, your call). |
+| User config | `~/.config/holt/config.json` | Your machine. Never committed. |
+| Project config | `./.holt/config.json` | The repo. Committed (or not, your call). |
 | CLI flags | `--model`, `--mode`, ... | Highest priority, per-invocation. |
-| Environment | `ZERO_*` | Provider commands, secrets, skills dir override. |
+| Environment | `HOLT_*` | Provider commands, secrets, skills dir override. |
 
 The user config holds things that should follow the user across projects (default provider, default model, theme). The project config holds things the team agreed on (provider catalog, sandbox policies, model restrictions).
 
@@ -296,24 +296,24 @@ The sandbox `additionalWriteRoots` key is **ignored in project config** by desig
 
 ## 8. End-to-end example
 
-A team that wants every contributor's Zero to behave the same way commits:
+A team that wants every contributor's Holt to behave the same way commits:
 
 - `AGENTS.md` — project conventions, build commands, do-not-edit lists.
-- `.zero/config.json` — provider catalog, default model, allowed tools.
-- `.zero/specialists/api-reviewer.md` — the team's PR-review specialist.
-- `.zero/hooks.json` — block `rm -rf` and `git push --force` on `beforeTool`.
-- `.zero/plugins/internal-tooling/` — a plugin that adds the team's internal CLI tools to the agent's toolset.
+- `.holt/config.json` — provider catalog, default model, allowed tools.
+- `.holt/specialists/api-reviewer.md` — the team's PR-review specialist.
+- `.holt/hooks.json` — block `rm -rf` and `git push --force` on `beforeTool`.
+- `.holt/plugins/internal-tooling/` — a plugin that adds the team's internal CLI tools to the agent's toolset.
 
 Each contributor adds only:
 
-- `~/.config/zero/config.json` — their personal API keys, theme, default mode.
-- `~/.local/share/zero/skills/` — personal skills they keep across projects.
+- `~/.config/holt/config.json` — their personal API keys, theme, default mode.
+- `~/.local/share/holt/skills/` — personal skills they keep across projects.
 
-That's it. Run `zero` from the repo root and the agent has the team's full instruction set, every contributor's personal setup, and nothing else.
+That's it. Run `holt` from the repo root and the agent has the team's full instruction set, every contributor's personal setup, and nothing else.
 
 ## 9. Reference
 
 - [README](README.md) — install, quickstart, command reference.
 - [docs/SPECIALISTS.md](docs/SPECIALISTS.md) — full specialist manifest spec.
-- [docs/STREAM_JSON_PROTOCOL.md](docs/STREAM_JSON_PROTOCOL.md) — `zero exec` I/O contract.
+- [docs/STREAM_JSON_PROTOCOL.md](docs/STREAM_JSON_PROTOCOL.md) — `holt exec` I/O contract.
 - [docs/INSTALL.md](docs/INSTALL.md) — install from source or release.
