@@ -266,6 +266,15 @@ split them — a Vercel-hosted page just points its WebSocket at the backend wit
 `?backend=wss://…`. It hands visitors a live agent, so always set `HOLT_WEB_TOKEN`
 and keep it isolated. See [docs/BROWSER_TERMINAL.md](docs/BROWSER_TERMINAL.md).
 
+## Robinhood Trading (MCP)
+
+Holt ships a Robinhood trading MCP server ([`mcp/robinhood/`](mcp/robinhood)) that
+gives the agent `rh_quote`, `rh_portfolio`, `rh_positions`, `rh_orders`,
+`rh_place_order`, and `rh_cancel_order` tools. It's zero-dependency (Node ≥ 18)
+and off until you configure it with a `ROBINHOOD_TOKEN`. Order placement is gated
+behind `HOLT_RH_ALLOW_TRADING=1` and a per-call `confirm: true`, so nothing trades
+by accident. See [docs/ROBINHOOD_MCP.md](docs/ROBINHOOD_MCP.md).
+
 ## Common Commands
 
 ```text
