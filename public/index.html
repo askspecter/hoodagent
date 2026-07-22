@@ -58,10 +58,11 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 .lp-ticker::before,.lp-ticker::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none}
 .lp-ticker::before{left:0;background:linear-gradient(90deg,#000,transparent)}
 .lp-ticker::after{right:0;background:linear-gradient(270deg,#000,transparent)}
-.lp-ticker-track{display:inline-flex;gap:26px;padding:8px 0;animation:tickerScroll 38s linear infinite;will-change:transform}
-.lp-ticker:hover .lp-ticker-track{animation-play-state:paused}
-@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.tk{display:inline-flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.04em}
+.lp-ticker-track{display:flex;width:max-content;padding:8px 0;animation:tickerScroll 42s linear infinite;transform:translateZ(0);backface-visibility:hidden}
+/* pause on hover only on real pointer devices — avoids sticky :hover freezing it on touch */
+@media (hover:hover){.lp-ticker:hover .lp-ticker-track{animation-play-state:paused}}
+@keyframes tickerScroll{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+.tk{display:inline-flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.04em;margin-right:26px;flex:none}
 .tk .sym{color:#c9d4b0;font-weight:700}
 .tk .pr{color:#8c9a5a}
 .tk .up{color:var(--green)}
@@ -2386,25 +2387,20 @@ function formatOutput(text){
 /* ══════ LANDING + LOADER BOOTSTRAP ══════ */
 (function(){
   // hero HOLT wordmark (the H emblem lives only in the top-left nav + favicon)
-  var lpLogo=document.getElementById('lpLogo');if(lpLogo)lpLogo.src=holtLogoDataURL(26,'#BFFF00');
+  // canvas can fail on some mobile browsers — never let it abort the rest of bootstrap
+  try{var lpLogo=document.getElementById('lpLogo');if(lpLogo)lpLogo.src=holtLogoDataURL(26,'#BFFF00');}catch(e){}
 
   // provider chips
   var prov=document.getElementById('lpProv');
   if(prov)prov.innerHTML=PROVIDERS.map(function(p){return '<span>'+p.name+'</span>';}).join('')+'<span>+16 more</span>';
 
-  // live ticker tape (scrolling stock quotes, doubled for a seamless loop)
+  // live ticker tape — two identical halves so translateX(-50%) loops seamlessly.
+  // Prices are static here (no width-changing flicker) to keep the loop rock-steady.
   var tk=document.getElementById('lpTicker');
   if(tk){
     var TICK=[['AAPL',229.14,0.87],['TSLA',242.68,-1.42],['NVDA',138.07,2.15],['MSFT',441.20,0.34],['AMZN',201.55,-0.58],['GOOGL',178.90,1.02],['META',585.10,1.77],['SPY',571.34,0.21],['AMD',126.44,-2.03],['COIN',298.77,4.61],['NFLX',702.30,0.95],['AVGO',171.22,-0.44]];
-    function row(){return TICK.map(function(q){var up=q[2]>=0;return '<span class="tk"><span class="sym">'+q[0]+'</span><span class="pr">$'+q[1].toFixed(2)+'</span><span class="'+(up?'up':'dn')+'">'+(up?'▲':'▼')+' '+Math.abs(q[2]).toFixed(2)+'%</span></span>';}).join('');}
-    tk.innerHTML=row()+row(); // duplicate so -50% translate loops seamlessly
-    // subtle live price flicker
-    setInterval(function(){
-      var syms=tk.querySelectorAll('.tk');
-      var i=Math.floor(Math.random()*syms.length);
-      var prEl=syms[i]&&syms[i].querySelector('.pr');
-      if(prEl){var v=parseFloat(prEl.textContent.replace('$',''));v=Math.max(1,v+(Math.random()-0.5)*0.4);prEl.textContent='$'+v.toFixed(2);}
-    },1400);
+    var half=TICK.map(function(q){var up=q[2]>=0;return '<span class="tk"><span class="sym">'+q[0]+'</span><span class="pr">$'+q[1].toFixed(2)+'</span><span class="'+(up?'up':'dn')+'">'+(up?'▲':'▼')+' '+Math.abs(q[2]).toFixed(2)+'%</span></span>';}).join('');
+    tk.innerHTML=half+half; // exactly two identical halves
   }
 
   // live desk — market board + executions (sample data)
