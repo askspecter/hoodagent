@@ -78,14 +78,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 @keyframes livePulse{0%,100%{opacity:1}50%{opacity:.35}}
 .lp-kicker b{color:var(--lime);font-weight:700}
 .lp-logo{display:block;margin:0 auto 24px;width:300px;max-width:64%;height:auto}
-/* animated CSS-3D wordmark (real depth, gentle turn) */
-.lp-logo3d{width:320px;max-width:66%;margin:0 auto 26px;perspective:1100px}
-.lp-logo3d-inner{position:relative;transform-style:preserve-3d;animation:logoSpin 7s ease-in-out infinite;will-change:transform}
-.lp-logo3d-inner img{display:block;width:100%;-webkit-user-drag:none;user-select:none}
+/* interactive CSS-3D wordmark (real depth — the user turns it with pointer/touch) */
+.lp-logo3d{width:320px;max-width:66%;margin:0 auto 26px;perspective:1100px;cursor:grab;touch-action:none}
+.lp-logo3d:active{cursor:grabbing}
+.lp-logo3d-inner{position:relative;transform-style:preserve-3d;transform:rotateY(-14deg) rotateX(8deg);transition:transform .16s ease-out;will-change:transform}
+.lp-logo3d-inner img{display:block;width:100%;-webkit-user-drag:none;user-select:none;pointer-events:none}
 .lp-logo3d-inner .l3-face{position:relative;z-index:2}
 .lp-logo3d-inner .l3-back{position:absolute;top:0;left:0}
-@keyframes logoSpin{0%,100%{transform:rotateY(-22deg) rotateX(8deg)}50%{transform:rotateY(22deg) rotateX(8deg)}}
-@media (prefers-reduced-motion:reduce){.lp-logo3d-inner{animation:none;transform:rotateY(-14deg) rotateX(8deg)}}
 .lp-tag{font-size:17px;color:var(--lime);letter-spacing:.08em;font-weight:600;margin-bottom:14px}
 .lp-sub{font-size:13px;color:#7c8a4a;line-height:1.75;max-width:600px;margin:0 auto 34px}
 .lp-sub .b{color:#c9d4b0;font-weight:600}
@@ -2427,6 +2426,15 @@ function formatOutput(text){
       var flat=holtFlatDataURL(30,'#BFFF00'),N=13,html='<img class="l3-face" src="'+flat+'" alt="HOLT">';
       for(var k=1;k<=N;k++){var br=(0.82-0.60*(k/N)).toFixed(3);html+='<img class="l3-back" src="'+flat+'" style="transform:translateZ(-'+(k*1.5).toFixed(1)+'px);filter:brightness('+br+')">';}
       l3.innerHTML=html;
+      // the user turns it — tilt follows the pointer / finger, springs back to rest
+      var wrap=l3.parentNode,restY=-14,restX=8;
+      function tilt(e){var r=wrap.getBoundingClientRect();var px=(e.clientX-r.left)/r.width-0.5,py=(e.clientY-r.top)/r.height-0.5;
+        l3.style.transform='rotateY('+(px*66).toFixed(1)+'deg) rotateX('+(-py*32).toFixed(1)+'deg)';}
+      function rest(){l3.style.transform='rotateY('+restY+'deg) rotateX('+restX+'deg)';}
+      wrap.addEventListener('pointermove',tilt);
+      wrap.addEventListener('pointerdown',tilt);
+      wrap.addEventListener('pointerleave',rest);
+      wrap.addEventListener('pointercancel',rest);
     }
   }catch(e){}
 
