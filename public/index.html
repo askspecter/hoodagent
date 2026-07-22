@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>HOLT — Trade &amp; Build from Your Terminal</title>
 <meta name="description" content="HOLT — a terminal agent you own, wired into a Robinhood trading MCP. Live stock quotes, portfolio, and buy/sell orders in plain English. Any model. You confirm every trade.">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" href="/holt-h.png">
+<meta property="og:image" content="/holt-h.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#000000">
@@ -34,8 +35,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 #landing::-webkit-scrollbar-thumb{background:#1a1a1a;border-radius:3px}
 .lp-wrap{max-width:1000px;margin:0 auto;padding:0 22px 80px}
 .lp-nav{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:18px 22px;position:sticky;top:0;background:linear-gradient(to bottom,#000 70%,transparent);z-index:5}
-.lp-nav-brand{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:.22em;font-size:13px;color:var(--lime)}
-.lp-nav-brand .dot{width:8px;height:8px;background:var(--lime);border-radius:2px;box-shadow:0 0 10px var(--lime)}
+.lp-nav-brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:.22em;font-size:13px;color:var(--lime)}
+.lp-nav-brand .lp-nav-h{width:20px;height:26px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(191,255,0,.5))}
 .lp-nav-links{display:flex;align-items:center;gap:20px;font-size:11px}
 .lp-nav-links a{color:#5a6a2a;text-decoration:none;letter-spacing:.06em;transition:color .15s}
 .lp-nav-links a:hover{color:var(--lime)}
@@ -51,13 +52,31 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 .sb-x svg{width:11px;height:11px;display:block}
 .sb-x:hover{color:var(--lime)}
 
+/* live ticker tape */
+.lp-ticker{max-width:1000px;margin:0 auto;overflow:hidden;border-top:1px solid #16200b;border-bottom:1px solid #16200b;background:linear-gradient(90deg,#060806,#0a0f06,#060806);white-space:nowrap;position:relative;z-index:4}
+.lp-ticker::before,.lp-ticker::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none}
+.lp-ticker::before{left:0;background:linear-gradient(90deg,#000,transparent)}
+.lp-ticker::after{right:0;background:linear-gradient(270deg,#000,transparent)}
+.lp-ticker-track{display:inline-flex;gap:26px;padding:8px 0;animation:tickerScroll 38s linear infinite;will-change:transform}
+.lp-ticker:hover .lp-ticker-track{animation-play-state:paused}
+@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tk{display:inline-flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.04em}
+.tk .sym{color:#c9d4b0;font-weight:700}
+.tk .pr{color:#8c9a5a}
+.tk .up{color:var(--green)}
+.tk .dn{color:var(--red)}
+
 /* hero */
-.lp-hero{text-align:center;padding:38px 0 14px}
-.lp-logo{display:block;margin:0 auto 26px;width:360px;max-width:74%;height:auto;filter:drop-shadow(0 0 24px rgba(191,255,0,.28))}
-.lp-tag{font-size:15px;color:var(--lime);letter-spacing:.12em;font-weight:500;margin-bottom:12px}
-.lp-sub{font-size:13px;color:#7c8a4a;line-height:1.7;max-width:600px;margin:0 auto 30px}
+.lp-hero{text-align:center;padding:30px 0 14px;position:relative}
+.lp-hero-glow{position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:640px;max-width:120%;height:420px;background:radial-gradient(ellipse at center,rgba(191,255,0,.16),rgba(191,255,0,.04) 40%,transparent 70%);filter:blur(20px);z-index:0;pointer-events:none;animation:heroPulse 5s ease-in-out infinite}
+@keyframes heroPulse{0%,100%{opacity:.7;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.06)}}
+.lp-hmark{display:block;margin:0 auto 18px;width:118px;height:auto;position:relative;z-index:1;filter:drop-shadow(0 0 26px rgba(191,255,0,.45));animation:hmarkFloat 4.5s ease-in-out infinite}
+@keyframes hmarkFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.lp-logo{display:block;margin:0 auto 22px;width:300px;max-width:66%;height:auto;position:relative;z-index:1;filter:drop-shadow(0 0 24px rgba(191,255,0,.28))}
+.lp-tag{font-size:15px;color:var(--lime);letter-spacing:.12em;font-weight:500;margin-bottom:12px;position:relative;z-index:1}
+.lp-sub{font-size:13px;color:#7c8a4a;line-height:1.7;max-width:600px;margin:0 auto 30px;position:relative;z-index:1}
 .lp-sub .b{color:var(--lime);font-weight:600}
-.lp-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-items:center}
+.lp-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-items:center;position:relative;z-index:1}
 .lp-btn{font-family:inherit;font-size:14px;font-weight:700;letter-spacing:.06em;cursor:pointer;border-radius:6px;padding:14px 30px;transition:all .15s;display:inline-flex;align-items:center;gap:10px;text-decoration:none}
 .lp-btn.primary{background:var(--lime);color:#000;border:1px solid var(--lime);box-shadow:0 0 26px rgba(191,255,0,.3)}
 .lp-btn.primary:hover{box-shadow:0 0 40px rgba(191,255,0,.55);transform:translateY(-1px)}
@@ -65,10 +84,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 .lp-btn.primary:hover .arr{transform:translateX(4px)}
 .lp-btn.ghost{background:transparent;color:var(--lime);border:1px solid #2c3a12}
 .lp-btn.ghost:hover{border-color:var(--lime);background:rgba(191,255,0,.05)}
-.lp-hint{font-size:10px;color:#4a5a24;letter-spacing:.1em;margin-top:16px}
+.lp-hint{font-size:10px;color:#4a5a24;letter-spacing:.1em;margin-top:16px;position:relative;z-index:1}
 
 /* terminal preview strip */
-.lp-preview{margin:44px auto 0;max-width:760px;background:#060806;border:1px solid #1c2810;border-radius:10px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.lp-preview{margin:44px auto 0;max-width:760px;background:#060806;border:1px solid #1c2810;border-radius:10px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.6);position:relative;z-index:1}
 .lp-preview-bar{display:flex;align-items:center;gap:7px;padding:9px 13px;border-bottom:1px solid #1c2810;background:#0a0d07}
 .lp-preview-bar .pd{width:10px;height:10px;border-radius:50%}
 .lp-preview-bar .pd.r{background:#3a1a1a}.lp-preview-bar .pd.y{background:#3a331a}.lp-preview-bar .pd.g{background:#1e3a1a}
@@ -126,7 +145,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 #loader{position:fixed;inset:0;z-index:999;background:#000;display:none;align-items:center;justify-content:center;flex-direction:column;transition:opacity .5s}
 #loader.show{display:flex}
 #loader.done{opacity:0;pointer-events:none}
-.load-logo{width:280px;max-width:68vw;height:auto;margin-bottom:34px;filter:drop-shadow(0 0 18px rgba(191,255,0,.3))}
+.load-logo{height:132px;width:auto;margin-bottom:30px;filter:drop-shadow(0 0 22px rgba(191,255,0,.5));animation:hmarkFloat 4.5s ease-in-out infinite}
 .load-console{width:min(440px,86vw);border:1px solid #1c2810;border-radius:8px;background:#050604;padding:16px 18px;font-size:12px;line-height:1.9;min-height:150px}
 .load-log{color:var(--lime);white-space:pre-wrap;min-height:120px}
 .load-log .lg-ok{color:var(--lime)}
@@ -203,7 +222,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 
 /* logo + welcome */
 .ascii-logo{display:block;margin:0 auto 12px;width:380px;max-width:76%;height:auto}
-.welcome-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;padding:20px 0}
+.welcome-wrap{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:22px 0 6px}
 
 /* thinking indicator */
 .thinking-line{margin:4px 0;font-size:11px;color:var(--dim);cursor:pointer;user-select:none}
@@ -455,10 +474,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
   .term-output{padding:10px 10px 6px}
   .input-area{padding:5px 10px}
   .status-bar{padding:3px 10px}
+  .lp-hmark{width:96px}
+  .lp-tag{font-size:13px}
 }
 @media(max-width:360px){
   .ascii-logo{width:230px}
   .sug-chip{font-size:10px;padding:3px 7px}
+  .lp-hmark{width:84px}
 }
 </style>
 </head>
@@ -467,7 +489,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 <!-- ══════ LANDING / PRODUCT PAGE ══════ -->
 <div id="landing">
   <nav class="lp-nav">
-    <div class="lp-nav-brand"><span class="dot"></span>HOLT</div>
+    <div class="lp-nav-brand"><img class="lp-nav-h" src="/holt-h.png" alt="">HOLT</div>
     <div class="lp-nav-links">
       <a href="#features" class="hide-sm">Features</a>
       <a href="#trading" class="hide-sm">Trading</a>
@@ -477,15 +499,19 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
     </div>
   </nav>
 
+  <!-- live ticker tape -->
+  <div class="lp-ticker"><div class="lp-ticker-track" id="lpTicker"></div></div>
+
   <div class="lp-wrap">
     <!-- hero -->
     <section class="lp-hero">
+      <div class="lp-hero-glow"></div>
+      <img class="lp-hmark" src="/holt-h.png" alt="HOLT emblem">
       <img class="lp-logo" id="lpLogo" alt="HOLT">
       <div class="lp-tag">Trade the market from your terminal.</div>
       <div class="lp-sub">HOLT is a <span class="b">terminal agent you own</span>, wired into a <span class="b">Robinhood trading MCP</span>. Ask for a live quote, your portfolio, or a buy/sell order in plain English — right next to reading files and running commands. <span class="b">You</span> pick the model and the permission level, and orders only go live when you confirm.</div>
       <div class="lp-cta-row">
         <button class="lp-btn primary" id="lpLaunch">Launch Terminal <span class="arr">❯</span></button>
-        <a class="lp-btn ghost lp-x-btn" href="https://x.com/useHOLT" target="_blank" rel="noopener" aria-label="Follow HOLT on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
       </div>
       <div class="lp-hint">runs entirely in your browser · no sign-up</div>
 
@@ -2252,13 +2278,28 @@ function formatOutput(text){
 
 /* ══════ LANDING + LOADER BOOTSTRAP ══════ */
 (function(){
-  // logos (shared full-lime canvas)
+  // logos — ASCII wordmark in hero, H emblem on the boot screen
   var lpLogo=document.getElementById('lpLogo');if(lpLogo)lpLogo.src=holtLogoDataURL(26,'#BFFF00');
-  var loadLogo=document.getElementById('loadLogo');if(loadLogo)loadLogo.src=holtLogoDataURL(20,'#BFFF00');
+  var loadLogo=document.getElementById('loadLogo');if(loadLogo)loadLogo.src='/holt-h.png';
 
   // provider chips
   var prov=document.getElementById('lpProv');
   if(prov)prov.innerHTML=PROVIDERS.map(function(p){return '<span>'+p.name+'</span>';}).join('')+'<span>+16 more</span>';
+
+  // live ticker tape (scrolling stock quotes, doubled for a seamless loop)
+  var tk=document.getElementById('lpTicker');
+  if(tk){
+    var TICK=[['AAPL',229.14,0.87],['TSLA',242.68,-1.42],['NVDA',138.07,2.15],['MSFT',441.20,0.34],['AMZN',201.55,-0.58],['GOOGL',178.90,1.02],['META',585.10,1.77],['SPY',571.34,0.21],['AMD',126.44,-2.03],['COIN',298.77,4.61],['NFLX',702.30,0.95],['AVGO',171.22,-0.44]];
+    function row(){return TICK.map(function(q){var up=q[2]>=0;return '<span class="tk"><span class="sym">'+q[0]+'</span><span class="pr">$'+q[1].toFixed(2)+'</span><span class="'+(up?'up':'dn')+'">'+(up?'▲':'▼')+' '+Math.abs(q[2]).toFixed(2)+'%</span></span>';}).join('');}
+    tk.innerHTML=row()+row(); // duplicate so -50% translate loops seamlessly
+    // subtle live price flicker
+    setInterval(function(){
+      var syms=tk.querySelectorAll('.tk');
+      var i=Math.floor(Math.random()*syms.length);
+      var prEl=syms[i]&&syms[i].querySelector('.pr');
+      if(prEl){var v=parseFloat(prEl.textContent.replace('$',''));v=Math.max(1,v+(Math.random()-0.5)*0.4);prEl.textContent='$'+v.toFixed(2);}
+    },1400);
+  }
 
   // terminal preview typewriter (loops until the user launches)
   var PREVIEW=[
