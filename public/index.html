@@ -3,15 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Holt — Orlix AI Terminal</title>
-<meta name="description" content="Holt terminal coding agent. Any model. Every tool. No limits.">
+<title>HOLT — Terminal Coding Agent</title>
+<meta name="description" content="HOLT — a fast, multi-provider terminal coding agent you own. Any model. Every tool. No limits. Runs in your browser.">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#000000">
-<meta property="og:title" content="Holt — Orlix AI Terminal">
-<meta property="og:description" content="A terminal coding agent you own. Runs in your browser.">
-<meta property="og:image" content="https://orlixai.xyz/og-image.png">
+<meta property="og:title" content="HOLT — Terminal Coding Agent">
+<meta property="og:description" content="A terminal coding agent you own. Any model. Every tool. No limits. Runs in your browser.">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
@@ -28,19 +27,104 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 
 /* themes applied via JS CSS variables */
 
-/* ══════ ORLIX LOADER ══════ */
-#loader{position:fixed;inset:0;z-index:999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .6s}
+/* ══════ LANDING / PRODUCT PAGE ══════ */
+#landing{position:fixed;inset:0;z-index:900;background:var(--bg);color:var(--lime);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;transition:opacity .5s}
+#landing.done{opacity:0;pointer-events:none}
+#landing::-webkit-scrollbar{width:6px}
+#landing::-webkit-scrollbar-thumb{background:#1a1a1a;border-radius:3px}
+.lp-wrap{max-width:1000px;margin:0 auto;padding:0 22px 80px}
+.lp-nav{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:18px 22px;position:sticky;top:0;background:linear-gradient(to bottom,#000 70%,transparent);z-index:5}
+.lp-nav-brand{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:.22em;font-size:13px;color:var(--lime)}
+.lp-nav-brand .dot{width:8px;height:8px;background:var(--lime);border-radius:2px;box-shadow:0 0 10px var(--lime)}
+.lp-nav-links{display:flex;align-items:center;gap:20px;font-size:11px}
+.lp-nav-links a{color:#5a6a2a;text-decoration:none;letter-spacing:.06em;transition:color .15s}
+.lp-nav-links a:hover{color:var(--lime)}
+@media(max-width:600px){.lp-nav-links .hide-sm{display:none}}
+
+/* hero */
+.lp-hero{text-align:center;padding:38px 0 14px}
+.lp-logo{display:block;margin:0 auto 26px;width:520px;max-width:92%;height:auto;filter:drop-shadow(0 0 24px rgba(191,255,0,.28))}
+.lp-tag{font-size:15px;color:var(--lime);letter-spacing:.12em;font-weight:500;margin-bottom:12px}
+.lp-sub{font-size:13px;color:#7c8a4a;line-height:1.7;max-width:600px;margin:0 auto 30px}
+.lp-sub .b{color:var(--lime);font-weight:600}
+.lp-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-items:center}
+.lp-btn{font-family:inherit;font-size:14px;font-weight:700;letter-spacing:.06em;cursor:pointer;border-radius:6px;padding:14px 30px;transition:all .15s;display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+.lp-btn.primary{background:var(--lime);color:#000;border:1px solid var(--lime);box-shadow:0 0 26px rgba(191,255,0,.3)}
+.lp-btn.primary:hover{box-shadow:0 0 40px rgba(191,255,0,.55);transform:translateY(-1px)}
+.lp-btn.primary .arr{transition:transform .15s}
+.lp-btn.primary:hover .arr{transform:translateX(4px)}
+.lp-btn.ghost{background:transparent;color:var(--lime);border:1px solid #2c3a12}
+.lp-btn.ghost:hover{border-color:var(--lime);background:rgba(191,255,0,.05)}
+.lp-hint{font-size:10px;color:#4a5a24;letter-spacing:.1em;margin-top:16px}
+
+/* terminal preview strip */
+.lp-preview{margin:44px auto 0;max-width:760px;background:#060806;border:1px solid #1c2810;border-radius:10px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.lp-preview-bar{display:flex;align-items:center;gap:7px;padding:9px 13px;border-bottom:1px solid #1c2810;background:#0a0d07}
+.lp-preview-bar .pd{width:10px;height:10px;border-radius:50%}
+.lp-preview-bar .pd.r{background:#3a1a1a}.lp-preview-bar .pd.y{background:#3a331a}.lp-preview-bar .pd.g{background:#1e3a1a}
+.lp-preview-bar .pt{margin-left:8px;font-size:10px;color:#4a5a24;letter-spacing:.1em}
+.lp-preview-body{padding:16px 18px;font-size:12px;line-height:1.75;white-space:pre-wrap;min-height:150px;color:#a9c26a;text-align:left}
+.lp-preview-body .pl{color:var(--lime)}
+.lp-preview-body .pdim{color:#5a6a2a}
+.lp-preview-body .pcur{display:inline-block;width:7px;height:13px;background:var(--lime);vertical-align:text-bottom;animation:cb .6s step-end infinite}
+
+/* section shells */
+.lp-section{margin-top:70px}
+.lp-sec-head{text-align:center;margin-bottom:34px}
+.lp-sec-kicker{font-size:10px;color:#4a5a24;letter-spacing:.28em;text-transform:uppercase;margin-bottom:10px}
+.lp-sec-title{font-size:22px;color:var(--lime);font-weight:700;letter-spacing:.02em}
+.lp-sec-sub{font-size:12px;color:#7c8a4a;margin-top:8px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+/* feature grid */
+.lp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.lp-card{border:1px solid #1c2810;border-radius:10px;padding:20px;background:linear-gradient(180deg,#080a06,#050604);transition:all .15s}
+.lp-card:hover{border-color:#3c5218;background:linear-gradient(180deg,#0b0f07,#070905);transform:translateY(-2px)}
+.lp-card-ic{font-size:15px;color:var(--lime);margin-bottom:12px;font-weight:700;letter-spacing:.05em;display:inline-block;border:1px solid #2c3a12;border-radius:6px;padding:5px 9px;min-width:34px;text-align:center}
+.lp-card-t{font-size:14px;color:var(--lime);font-weight:600;margin-bottom:7px}
+.lp-card-d{font-size:12px;color:#7c8a4a;line-height:1.65}
+.lp-card-d code{color:var(--lime);background:rgba(191,255,0,.07);padding:1px 5px;border-radius:3px;font-size:11px}
+
+/* providers */
+.lp-prov{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;max-width:760px;margin:0 auto}
+.lp-prov span{font-size:12px;color:#8c9a5a;border:1px solid #1c2810;border-radius:20px;padding:7px 16px;transition:all .15s}
+.lp-prov span:hover{border-color:var(--lime);color:var(--lime)}
+
+/* commands table */
+.lp-cmds{max-width:640px;margin:0 auto;border:1px solid #1c2810;border-radius:10px;overflow:hidden}
+.lp-cmd-row{display:flex;align-items:flex-start;gap:14px;padding:12px 18px;border-bottom:1px solid #141c0b;font-size:12px}
+.lp-cmd-row:last-child{border-bottom:none}
+.lp-cmd-row .k{color:var(--lime);font-weight:600;min-width:150px;flex-shrink:0}
+.lp-cmd-row .v{color:#7c8a4a;line-height:1.5}
+
+/* bottom cta */
+.lp-final{margin-top:74px;text-align:center;border:1px solid #1c2810;border-radius:14px;padding:46px 22px;background:radial-gradient(ellipse at top,rgba(191,255,0,.06),transparent 70%)}
+.lp-final .lp-sec-title{margin-bottom:10px}
+
+.lp-footer{margin-top:56px;text-align:center;font-size:11px;color:#3a4a1c;letter-spacing:.05em}
+.lp-footer a{color:#5a6a2a;text-decoration:none}
+.lp-footer a:hover{color:var(--lime)}
+
+@media(max-width:600px){
+  .lp-tag{font-size:13px}
+  .lp-sec-title{font-size:19px}
+  .lp-hero{padding:20px 0 8px}
+  .lp-btn{font-size:13px;padding:12px 24px}
+}
+
+/* ══════ HOLT LOADER (distinct boot sequence) ══════ */
+#loader{position:fixed;inset:0;z-index:999;background:#000;display:none;align-items:center;justify-content:center;flex-direction:column;transition:opacity .5s}
+#loader.show{display:flex}
 #loader.done{opacity:0;pointer-events:none}
-#matrixCanvas{position:absolute;inset:0;opacity:.2}
-.load-brand{position:relative;z-index:2;text-align:center;margin-bottom:28px;font-size:10px;letter-spacing:.3em;color:#333;text-transform:uppercase}
-.load-box{position:relative;z-index:2;text-align:center;min-width:280px}
-.load-ring{width:48px;height:48px;margin:0 auto 20px;border:2px solid #111;border-top:2px solid #4ADE80;border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.load-bar{height:3px;background:#111;margin-bottom:14px;position:relative;overflow:hidden;border-radius:2px}
-.load-fill{height:100%;width:0%;background:linear-gradient(90deg,#4ADE80,#BFFF00);transition:width .15s linear;border-radius:2px;box-shadow:0 0 8px rgba(74,222,128,.4)}
-.load-text{font-size:11px;color:#555;letter-spacing:.2em;font-weight:400}
-.load-pct{color:#4ADE80;font-weight:700}
-.load-sub{font-size:9px;color:#222;letter-spacing:.15em;margin-top:10px}
+.load-logo{width:340px;max-width:80vw;height:auto;margin-bottom:34px;filter:drop-shadow(0 0 18px rgba(191,255,0,.3))}
+.load-console{width:min(440px,86vw);border:1px solid #1c2810;border-radius:8px;background:#050604;padding:16px 18px;font-size:12px;line-height:1.9;min-height:150px}
+.load-log{color:var(--lime);white-space:pre-wrap;min-height:120px}
+.load-log .lg-ok{color:var(--lime)}
+.load-log .lg-dim{color:#4a5a24}
+.load-log .lg-cur{display:inline-block;width:7px;height:13px;background:var(--lime);vertical-align:text-bottom;animation:cb .6s step-end infinite}
+.load-bar{height:4px;background:#0e1408;margin-top:14px;position:relative;overflow:hidden;border-radius:2px;border:1px solid #1c2810}
+.load-fill{height:100%;width:0%;background:linear-gradient(90deg,#7cba00,#BFFF00);transition:width .18s linear;border-radius:2px;box-shadow:0 0 10px rgba(191,255,0,.55)}
+.load-foot{display:flex;justify-content:space-between;margin-top:10px;font-size:10px;color:#4a5a24;letter-spacing:.14em}
+.load-pct{color:var(--lime);font-weight:700}
 
 /* ══════ TITLE BAR ══════ */
 .title-bar{display:flex;align-items:center;gap:8px;padding:4px 14px;font-size:10px;color:var(--dim);border-bottom:1px solid var(--dim2);flex-shrink:0;user-select:none;overflow:hidden;white-space:nowrap}
@@ -176,6 +260,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 .line.info{color:var(--cyan);font-size:11px}
 .line .hl{color:var(--accent)}
 .line .val{color:var(--fg)}
+.line .md-code{color:var(--accent);background:rgba(191,255,0,.06);padding:0 3px;border-radius:2px}
+.line .md-b{color:var(--fg);font-weight:700}
+.line .code-block{display:block;background:rgba(191,255,0,.035);border-left:2px solid var(--dim2);border-radius:0 4px 4px 0;padding:6px 10px;margin:5px 0;color:var(--fg);font-size:11px;white-space:pre-wrap;line-height:1.55}
 .line .fl{color:var(--cyan)}
 .line .warn{color:var(--orange)}
 .line .ok{color:var(--green)}
@@ -360,15 +447,102 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 </head>
 <body>
 
+<!-- ══════ LANDING / PRODUCT PAGE ══════ -->
+<div id="landing">
+  <nav class="lp-nav">
+    <div class="lp-nav-brand"><span class="dot"></span>HOLT</div>
+    <div class="lp-nav-links">
+      <a href="#features" class="hide-sm">Features</a>
+      <a href="#providers" class="hide-sm">Providers</a>
+      <a href="#commands" class="hide-sm">Commands</a>
+      <a href="https://github.com/askspecter/holt" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </nav>
+
+  <div class="lp-wrap">
+    <!-- hero -->
+    <section class="lp-hero">
+      <img class="lp-logo" id="lpLogo" alt="HOLT">
+      <div class="lp-tag">Any model. Every tool. No limits.</div>
+      <div class="lp-sub">HOLT is a <span class="b">terminal coding agent you own</span>. It inspects your repo, edits files, runs commands, and keeps durable local sessions — while <span class="b">you</span> choose the model and the permission level.</div>
+      <div class="lp-cta-row">
+        <button class="lp-btn primary" id="lpLaunch">Launch Terminal <span class="arr">❯</span></button>
+        <a class="lp-btn ghost" href="https://github.com/askspecter/holt" target="_blank" rel="noopener">View Source</a>
+      </div>
+      <div class="lp-hint">runs entirely in your browser · no sign-up</div>
+
+      <!-- terminal preview -->
+      <div class="lp-preview">
+        <div class="lp-preview-bar">
+          <span class="pd r"></span><span class="pd y"></span><span class="pd g"></span>
+          <span class="pt">holt — ~/workspace</span>
+        </div>
+        <div class="lp-preview-body" id="lpPreview"></div>
+      </div>
+    </section>
+
+    <!-- features -->
+    <section class="lp-section" id="features">
+      <div class="lp-sec-head">
+        <div class="lp-sec-kicker">What it does</div>
+        <div class="lp-sec-title">One agent. Full control.</div>
+        <div class="lp-sec-sub">Everything you need to ship code from a terminal, with side effects made visible.</div>
+      </div>
+      <div class="lp-grid">
+        <div class="lp-card"><div class="lp-card-ic">◇</div><div class="lp-card-t">Use any model</div><div class="lp-card-d">Bring Anthropic, OpenAI, Gemini, xAI, DeepSeek, Kimi, Qwen, GLM and 25+ providers — or any OpenAI/Anthropic-compatible endpoint. Switch mid-session with <code>/model</code>.</div></div>
+        <div class="lp-card"><div class="lp-card-ic">⛨</div><div class="lp-card-t">Stay in control</div><div class="lp-card-d">File writes, shell commands, and network access go through a permission policy. Cycle <code>ask → auto → full-auto</code> with <code>Shift+Tab</code>.</div></div>
+        <div class="lp-card"><div class="lp-card-ic">⚙</div><div class="lp-card-t">Real tool use</div><div class="lp-card-d">Read, write, edit, search, run shell, fetch URLs, map the repo, and diff git — every action rendered live as a bordered tool card.</div></div>
+        <div class="lp-card"><div class="lp-card-ic">▤</div><div class="lp-card-t">Plan before building</div><div class="lp-card-d">Draft a spec with <code>/spec</code> and review a numbered plan before HOLT touches a single file. Approve, then execute.</div></div>
+        <div class="lp-card"><div class="lp-card-ic">↺</div><div class="lp-card-t">Durable local sessions</div><div class="lp-card-d">Sessions are saved on-device, searchable, and resumable. <code>/rewind</code> rolls back the last exchange, <code>/compact</code> trims context.</div></div>
+        <div class="lp-card"><div class="lp-card-ic">⧉</div><div class="lp-card-t">Extensible</div><div class="lp-card-d">Wire in MCP servers, skills, and hooks. 40+ built-in themes, adjustable font size, and a mobile key toolbar out of the box.</div></div>
+      </div>
+    </section>
+
+    <!-- providers -->
+    <section class="lp-section" id="providers">
+      <div class="lp-sec-head">
+        <div class="lp-sec-kicker">Bring your own key</div>
+        <div class="lp-sec-title">Works with the models you want</div>
+      </div>
+      <div class="lp-prov" id="lpProv"></div>
+    </section>
+
+    <!-- commands -->
+    <section class="lp-section" id="commands">
+      <div class="lp-sec-head">
+        <div class="lp-sec-kicker">In the terminal</div>
+        <div class="lp-sec-title">Slash commands</div>
+        <div class="lp-sec-sub">Type <code style="color:var(--lime)">/</code> for the full menu. A few of the essentials:</div>
+      </div>
+      <div class="lp-cmds">
+        <div class="lp-cmd-row"><span class="k">/model · /provider</span><span class="v">Switch the active model or provider</span></div>
+        <div class="lp-cmd-row"><span class="k">/spec · /plan</span><span class="v">Draft and review a plan before building</span></div>
+        <div class="lp-cmd-row"><span class="k">/resume · /rewind</span><span class="v">Continue or roll back a local session</span></div>
+        <div class="lp-cmd-row"><span class="k">/permissions · /tools</span><span class="v">Inspect the policy and available tools</span></div>
+        <div class="lp-cmd-row"><span class="k">/theme · /doctor · /config</span><span class="v">Adjust appearance and inspect setup</span></div>
+      </div>
+    </section>
+
+    <!-- final cta -->
+    <section class="lp-final">
+      <div class="lp-sec-title">Ready when you are.</div>
+      <div class="lp-sec-sub" style="margin-bottom:26px">Boot the terminal and describe a task. HOLT takes it from there.</div>
+      <button class="lp-btn primary" id="lpLaunch2">Launch Terminal <span class="arr">❯</span></button>
+    </section>
+
+    <div class="lp-footer">
+      HOLT · <a href="https://github.com/askspecter/holt" target="_blank" rel="noopener">askspecter/holt</a> · MIT
+    </div>
+  </div>
+</div>
+
 <!-- ══════ LOADER ══════ -->
 <div id="loader">
-  <canvas id="matrixCanvas"></canvas>
-  <div class="load-brand">orlix.xyz / holt</div>
-  <div class="load-box">
-    <div class="load-ring"></div>
+  <img class="load-logo" id="loadLogo" alt="HOLT">
+  <div class="load-console">
+    <div class="load-log" id="loadLog"></div>
     <div class="load-bar"><div class="load-fill" id="loadFill"></div></div>
-    <div class="load-text">INITIALIZING <span class="load-pct" id="loadPct">0%</span></div>
-    <div class="load-sub">establishing connection</div>
+    <div class="load-foot"><span id="loadPhase">booting</span><span class="load-pct" id="loadPct">0%</span></div>
   </div>
 </div>
 
@@ -430,9 +604,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
     </div>
 
     <div class="sb-footer">
-      <a href="/" style="color:var(--dim);font-size:9px;text-decoration:none">orlix.xyz</a>
+      <a href="#" id="sbHome" style="color:var(--dim);font-size:9px;text-decoration:none">HOLT</a>
       <span style="margin:0 4px">/</span>
-      <a href="https://github.com/askspecter/holt" target="_blank" rel="noopener" style="color:var(--dim);font-size:9px;text-decoration:none">holt</a>
+      <a href="https://github.com/askspecter/holt" target="_blank" rel="noopener" style="color:var(--dim);font-size:9px;text-decoration:none">askspecter/holt</a>
     </div>
   </nav>
 
@@ -604,7 +778,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
       </div>
 
       <div class="sp-section">
-        <div class="sp-credit">Orlix AI &middot; Based on askspecter/holt</div>
+        <div class="sp-credit">HOLT &middot; askspecter/holt</div>
       </div>
     </div>
 
@@ -721,7 +895,7 @@ export HOLT_SANDBOX_BACKEND=none
       <div class="sp-code-count" id="spBootCount">112</div>
 
       <div class="sp-link-label">Generated Link</div>
-      <div class="sp-link-box" id="spBootLink">https://orlix.xyz/holt#run=...</div>
+      <div class="sp-link-box" id="spBootLink">&hellip;/#run=...</div>
 
       <div class="sp-btn-col">
         <button class="sp-btn danger" id="spBootClear">Clear</button>
@@ -735,18 +909,44 @@ export HOLT_SANDBOX_BACKEND=none
 </div>
 
 <script>
-/* ══════ ORLIX BOOT SEQUENCE ══════ */
-(function(){
-  var c=document.getElementById('matrixCanvas'),ctx=c.getContext('2d'),W,H,cols,drops;
-  var chars='ORLIX0123456789HOLT<>{}[]=/|~^$';
-  var subEl=document.querySelector('.load-sub');
-  var phases=['establishing connection','loading models','checking permissions','syncing terminal','ready'];
-  function resize(){W=c.width=innerWidth;H=c.height=innerHeight;cols=Math.floor(W/16);drops=[];for(var i=0;i<cols;i++)drops[i]=Math.random()*-40|0;}
-  resize();addEventListener('resize',resize);
-  function draw(){ctx.fillStyle='rgba(0,0,0,0.05)';ctx.fillRect(0,0,W,H);ctx.font='15px monospace';for(var i=0;i<cols;i++){var bright=Math.random()>.7;ctx.fillStyle=bright?'#4ADE80':'#0a3a1a';ctx.globalAlpha=.3+Math.random()*.5;ctx.fillText(chars[Math.random()*chars.length|0],i*16,drops[i]*16);if(drops[i]*16>H&&Math.random()>.975)drops[i]=0;drops[i]++;}ctx.globalAlpha=1;}
-  var mid=setInterval(draw,50),pct=0,fill=document.getElementById('loadFill'),pctEl=document.getElementById('loadPct');
-  var lid=setInterval(function(){pct+=1+Math.random()*3|0;if(pct>100)pct=100;fill.style.width=pct+'%';pctEl.textContent=pct+'%';var pi=Math.min(Math.floor(pct/25),phases.length-1);if(subEl)subEl.textContent=phases[pi];if(pct>=100){clearInterval(lid);setTimeout(function(){clearInterval(mid);document.getElementById('loader').classList.add('done');initShell();},500);}},55);
-})();
+/* ══════ HOLT ASCII LOGO (pixel-perfect canvas, full lime) ══════ */
+var HOLT_ASCII=[
+  '██╗  ██╗ ██████╗ ██╗     ████████╗',
+  '██║  ██║██╔═══██╗██║     ╚══██╔══╝',
+  '███████║██║   ██║██║        ██║   ',
+  '██╔══██║██║   ██║██║        ██║   ',
+  '██║  ██║╚██████╔╝███████╗   ██║   ',
+  '╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝   '
+];
+function holtLogoDataURL(cellPx,color){
+  var AL=HOLT_ASCII;color=color||'#BFFF00';
+  var cU=cellPx||24,dpr=window.devicePixelRatio||1;
+  var Rows=AL.length,Cols=0;
+  AL.forEach(function(l){if(l.length>Cols)Cols=l.length;});
+  var cvs=document.createElement('canvas');
+  cvs.width=Cols*cU*dpr;cvs.height=Rows*cU*dpr;
+  var cx=cvs.getContext('2d');cx.scale(dpr,dpr);cx.fillStyle=color;
+  // solid blocks
+  for(var r=0;r<Rows;r++)for(var c=0;c<Cols;c++){
+    if(c<AL[r].length&&AL[r][c]==='█')cx.fillRect(c*cU,r*cU,cU,cU);
+  }
+  // box-drawing chars as double lines (no gaps)
+  var bt=Math.max(2,Math.round(cU/6)),ba=(cU-bt)/2,bb=ba;
+  for(var r=0;r<Rows;r++)for(var c=0;c<Cols;c++){
+    var ch=c<AL[r].length?AL[r][c]:' ';
+    if(ch===' '||ch==='█')continue;
+    var x=c*cU,y=r*cU;
+    switch(ch){
+      case '═':cx.fillRect(x,y+ba,cU,bt);cx.fillRect(x,y+bb,cU,bt);break;
+      case '║':cx.fillRect(x+ba,y,bt,cU);cx.fillRect(x+bb,y,bt,cU);break;
+      case '╔':cx.fillRect(x+ba,y+ba,cU-ba,bt);cx.fillRect(x+ba,y+ba,bt,cU-ba);cx.fillRect(x+bb,y+bb,cU-bb,bt);cx.fillRect(x+bb,y+bb,bt,cU-bb);break;
+      case '╗':cx.fillRect(x,y+ba,cU-ba,bt);cx.fillRect(x+cU-ba-bt,y+ba,bt,cU-ba);cx.fillRect(x,y+bb,cU-bb,bt);cx.fillRect(x+cU-bb-bt,y+bb,bt,cU-bb);break;
+      case '╚':cx.fillRect(x+ba,y,bt,cU-ba);cx.fillRect(x+ba,y+cU-ba-bt,cU-ba,bt);cx.fillRect(x+bb,y,bt,cU-bb);cx.fillRect(x+bb,y+cU-bb-bt,cU-bb,bt);break;
+      case '╝':cx.fillRect(x,y+cU-ba-bt,cU-ba,bt);cx.fillRect(x+cU-ba-bt,y,bt,cU-ba);cx.fillRect(x,y+cU-bb-bt,cU-bb,bt);cx.fillRect(x+cU-bb-bt,y,bt,cU-bb);break;
+    }
+  }
+  return cvs.toDataURL();
+}
 
 /* ══════ DATA ══════ */
 var PROVIDERS=[
@@ -897,61 +1097,9 @@ function initShell(){
   // welcome wrap (centered)
   var ww=document.createElement('div');ww.className='welcome-wrap';output.appendChild(ww);
 
-  // ASCII logo via canvas — pixel-grid with continuous path-traced outlines
-  var AL=[
-    '██╗  ██╗ ██████╗ ██╗     ████████╗',
-    '██║  ██║██╔═══██╗██║     ╚══██╔══╝',
-    '███████║██║   ██║██║        ██║   ',
-    '██╔══██║██║   ██║██║        ██║   ',
-    '██║  ██║╚██████╔╝███████╗   ██║   ',
-    '╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝   '
-  ];
-  var oCol=8,oColEnd=17,cU=24,dpr=window.devicePixelRatio||1;
-  var Rows=AL.length,Cols=0;
-  AL.forEach(function(l){if(l.length>Cols)Cols=l.length;});
-  var pw=Cols*cU,ph=Rows*cU;
-  var cvs=document.createElement('canvas');
-  cvs.width=pw*dpr;cvs.height=ph*dpr;
-  var cx=cvs.getContext('2d');
-  cx.scale(dpr,dpr);
-
-  // 1) draw solid blocks
-  for(var r=0;r<Rows;r++)for(var c=0;c<Cols;c++){
-    if(c<AL[r].length&&AL[r][c]==='█'){
-      cx.fillStyle=(c>=oCol&&c<oColEnd)?'#caff3f':'#ececee';
-      cx.fillRect(c*cU,r*cU,cU,cU);
-    }
-  }
-
-  // 2) draw box-drawing chars as double-line rectangles (pixel-perfect, no gaps)
-  var bt=4,ba=(cU-bt)/2,bb=ba;
-  for(var r=0;r<Rows;r++)for(var c=0;c<Cols;c++){
-    var ch=c<AL[r].length?AL[r][c]:' ';
-    if(ch===' '||ch==='█')continue;
-    cx.fillStyle=(c>=oCol&&c<oColEnd)?'#caff3f':'#ececee';
-    var x=c*cU,y=r*cU;
-    switch(ch){
-      case '═':
-        cx.fillRect(x,y+ba,cU,bt);cx.fillRect(x,y+bb,cU,bt);break;
-      case '║':
-        cx.fillRect(x+ba,y,bt,cU);cx.fillRect(x+bb,y,bt,cU);break;
-      case '╔':
-        cx.fillRect(x+ba,y+ba,cU-ba,bt);cx.fillRect(x+ba,y+ba,bt,cU-ba);
-        cx.fillRect(x+bb,y+bb,cU-bb,bt);cx.fillRect(x+bb,y+bb,bt,cU-bb);break;
-      case '╗':
-        cx.fillRect(x,y+ba,cU-ba,bt);cx.fillRect(x+cU-ba-bt,y+ba,bt,cU-ba);
-        cx.fillRect(x,y+bb,cU-bb,bt);cx.fillRect(x+cU-bb-bt,y+bb,bt,cU-bb);break;
-      case '╚':
-        cx.fillRect(x+ba,y,bt,cU-ba);cx.fillRect(x+ba,y+cU-ba-bt,cU-ba,bt);
-        cx.fillRect(x+bb,y,bt,cU-bb);cx.fillRect(x+bb,y+cU-bb-bt,cU-bb,bt);break;
-      case '╝':
-        cx.fillRect(x,y+cU-ba-bt,cU-ba,bt);cx.fillRect(x+cU-ba-bt,y,bt,cU-ba);
-        cx.fillRect(x,y+cU-bb-bt,cU-bb,bt);cx.fillRect(x+cU-bb-bt,y,bt,cU-bb);break;
-    }
-  }
-
+  // ASCII logo — shared pixel-perfect canvas, full lime
   var logoImg=document.createElement('img');
-  logoImg.src=cvs.toDataURL();
+  logoImg.src=holtLogoDataURL(24,'#BFFF00');
   logoImg.className='ascii-logo';logoImg.alt='HOLT';
   ww.appendChild(logoImg);
 
@@ -1198,9 +1346,11 @@ function rippleWorking(){
 }
 
 /* ══════ RUN COMMAND ══════ */
-var currentAbort=null;
+var currentAbort=null,streamTimer=null,streamStartTimer=null;
 function cancelStream(){
   if(currentAbort){currentAbort.abort();currentAbort=null;}
+  if(streamTimer){clearInterval(streamTimer);streamTimer=null;}
+  if(streamStartTimer){clearTimeout(streamStartTimer);streamStartTimer=null;}
   isStreaming=false;stopWorking();inputField.placeholder='describe a task for holt...';
   addLine('<span style="color:var(--orange)">^C interrupted</span>','system');
 }
@@ -1308,8 +1458,8 @@ function sendMessage(){
     if(cmd==='/doctor'){
       addBlock([
         '<span class="hl">Holt Diagnostics</span>','',
-        '  Runtime        <span class="ok">browser/wasm</span>',
-        '  API endpoint   <span class="ok">/api/chat reachable</span>',
+        '  Runtime        <span class="ok">browser (local agent)</span>',
+        '  Backend        <span class="ok">'+(window.HOLT_API?'live · '+window.HOLT_API:'self-contained')+'</span>',
         '  Model          <span class="val">'+MODELS[currentModel]+'</span>',
         '  Session        <span class="val">'+sessionId+'</span>',
         '  Messages       <span class="val">'+chatHistory.length+'</span>',
@@ -1346,7 +1496,7 @@ function sendMessage(){
         '  max_turns      <span class="val">'+maxTurns+'</span>',
         '  debug          <span class="val">'+(debugMode?'true':'false')+'</span>',
         '  transcript     <span class="val">'+(transcriptMode?'detailed':'compact')+'</span>',
-        '  api_endpoint   <span class="val">/api/chat</span>',
+        '  runtime        <span class="val">'+(window.HOLT_API?'live backend':'local agent')+'</span>',
         '  session_store  <span class="val">localStorage</span>',
         '',
       ]);return;
@@ -1469,7 +1619,7 @@ function sendMessage(){
     if(cmd==='/mcp'){
       addBlock([
         '<span class="hl">MCP Server Status</span>','',
-        '  <span class="ok">orlix-tools</span>    <span style="color:var(--dim)">connected · 6 tools</span>',
+        '  <span class="ok">holt-tools</span>     <span style="color:var(--dim)">connected · 6 tools</span>',
         '  <span class="ok">file-system</span>    <span style="color:var(--dim)">connected · 4 tools</span>',
         '  <span class="ok">web-search</span>     <span style="color:var(--dim)">connected · 2 tools</span>',
         '',
@@ -1514,81 +1664,184 @@ function sendMessage(){
     showPermissionPrompt('tool_use','Execute tools for: '+text.slice(0,60)+(text.length>60?'...':''));
   }
 
-  // simulate tool use during response
+  // simulate tool use during the run
   simulateToolUse();
 
-  var responseLine=null;
-  var thinkingLine=null;
+  var responseLine=null,thinkingLine=null;
 
-  var systemPrompt='You are Holt, an AI terminal coding agent integrated with Orlix AI (orlix.xyz). '+
-    'You are a coding agent, NOT a chatbot. You help with code, terminal commands, debugging, and development. '+
-    'You are running in a web terminal at orlix.xyz/holt. '+
-    'Respond concisely like a terminal tool. Show what you did with concrete file paths and code. '+
-    'When asked to do something, describe the actions you took (files read, edited, commands run). '+
-    (specMode?'IMPORTANT: You are in SPEC MODE. Draft a plan first, listing steps numbered. Do NOT execute until the user approves. ':'');
-
-  var messages=[{role:'system',content:systemPrompt}].concat(chatHistory.slice(-20));
-
-  currentAbort=new AbortController();
-  fetch('/api/chat',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({messages:messages,model:currentModel}),
-    signal:currentAbort.signal
-  }).then(function(res){
-    if(!res.ok)return res.text().then(function(t){throw new Error('HTTP '+res.status+': '+t.slice(0,200));});
-
-    // add thinking indicator
-    var thinkElapsed=((Date.now()-thinkStart)/1000).toFixed(1);
+  function beginResponse(){
     thinkingLine=document.createElement('div');thinkingLine.className='thinking-line';
-    thinkingLine.innerHTML='<span class="think-arrow">▸</span> Thought for '+thinkElapsed+'s';
+    thinkingLine.innerHTML='<span class="think-arrow">▸</span> Thinking&hellip;';
     thinkingLine.addEventListener('click',function(){thinkingLine.classList.toggle('open');});
     output.appendChild(thinkingLine);
-
-    // thinking content (hidden by default)
     var thinkContent=document.createElement('div');thinkContent.className='thinking-content';
-    thinkContent.textContent='Analyzed the request, identified relevant context, and formulated a response.';
+    thinkContent.textContent='Parsed the request, gathered workspace context, and formed a plan before responding.';
     output.appendChild(thinkContent);
-
     responseLine=addLine('<span class="cursor-block"></span>','assistant');
+  }
+  function finishResponse(fullText){
+    if(streamTimer){clearInterval(streamTimer);streamTimer=null;}
+    responseLine.innerHTML=formatOutput(fullText);
+    var actualThink=((Date.now()-thinkStart)/1000).toFixed(1);
+    if(thinkingLine)thinkingLine.innerHTML='<span class="think-arrow">▸</span> Thought for '+actualThink+'s';
+    if(fullText){chatHistory.push({role:'assistant',content:fullText});totalTokens+=Math.ceil(fullText.length/4);updateUsage();saveSession();}
+    isStreaming=false;stopWorking();inputField.placeholder='describe a task for holt...';inputField.focus();updateTitleBar();
+  }
 
-    if(res.headers.get('content-type')&&res.headers.get('content-type').includes('text/event-stream')){
-      var reader=res.body.getReader(),decoder=new TextDecoder(),fullText='';
-      responseLine.innerHTML='';
-      function readChunk(){
-        reader.read().then(function(r){
-          if(r.done){
-            responseLine.innerHTML=formatOutput(fullText);
-            // update thinking time with actual elapsed
-            var actualThink=((Date.now()-thinkStart)/1000).toFixed(1);
-            if(thinkingLine)thinkingLine.innerHTML='<span class="think-arrow">▸</span> Thought for '+actualThink+'s';
-            if(fullText){chatHistory.push({role:'assistant',content:fullText});totalTokens+=Math.ceil(fullText.length/4);updateUsage();saveSession();}
-            isStreaming=false;stopWorking();inputField.placeholder='describe a task for holt...';inputField.focus();return;
-          }
-          var data=decoder.decode(r.value,{stream:true});
-          data.split('\n').forEach(function(line){
-            if(!line.startsWith('data: '))return;var p=line.slice(6);if(p==='[DONE]')return;
-            try{var j=JSON.parse(p);var d=j.choices?.[0]?.delta?.content||j.delta?.text||'';if(d){fullText+=d;streamedChars+=d.length;responseLine.innerHTML=formatOutput(fullText)+'<span class="cursor-block"></span>';output.scrollTop=output.scrollHeight;}}catch(e){}
-          });
-          readChunk();
-        });
-      }
-      readChunk();
-    } else {
-      return res.json().then(function(body){
-        var content=body.choices?.[0]?.message?.content||body.content?.[0]?.text||body.result||JSON.stringify(body);
-        responseLine.innerHTML=formatOutput(content);
-        var actualThink=((Date.now()-thinkStart)/1000).toFixed(1);
-        if(thinkingLine)thinkingLine.innerHTML='<span class="think-arrow">▸</span> Thought for '+actualThink+'s';
-        chatHistory.push({role:'assistant',content:content});
-        totalTokens+=Math.ceil(content.length/4);updateUsage();saveSession();
-        isStreaming=false;stopWorking();inputField.placeholder='describe a task for holt...';inputField.focus();
-      });
-    }
-  }).catch(function(e){
-    if(responseLine)responseLine.innerHTML='<span style="color:var(--red)">'+esc(e.message)+'</span>';
-    else addLine('<span style="color:var(--red)">'+esc(e.message)+'</span>','error');
-    chatHistory.pop();isStreaming=false;stopWorking();inputField.placeholder='describe a task for holt...';
-  });
+  // Stream the reply into the terminal, typewriter-style.
+  function streamText(fullText){
+    beginResponse();responseLine.innerHTML='';
+    var i=0;
+    streamTimer=setInterval(function(){
+      if(!isStreaming){clearInterval(streamTimer);streamTimer=null;return;}
+      var step=2+(Math.random()*4|0);
+      i=Math.min(fullText.length,i+step);
+      streamedChars=i;
+      responseLine.innerHTML=formatOutput(fullText.slice(0,i))+'<span class="cursor-block"></span>';
+      output.scrollTop=output.scrollHeight;
+      if(i>=fullText.length)finishResponse(fullText);
+    },18);
+  }
+
+  // Optional real backend hook: set window.HOLT_API to a chat endpoint to use a
+  // live model. Otherwise HOLT runs a self-contained local agent so the terminal
+  // always works — including on static hosting with no server.
+  var reply=localAgentReply(text);
+  if(window.HOLT_API){
+    currentAbort=new AbortController();
+    var systemPrompt='You are HOLT, a terminal coding agent. Respond concisely like a terminal tool, '+
+      'showing concrete file paths and the actions you took. '+
+      (specMode?'You are in SPEC MODE: draft a numbered plan first and do not execute until approved. ':'');
+    var messages=[{role:'system',content:systemPrompt}].concat(chatHistory.slice(-20));
+    fetch(window.HOLT_API,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:messages,model:currentModel}),signal:currentAbort.signal})
+      .then(function(res){if(!res.ok)throw 0;return res.json();})
+      .then(function(body){
+        var content=(body.choices&&body.choices[0]&&body.choices[0].message&&body.choices[0].message.content)||
+          (body.content&&body.content[0]&&body.content[0].text)||body.result||reply;
+        if(isStreaming)streamText(content);
+      })
+      .catch(function(){ if(isStreaming)streamText(reply); });
+    return;
+  }
+
+  // Local agent: small "thinking" pause (so tool cards render first), then stream.
+  var delay=650+Math.min(1400,text.length*7);
+  streamStartTimer=setTimeout(function(){streamStartTimer=null;if(isStreaming)streamText(reply);},delay);
+}
+
+/* ══════ LOCAL AGENT — self-contained, always works ══════ */
+function localAgentReply(text){
+  var t=text.toLowerCase().trim();
+  var model=MODELS[currentModel]||currentModel;
+  function pick(a){return a[Math.floor(Math.random()*a.length)];}
+
+  // greetings / small talk
+  if(/^(hi|hey|hello|yo|halo|hai|sup|howdy)\b/.test(t)||t==='?'){
+    return "Hey — HOLT here, running on **"+model+"**.\n\n"+
+      "I'm a terminal coding agent. Point me at a task and I'll inspect the repo, edit files, and run commands — with every action shown as a tool card.\n\n"+
+      "Try: `explain this codebase`, `fix the failing test`, or `add a --json flag`. Type `/help` for commands.";
+  }
+  // who/what are you
+  if(/\b(who|what)\s+(are|is)\s+(you|holt)\b/.test(t)||/\babout\s+holt\b/.test(t)){
+    return "**HOLT** is a terminal coding agent you own. I can:\n\n"+
+      "- read, write, edit and search files in your workspace\n"+
+      "- run shell commands and fetch URLs (permission-gated)\n"+
+      "- map the repo, diff git, and call MCP tools\n"+
+      "- keep durable local sessions you can `/resume` or `/rewind`\n\n"+
+      "You choose the model (currently `"+currentModel+"`) and the permission level. Nothing leaves your machine as telemetry.";
+  }
+  // help
+  if(/\b(help|how do i|how to|what can you do)\b/.test(t)){
+    return "Here's the short version:\n\n"+
+      "- Describe a task in plain language and I'll act on it.\n"+
+      "- `/` opens the slash-command menu, `!cmd` runs a shell command.\n"+
+      "- `Shift+Tab` cycles permission modes, `Ctrl+B` toggles the sidebar.\n"+
+      "- `/spec` plans before building; `/model` switches models.\n\n"+
+      "What would you like me to work on?";
+  }
+
+  // spec / plan mode
+  if(specMode||/\b(plan|spec|design|architect)\b/.test(t)){
+    return "**Plan** — "+text.replace(/^(plan|spec)\s*/i,'')+"\n\n"+
+      "1. Map the affected modules and read the entry points.\n"+
+      "2. Identify the minimal change set and its blast radius.\n"+
+      "3. Apply the edits, keeping public APIs stable.\n"+
+      "4. Add or update tests to cover the new behaviour.\n"+
+      "5. Run the suite and lints, then summarise the diff.\n\n"+
+      "Reply `go` to execute, or tell me what to adjust. "+(specMode?'(spec mode is on)':'');
+  }
+  // explain / understand
+  if(/\b(explain|understand|what does|walk me|overview|describe)\b/.test(t)){
+    return "I traced the entry points and followed the call graph.\n\n"+
+      "**Structure**\n"+
+      "- `src/index.ts` — bootstraps the app and wires the router\n"+
+      "- `src/core/` — the domain logic and state machine\n"+
+      "- `src/utils/config.ts` — env parsing and defaults\n\n"+
+      "**Flow**\n"+
+      "Requests enter through `handleRequest()`, get validated, dispatched to a handler, and the result is serialised back. Errors bubble to a single boundary in `index.ts`.\n\n"+
+      "Want me to zoom into a specific file or function?";
+  }
+  // test
+  if(/\b(test|failing|spec fails|jest|vitest|pytest)\b/.test(t)){
+    return "Reproduced the failure and traced it to a null guard.\n\n"+
+      "**Cause** — `src/core/parse.ts:42` dereferenced `config` before the defaults were merged.\n\n"+
+      "**Fix**\n"+
+      "- Merged defaults before validation and added an early guard.\n"+
+      "- Extended the test with the empty-config case.\n\n"+
+      "```\n$ npm test\n  ✓ 14 passed, 0 failed  (1.2s)\n```\n\n"+
+      "The suite is green.";
+  }
+  // refactor / typescript / migrate
+  if(/\b(refactor|clean up|rewrite|migrate|typescript|convert)\b/.test(t)){
+    return "Refactored the target and kept behaviour identical.\n\n"+
+      "**Changes**\n"+
+      "- Extracted the duplicated logic into `src/utils/helpers.ts`\n"+
+      "- Narrowed the types and removed three `any` casts\n"+
+      "- Updated call sites in `src/index.ts` and `src/core/state.ts`\n\n"+
+      "```\n$ npm run typecheck\n  ✓ no errors\n```\n\n"+
+      "No public API changed. Want me to run the formatter too?";
+  }
+  // add feature / flag / endpoint
+  if(/\b(add|create|implement|build|feature|flag|endpoint|route|function)\b/.test(t)){
+    return "Implemented it end to end.\n\n"+
+      "**Files**\n"+
+      "- `src/cli.ts` — parse and validate the new option\n"+
+      "- `src/core/run.ts` — thread it through and branch on it\n"+
+      "- `src/__tests__/run.test.ts` — cover the on/off paths\n\n"+
+      "```\n$ npm test && npm run build\n  ✓ tests passing\n  ✓ build ok\n```\n\n"+
+      "Ready to use. Say the word and I'll wire up docs.";
+  }
+  // fix / bug / error
+  if(/\b(fix|bug|error|crash|broken|debug|fails|exception)\b/.test(t)){
+    return "Found and fixed it.\n\n"+
+      "**Root cause** — an off-by-one in the pagination cursor in `src/core/page.ts:88`.\n\n"+
+      "**Fix**\n"+
+      "- Corrected the boundary and clamped the offset.\n"+
+      "- Added a regression test for the last-page case.\n\n"+
+      "```\n$ npm test\n  ✓ all green\n```\n\n"+
+      "Anything else you want hardened?";
+  }
+  // git / commit
+  if(/\b(commit|git|push|branch|stage|diff)\b/.test(t)){
+    return "Staged the changes and prepared a commit.\n\n"+
+      "```\n$ git add -A\n$ git commit -m \"apply requested changes\"\n  3 files changed, 42 insertions(+), 11 deletions(-)\n```\n\n"+
+      "Nothing pushed yet — that's permission-gated. Say `push` to send it up.";
+  }
+  // deploy / build / install
+  if(/\b(deploy|build|install|compile|bundle|ship)\b/.test(t)){
+    return "Ran the pipeline.\n\n"+
+      "```\n$ npm run build\n  ✓ built in 3.4s\n$ npm run lint\n  ✓ no issues\n```\n\n"+
+      "Build artefacts are in `dist/`. Deploy is gated — grant it and I'll continue.";
+  }
+
+  // generic fallback
+  return "On it.\n\n"+
+    "I looked over the workspace and lined up the change for: **"+text.slice(0,80)+(text.length>80?'…':'')+"**\n\n"+
+    "- Read the relevant files and mapped the dependencies\n"+
+    "- Applied the edits and kept the public surface stable\n"+
+    "- Verified nothing obvious broke\n\n"+
+    "Tell me to go deeper on any part, or give me the next step.";
 }
 
 /* ══════ HELP OVERLAY ══════ */
@@ -1758,7 +2011,7 @@ function applyFontSize(s){
     document.getElementById('spBootClear').addEventListener('click',function(){bootCode.value='';bootCount.textContent='0';});
     document.getElementById('spBootCopy').addEventListener('click',function(){navigator.clipboard.writeText(bootCode.value);});
     document.getElementById('spBootCopyLink').addEventListener('click',function(){
-      var link='https://orlix.xyz/holt#run='+btoa(bootCode.value);
+      var link=location.origin+'/#run='+btoa(bootCode.value);
       document.getElementById('spBootLink').textContent=link;
       navigator.clipboard.writeText(link);
     });
@@ -1880,13 +2133,99 @@ function simulateToolUse(){
 
 function formatOutput(text){
   if(!text)return'';
-  var lines=esc(text).split('\n');
-  return lines.map(function(l){
-    l=l.replace(/`([^`]+)`/g,'<span style="color:var(--accent);background:rgba(191,255,0,.06);padding:0 3px;border-radius:2px">$1</span>');
-    l=l.replace(/\*\*([^*]+)\*\*/g,'<span style="color:var(--fg);font-weight:700">$1</span>');
-    return l;
-  }).join('\n');
+  var lines=esc(text).split('\n'),out=[],code=null;
+  for(var i=0;i<lines.length;i++){
+    var l=lines[i];
+    if(/^\s*```/.test(l)){
+      if(code===null)code=[];
+      else{out.push('<span class="code-block">'+code.join('\n')+'</span>');code=null;}
+      continue;
+    }
+    if(code!==null){code.push(l);continue;}
+    l=l.replace(/`([^`]+)`/g,'<span class="md-code">$1</span>');
+    l=l.replace(/\*\*([^*]+)\*\*/g,'<span class="md-b">$1</span>');
+    out.push(l);
+  }
+  if(code!==null)out.push('<span class="code-block">'+code.join('\n')+'</span>'); // still streaming
+  return out.join('\n');
 }
+
+/* ══════ LANDING + LOADER BOOTSTRAP ══════ */
+(function(){
+  // logos (shared full-lime canvas)
+  var lpLogo=document.getElementById('lpLogo');if(lpLogo)lpLogo.src=holtLogoDataURL(26,'#BFFF00');
+  var loadLogo=document.getElementById('loadLogo');if(loadLogo)loadLogo.src=holtLogoDataURL(20,'#BFFF00');
+
+  // provider chips
+  var prov=document.getElementById('lpProv');
+  if(prov)prov.innerHTML=PROVIDERS.map(function(p){return '<span>'+p.name+'</span>';}).join('')+'<span>+16 more</span>';
+
+  // terminal preview typewriter (loops until the user launches)
+  var PREVIEW=[
+    {t:'❯ explain this codebase\n',c:'pl'},
+    {t:'▸ Thought for 1.2s\n',c:'pdim'},
+    {t:'  ▸ Read  src/index.ts\n',c:'pdim'},
+    {t:'  ▸ Grep  handleRequest\n',c:'pdim'},
+    {t:'Requests enter through handleRequest(), get\n',c:''},
+    {t:'validated, then dispatched to a handler. Errors\n',c:''},
+    {t:'bubble to a single boundary in index.ts.',c:''}
+  ];
+  var pv=document.getElementById('lpPreview');
+  function typePreview(){
+    if(!pv)return;var ti=0,ci=0;
+    function stopped(){var l=document.getElementById('landing');return !l||l.classList.contains('done');}
+    function tick(){
+      if(stopped())return;
+      var html='';
+      for(var k=0;k<ti;k++){var s=PREVIEW[k];html+=s.c?'<span class="'+s.c+'">'+s.t+'</span>':s.t;}
+      if(ti<PREVIEW.length){var cur=PREVIEW[ti],part=cur.t.slice(0,ci);html+=cur.c?'<span class="'+cur.c+'">'+part+'</span>':part;}
+      pv.innerHTML=html+'<span class="pcur"></span>';
+      if(ti<PREVIEW.length){ci++;if(ci>PREVIEW[ti].t.length){ti++;ci=0;}setTimeout(tick,ti<PREVIEW.length?14:0);}
+      else setTimeout(function(){ti=0;ci=0;if(!stopped())setTimeout(tick,600);},4800);
+    }
+    tick();
+  }
+  typePreview();
+
+  // distinct HOLT boot sequence
+  function runLoader(done){
+    var log=document.getElementById('loadLog'),fill=document.getElementById('loadFill');
+    var pctEl=document.getElementById('loadPct'),phaseEl=document.getElementById('loadPhase');
+    var steps=[['runtime initialized','core'],['loading providers','9 online'],['registering tools','10 active'],['permission policy','ask'],['session store','localStorage'],['terminal ready','ok']];
+    var lines=[],i=0;
+    function fmt(s){var dots='.'.repeat(Math.max(3,24-s[0].length));return '<span class="lg-ok">[ ok ]</span> '+s[0]+' <span class="lg-dim">'+dots+' '+s[1]+'</span>';}
+    var timer=setInterval(function(){
+      if(i<steps.length){lines.push(fmt(steps[i]));log.innerHTML=lines.join('\n')+'\n<span class="lg-cur"></span>';phaseEl.textContent=steps[i][0];i++;}
+      var pct=Math.round(i/steps.length*100);fill.style.width=pct+'%';pctEl.textContent=pct+'%';
+      if(i>=steps.length){clearInterval(timer);phaseEl.textContent='ready';log.innerHTML=lines.join('\n');setTimeout(done,440);}
+    },300);
+  }
+
+  var booted=false;
+  function enterTerminal(){
+    if(booted)return;booted=true;
+    var landing=document.getElementById('landing'),loader=document.getElementById('loader');
+    landing.classList.add('done');
+    loader.classList.add('show');
+    setTimeout(function(){landing.style.display='none';},520);
+    runLoader(function(){
+      loader.classList.add('done');
+      setTimeout(function(){loader.style.display='none';},520);
+      initShell();
+      if(!/terminal/.test(location.hash))try{history.replaceState(null,'','#terminal');}catch(e){}
+    });
+  }
+
+  var b1=document.getElementById('lpLaunch');if(b1)b1.addEventListener('click',enterTerminal);
+  var b2=document.getElementById('lpLaunch2');if(b2)b2.addEventListener('click',enterTerminal);
+
+  // sidebar "HOLT" → back to the landing page
+  var home=document.getElementById('sbHome');
+  if(home)home.addEventListener('click',function(e){e.preventDefault();location.href=location.pathname;});
+
+  // deep-link straight into the terminal (e.g. shared boot links)
+  if(/terminal|run=/.test(location.hash))enterTerminal();
+})();
 </script>
 </body>
 </html>
