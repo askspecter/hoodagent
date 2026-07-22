@@ -41,6 +41,16 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 .lp-nav-links a:hover{color:var(--lime)}
 @media(max-width:600px){.lp-nav-links .hide-sm{display:none}}
 
+/* X (twitter) emblem */
+.lp-x{display:inline-flex;align-items:center;justify-content:center;color:#5a6a2a;transition:color .15s,transform .15s}
+.lp-x svg{width:16px;height:16px;display:block}
+.lp-x:hover{color:var(--lime);transform:translateY(-1px)}
+.lp-btn.lp-x-btn{padding:14px 20px}
+.lp-btn.lp-x-btn svg{width:20px;height:20px;display:block}
+.sb-x{display:inline-flex;align-items:center;color:var(--dim);transition:color .15s}
+.sb-x svg{width:11px;height:11px;display:block}
+.sb-x:hover{color:var(--lime)}
+
 /* hero */
 .lp-hero{text-align:center;padding:38px 0 14px}
 .lp-logo{display:block;margin:0 auto 26px;width:520px;max-width:92%;height:auto;filter:drop-shadow(0 0 24px rgba(191,255,0,.28))}
@@ -455,7 +465,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
       <a href="#features" class="hide-sm">Features</a>
       <a href="#providers" class="hide-sm">Providers</a>
       <a href="#commands" class="hide-sm">Commands</a>
-      <a href="https://github.com/askspecter/holt" target="_blank" rel="noopener">GitHub</a>
+      <a class="lp-x" href="https://x.com/useHOLT" target="_blank" rel="noopener" aria-label="HOLT on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
     </div>
   </nav>
 
@@ -467,7 +477,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
       <div class="lp-sub">HOLT is a <span class="b">terminal coding agent you own</span>. It inspects your repo, edits files, runs commands, and keeps durable local sessions — while <span class="b">you</span> choose the model and the permission level.</div>
       <div class="lp-cta-row">
         <button class="lp-btn primary" id="lpLaunch">Launch Terminal <span class="arr">❯</span></button>
-        <a class="lp-btn ghost" href="https://github.com/askspecter/holt" target="_blank" rel="noopener">View Source</a>
+        <a class="lp-btn ghost lp-x-btn" href="https://x.com/useHOLT" target="_blank" rel="noopener" aria-label="Follow HOLT on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
       </div>
       <div class="lp-hint">runs entirely in your browser · no sign-up</div>
 
@@ -531,7 +541,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
     </section>
 
     <div class="lp-footer">
-      HOLT · <a href="https://github.com/askspecter/holt" target="_blank" rel="noopener">askspecter/holt</a> · MIT
+      HOLT <a class="lp-x" href="https://x.com/useHOLT" target="_blank" rel="noopener" aria-label="HOLT on X" style="vertical-align:middle;margin:0 4px"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a> MIT
     </div>
   </div>
 </div>
@@ -605,8 +615,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 
     <div class="sb-footer">
       <a href="#" id="sbHome" style="color:var(--dim);font-size:9px;text-decoration:none">HOLT</a>
-      <span style="margin:0 4px">/</span>
-      <a href="https://github.com/askspecter/holt" target="_blank" rel="noopener" style="color:var(--dim);font-size:9px;text-decoration:none">askspecter/holt</a>
+      <span style="margin:0 5px">·</span>
+      <a class="sb-x" href="https://x.com/useHOLT" target="_blank" rel="noopener" aria-label="HOLT on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
     </div>
   </nav>
 
@@ -778,7 +788,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
       </div>
 
       <div class="sp-section">
-        <div class="sp-credit">HOLT &middot; askspecter/holt</div>
+        <div class="sp-credit">HOLT &middot; @useHOLT</div>
       </div>
     </div>
 
@@ -911,12 +921,12 @@ export HOLT_SANDBOX_BACKEND=none
 <script>
 /* ══════ HOLT ASCII LOGO (pixel-perfect canvas, full lime) ══════ */
 var HOLT_ASCII=[
-  '██╗  ██╗ ██████╗ ██╗     ████████╗',
-  '██║  ██║██╔═══██╗██║     ╚══██╔══╝',
-  '███████║██║   ██║██║        ██║   ',
-  '██╔══██║██║   ██║██║        ██║   ',
-  '██║  ██║╚██████╔╝███████╗   ██║   ',
-  '╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝   '
+  '██╗  ██╗ ██████╗ ██╗  ████████╗',
+  '██║  ██║██╔═══██╗██║  ╚══██╔══╝',
+  '███████║██║   ██║██║     ██║',
+  '██╔══██║██║   ██║██║     ██║',
+  '██║  ██║╚██████╔╝███████╗██║',
+  '╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝'
 ];
 function holtLogoDataURL(cellPx,color){
   var AL=HOLT_ASCII;color=color||'#BFFF00';
