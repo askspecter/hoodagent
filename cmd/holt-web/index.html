@@ -2,113 +2,217 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <title>HOLT — browser terminal</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.min.css" />
   <style>
-    :root { color-scheme: dark; }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; background: #0b0e14; }
-    body {
-      font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
-      display: flex; flex-direction: column; color: #7d8590;
+    :root { color-scheme: dark; --bg:#000; --panel:#0d111a; --line:#1c2230; --ink:#c9d1d9; --muted:#7d8590; --accent:#b6ff00; --danger:#f85149; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { height:100%; margin:0; background:var(--bg); overflow:hidden; }
+    body { font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace; display:flex; flex-direction:column; }
+    #term { flex:1; min-height:0; padding:6px 8px 0; }
+    .xterm .xterm-viewport { overflow-y:auto; }
+
+    /* connection dot (unobtrusive, top-right) */
+    #dot { position:fixed; top:6px; right:8px; width:8px; height:8px; border-radius:50%; background:var(--danger); z-index:20; transition:background .2s, opacity .6s; }
+    #dot.up { background:var(--accent); opacity:.35; }
+
+    /* mobile key toolbar */
+    #bar { flex:0 0 auto; background:var(--panel); border-top:1px solid var(--line); padding:6px 6px calc(6px + env(safe-area-inset-bottom)); display:flex; flex-direction:column; gap:6px; }
+    .row { display:flex; gap:6px; }
+    .grow { flex:1 1 auto; }
+    button.key {
+      appearance:none; border:1px solid var(--line); background:#161b26; color:var(--muted);
+      font:600 13px/1 ui-monospace, monospace; padding:11px 0; min-width:40px; flex:1 1 0; border-radius:8px;
+      touch-action:manipulation; user-select:none; cursor:pointer;
     }
-    header {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 14px; border-bottom: 1px solid #1c2230;
-      background: #0d111a; user-select: none;
-    }
-    .brand { font-weight: 800; letter-spacing: 2px; color: #c9d1d9; }
-    .brand .o { color: #2dd4bf; }
-    .status { margin-left: auto; font-size: 12px; display: flex; align-items: center; gap: 7px; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: #f85149; transition: background .2s; }
-    .dot.up { background: #2dd4bf; }
-    #term { flex: 1; min-height: 0; padding: 8px 10px; }
-    .banner {
-      position: absolute; inset: auto 0 0 0; margin: 0 auto 14px; width: max-content;
-      max-width: 90%; padding: 8px 14px; border-radius: 8px;
-      background: #161b26; border: 1px solid #232a38; color: #adbac7; font-size: 13px;
-      box-shadow: 0 6px 24px rgba(0,0,0,.4); display: none;
-    }
-    .banner.show { display: block; }
+    button.key:active { background:#232a38; color:var(--ink); }
+    button.key.wide { flex:1.6 1 0; }
+    button.key.on { background:var(--accent); color:#0b0e14; border-color:var(--accent); }
+    button.key.rec { background:var(--danger); color:#fff; border-color:var(--danger); }
+
+    /* banner + settings */
+    .banner { position:fixed; left:50%; bottom:120px; transform:translateX(-50%); max-width:90%; padding:9px 14px; border-radius:8px; background:#161b26; border:1px solid var(--line); color:var(--ink); font-size:13px; box-shadow:0 6px 24px rgba(0,0,0,.5); display:none; z-index:30; }
+    .banner.show { display:block; }
+    #gear { position:fixed; right:10px; bottom:120px; width:40px; height:40px; border-radius:50%; background:#161b26; border:1px solid var(--line); color:var(--muted); font-size:18px; z-index:25; cursor:pointer; }
+    #panel { position:fixed; inset:auto 10px 120px auto; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px; z-index:35; display:none; width:220px; box-shadow:0 10px 30px rgba(0,0,0,.6); }
+    #panel.show { display:block; }
+    #panel h3 { margin:0 0 8px; font-size:12px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; }
+    #panel .prow { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:8px 0; color:var(--ink); font-size:13px; }
+    #panel button { border:1px solid var(--line); background:#161b26; color:var(--ink); border-radius:7px; padding:7px 10px; font:600 13px/1 monospace; cursor:pointer; }
+    .brand { font-weight:800; letter-spacing:2px; color:var(--ink); }
+    .brand .o { color:var(--accent); }
   </style>
 </head>
 <body>
-  <header>
-    <span class="brand">H<span class="o">O</span>LT</span>
-    <span class="status"><span id="dot" class="dot"></span><span id="state">connecting…</span></span>
-  </header>
+  <div id="dot"></div>
   <div id="term"></div>
+
+  <button id="gear" aria-label="settings">⚙</button>
+  <div id="panel">
+    <h3><span class="brand">H<span class="o">O</span>LT</span> · settings</h3>
+    <div class="prow"><span>Font size</span><span><button id="fdec">A−</button> <button id="finc">A+</button></span></div>
+    <div class="prow"><span>Session</span><button id="reconnect">Reconnect</button></div>
+    <div class="prow"><span>Clipboard</span><button id="pasteBig">Paste</button></div>
+  </div>
+
   <div id="banner" class="banner"></div>
+
+  <nav id="bar">
+    <div class="row" id="row1"></div>
+    <div class="row" id="row2"></div>
+  </nav>
 
   <script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/lib/addon-fit.min.js"></script>
   <script>
-    const MSG_INPUT = "0";
-    const MSG_RESIZE = "1";
+    const MSG_INPUT = "0", MSG_RESIZE = "1";
+    const ESC = "\x1b";
 
+    let fontSize = Math.max(12, Math.min(16, Math.round(window.innerWidth / 26)));
     const term = new Terminal({
-      cursorBlink: true,
+      cursorBlink: true, fontSize,
       fontFamily: 'ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace',
-      fontSize: 14,
-      theme: {
-        background: "#0b0e14", foreground: "#c9d1d9", cursor: "#2dd4bf",
-        selectionBackground: "#2d3341",
-      },
+      theme: { background: "#000000", foreground: "#c9d1d9", cursor: "#b6ff00", selectionBackground: "#2d3341" },
+      allowProposedApi: true,
     });
     const fit = new FitAddon.FitAddon();
     term.loadAddon(fit);
     term.open(document.getElementById("term"));
     fit.fit();
-    term.focus();
 
     const dot = document.getElementById("dot");
-    const state = document.getElementById("state");
     const banner = document.getElementById("banner");
-    function setState(up, text) { dot.classList.toggle("up", up); state.textContent = text; }
-    function showBanner(text) { banner.textContent = text; banner.classList.add("show"); }
-
-    function sendResize() {
-      if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(MSG_RESIZE + JSON.stringify({ cols: term.cols, rows: term.rows }));
-      }
+    function setUp(up) { dot.classList.toggle("up", up); }
+    let bannerTimer;
+    function showBanner(text, ms) {
+      banner.textContent = text; banner.classList.add("show");
+      clearTimeout(bannerTimer);
+      if (ms) bannerTimer = setTimeout(() => banner.classList.remove("show"), ms);
     }
 
+    // ---- WebSocket ----
     const token = new URLSearchParams(location.search).get("token") || "";
     const scheme = location.protocol === "https:" ? "wss" : "ws";
     const wsURL = `${scheme}://${location.host}/ws${token ? "?token=" + encodeURIComponent(token) : ""}`;
-
     let ws;
+    function wsOpen() { return ws && ws.readyState === WebSocket.OPEN; }
+    function sendResize() { if (wsOpen()) ws.send(MSG_RESIZE + JSON.stringify({ cols: term.cols, rows: term.rows })); }
+    function sendRaw(data) { if (wsOpen()) ws.send(MSG_INPUT + data); }
+
     function connect() {
-      setState(false, "connecting…");
       ws = new WebSocket(wsURL);
       ws.binaryType = "arraybuffer";
-
-      ws.onopen = () => { setState(true, "connected"); banner.classList.remove("show"); sendResize(); term.focus(); };
-      ws.onmessage = (ev) => {
-        const bytes = ev.data instanceof ArrayBuffer ? new Uint8Array(ev.data) : ev.data;
-        term.write(bytes);
-      };
+      ws.onopen = () => { setUp(true); banner.classList.remove("show"); sendResize(); term.focus(); };
+      ws.onmessage = (ev) => term.write(ev.data instanceof ArrayBuffer ? new Uint8Array(ev.data) : ev.data);
       ws.onclose = (ev) => {
-        setState(false, "disconnected");
-        if (ev.code === 1008 || ev.code === 4001) {
-          showBanner("Unauthorized — append ?token=YOUR_TOKEN to the URL.");
-          return;
-        }
-        showBanner("Session ended. Reconnecting in 2s…");
-        setTimeout(connect, 2000);
+        setUp(false);
+        if (ev.code === 1008 || ev.code === 4001) { showBanner("Unauthorized — append ?token=YOUR_TOKEN to the URL."); return; }
+        showBanner("Reconnecting…"); setTimeout(connect, 2000);
       };
       ws.onerror = () => { try { ws.close(); } catch (_) {} };
     }
 
-    term.onData((d) => { if (ws && ws.readyState === WebSocket.OPEN) ws.send(MSG_INPUT + d); });
+    // ---- input with sticky CTRL / ALT modifiers ----
+    let ctrl = false, alt = false;
+    function refreshMods() {
+      document.getElementById("kCtrl").classList.toggle("on", ctrl);
+      document.getElementById("kAlt").classList.toggle("on", alt);
+    }
+    function typed(d) {
+      if (!d) return;
+      if (ctrl) {
+        const c = d[0].toLowerCase();
+        if (c >= "a" && c <= "z") sendRaw(String.fromCharCode(c.charCodeAt(0) - 96) + d.slice(1));
+        else if (c === " ") sendRaw("\x00" + d.slice(1));
+        else sendRaw(d);
+        ctrl = false; refreshMods(); return;
+      }
+      if (alt) { sendRaw(ESC + d); alt = false; refreshMods(); return; }
+      sendRaw(d);
+    }
+    term.onData(typed);
 
-    let resizeTimer;
-    const onResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => { fit.fit(); sendResize(); }, 80);
-    };
-    window.addEventListener("resize", onResize);
+    // ---- key toolbar ----
+    // label, action. `send` types through modifiers; `raw` bypasses them.
+    function key(label, opts = {}) {
+      const b = document.createElement("button");
+      b.className = "key" + (opts.wide ? " wide" : "");
+      b.textContent = label;
+      if (opts.id) b.id = opts.id;
+      b.addEventListener("click", (e) => { e.preventDefault(); opts.onTap(); if (!opts.keepFocus) term.focus(); });
+      return b;
+    }
+    const spacer = () => { const s = document.createElement("span"); s.className = "grow"; return s; };
+
+    const row1 = document.getElementById("row1"), row2 = document.getElementById("row2");
+    [
+      key("~", { onTap: () => typed("~") }),
+      key("|", { onTap: () => typed("|") }),
+      key("/", { onTap: () => typed("/") }),
+      key("-", { onTap: () => typed("-") }),
+      spacer(),
+      key("COPY", { onTap: doCopy }),
+      key("PASTE", { onTap: doPaste }),
+      key("MIC", { id: "kMic", onTap: toggleMic }),
+      key("KBD", { onTap: () => term.focus() }),
+      key("ESC", { onTap: () => sendRaw(ESC) }),
+      key("CTRL", { id: "kCtrl", onTap: () => { ctrl = !ctrl; if (ctrl) alt = false; refreshMods(); }, keepFocus: true }),
+    ].forEach((el) => row1.appendChild(el));
+    [
+      key("ALT", { id: "kAlt", onTap: () => { alt = !alt; if (alt) ctrl = false; refreshMods(); }, keepFocus: true }),
+      key("TAB", { onTap: () => sendRaw("\t") }),
+      key("RETN", { wide: true, onTap: () => sendRaw("\r") }),
+      spacer(),
+      key("⌫", { onTap: () => sendRaw("\x7f") }),
+      key("←", { onTap: () => sendRaw(ESC + "[D") }),
+      key("↑", { onTap: () => sendRaw(ESC + "[A") }),
+      key("↓", { onTap: () => sendRaw(ESC + "[B") }),
+      key("→", { onTap: () => sendRaw(ESC + "[C") }),
+    ].forEach((el) => row2.appendChild(el));
+
+    // ---- clipboard ----
+    async function doCopy() {
+      const sel = term.getSelection();
+      if (!sel) { showBanner("Select text first, then COPY.", 1600); return; }
+      try { await navigator.clipboard.writeText(sel); showBanner("Copied.", 1000); } catch (_) { showBanner("Clipboard blocked by browser.", 1600); }
+    }
+    async function doPaste() {
+      try { const t = await navigator.clipboard.readText(); if (t) sendRaw(t); } catch (_) { showBanner("Clipboard blocked — long-press to paste.", 1800); }
+    }
+    document.getElementById("pasteBig").addEventListener("click", () => { doPaste(); closePanel(); });
+
+    // ---- microphone dictation (Web Speech API) ----
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let rec = null;
+    function toggleMic() {
+      const btn = document.getElementById("kMic");
+      if (!SR) { showBanner("Voice input not supported in this browser.", 1800); return; }
+      if (rec) { rec.stop(); return; }
+      rec = new SR(); rec.lang = navigator.language || "en-US"; rec.interimResults = false;
+      rec.onresult = (e) => { const t = e.results[0][0].transcript; if (t) sendRaw(t); };
+      rec.onerror = () => showBanner("Voice input error.", 1500);
+      rec.onend = () => { rec = null; btn.classList.remove("rec"); };
+      rec.start(); btn.classList.add("rec"); showBanner("Listening…", 1200);
+    }
+    if (!SR) document.getElementById("kMic").style.display = "none";
+
+    // ---- settings panel ----
+    const gear = document.getElementById("gear"), panel = document.getElementById("panel");
+    function closePanel() { panel.classList.remove("show"); }
+    gear.addEventListener("click", () => panel.classList.toggle("show"));
+    function applyFont(sz) { fontSize = Math.max(9, Math.min(24, sz)); term.options.fontSize = fontSize; fit.fit(); sendResize(); }
+    document.getElementById("finc").addEventListener("click", () => applyFont(fontSize + 1));
+    document.getElementById("fdec").addEventListener("click", () => applyFont(fontSize - 1));
+    document.getElementById("reconnect").addEventListener("click", () => { closePanel(); try { ws.close(); } catch (_) {} });
+
+    // ---- resize handling (also on mobile keyboard show/hide) ----
+    let rt;
+    function refit() { clearTimeout(rt); rt = setTimeout(() => { fit.fit(); sendResize(); }, 90); }
+    window.addEventListener("resize", refit);
+    if (window.visualViewport) window.visualViewport.addEventListener("resize", refit);
 
     connect();
   </script>
