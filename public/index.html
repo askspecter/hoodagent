@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>HOLT — Terminal Coding Agent</title>
-<meta name="description" content="HOLT — a fast, multi-provider terminal coding agent you own. Any model. Every tool. No limits. Runs in your browser.">
+<title>HOLT — Trade &amp; Build from Your Terminal</title>
+<meta name="description" content="HOLT — a terminal agent you own, wired into a Robinhood trading MCP. Live stock quotes, portfolio, and buy/sell orders in plain English. Any model. You confirm every trade.">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#000000">
-<meta property="og:title" content="HOLT — Terminal Coding Agent">
-<meta property="og:description" content="A terminal coding agent you own. Any model. Every tool. No limits. Runs in your browser.">
+<meta property="og:title" content="HOLT — Trade &amp; Build from Your Terminal">
+<meta property="og:description" content="A terminal agent you own, wired into a Robinhood trading MCP. Live quotes, portfolio, and buy/sell orders — you confirm every trade.">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
@@ -91,6 +91,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 .lp-card:hover{border-color:#3c5218;background:linear-gradient(180deg,#0b0f07,#070905);transform:translateY(-2px)}
 .lp-card-ic{font-size:15px;color:var(--lime);margin-bottom:12px;font-weight:700;letter-spacing:.05em;display:inline-block;border:1px solid #2c3a12;border-radius:6px;padding:5px 9px;min-width:34px;text-align:center}
 .lp-card-t{font-size:14px;color:var(--lime);font-weight:600;margin-bottom:7px}
+.lp-card-t code{font-size:13px;background:rgba(191,255,0,.09);border:1px solid #2c3a12;padding:2px 8px;border-radius:5px;letter-spacing:.02em}
 .lp-card-d{font-size:12px;color:#7c8a4a;line-height:1.65}
 .lp-card-d code{color:var(--lime);background:rgba(191,255,0,.07);padding:1px 5px;border-radius:3px;font-size:11px}
 
@@ -226,11 +227,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 .tool-card.edit{border-left-color:var(--yellow)}
 .tool-card.shell{border-left-color:var(--orange)}
 .tool-card.search{border-left-color:var(--purple)}
+.tool-card.trade{border-left-color:var(--lime)}
 .tool-card.read .tc-name{color:var(--cyan)}
 .tool-card.write .tc-name{color:var(--green)}
 .tool-card.edit .tc-name{color:var(--yellow)}
 .tool-card.shell .tc-name{color:var(--orange)}
 .tool-card.search .tc-name{color:var(--purple)}
+.tool-card.trade .tc-name{color:var(--lime)}
 
 /* permission prompt */
 .perm-prompt{margin:6px 0;padding:10px 14px;border:1px solid var(--dim2);border-radius:6px;background:var(--bg2);font-size:12px}
@@ -467,6 +470,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
     <div class="lp-nav-brand"><span class="dot"></span>HOLT</div>
     <div class="lp-nav-links">
       <a href="#features" class="hide-sm">Features</a>
+      <a href="#trading" class="hide-sm">Trading</a>
       <a href="#providers" class="hide-sm">Providers</a>
       <a href="#commands" class="hide-sm">Commands</a>
       <a class="lp-x" href="https://x.com/useHOLT" target="_blank" rel="noopener" aria-label="HOLT on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
@@ -477,8 +481,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
     <!-- hero -->
     <section class="lp-hero">
       <img class="lp-logo" id="lpLogo" alt="HOLT">
-      <div class="lp-tag">Any model. Every tool. No limits.</div>
-      <div class="lp-sub">HOLT is a <span class="b">terminal coding agent you own</span>. It inspects your repo, edits files, runs commands, and keeps durable local sessions — while <span class="b">you</span> choose the model and the permission level.</div>
+      <div class="lp-tag">Trade the market from your terminal.</div>
+      <div class="lp-sub">HOLT is a <span class="b">terminal agent you own</span>, wired into a <span class="b">Robinhood trading MCP</span>. Ask for a live quote, your portfolio, or a buy/sell order in plain English — right next to reading files and running commands. <span class="b">You</span> pick the model and the permission level, and orders only go live when you confirm.</div>
       <div class="lp-cta-row">
         <button class="lp-btn primary" id="lpLaunch">Launch Terminal <span class="arr">❯</span></button>
         <a class="lp-btn ghost lp-x-btn" href="https://x.com/useHOLT" target="_blank" rel="noopener" aria-label="Follow HOLT on X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
@@ -499,16 +503,33 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
     <section class="lp-section" id="features">
       <div class="lp-sec-head">
         <div class="lp-sec-kicker">What it does</div>
-        <div class="lp-sec-title">One agent. Full control.</div>
-        <div class="lp-sec-sub">Everything you need to ship code from a terminal, with side effects made visible.</div>
+        <div class="lp-sec-title">Trade and build from one terminal.</div>
+        <div class="lp-sec-sub">HOLT drives your Robinhood account and your codebase from the same prompt — with every side effect made visible.</div>
       </div>
       <div class="lp-grid">
-        <div class="lp-card"><div class="lp-card-ic">◇</div><div class="lp-card-t">Use any model</div><div class="lp-card-d">Bring Anthropic, OpenAI, Gemini, xAI, DeepSeek, Kimi, Qwen, GLM and 25+ providers — or any OpenAI/Anthropic-compatible endpoint. Switch mid-session with <code>/model</code>.</div></div>
-        <div class="lp-card"><div class="lp-card-ic">⛨</div><div class="lp-card-t">Stay in control</div><div class="lp-card-d">File writes, shell commands, and network access go through a permission policy. Cycle <code>ask → auto → full-auto</code> with <code>Shift+Tab</code>.</div></div>
-        <div class="lp-card"><div class="lp-card-ic">⚙</div><div class="lp-card-t">Real tool use</div><div class="lp-card-d">Read, write, edit, search, run shell, fetch URLs, map the repo, and diff git — every action rendered live as a bordered tool card.</div></div>
-        <div class="lp-card"><div class="lp-card-ic">▤</div><div class="lp-card-t">Plan before building</div><div class="lp-card-d">Draft a spec with <code>/spec</code> and review a numbered plan before HOLT touches a single file. Approve, then execute.</div></div>
+        <div class="lp-card"><div class="lp-card-ic">$</div><div class="lp-card-t">Trade via Robinhood</div><div class="lp-card-d">A built-in Robinhood MCP places market &amp; limit <span class="b">buy/sell</span> orders, lists positions, and cancels open orders — all from plain-English prompts in the terminal.</div></div>
+        <div class="lp-card"><div class="lp-card-ic">📈</div><div class="lp-card-t">Live quotes &amp; portfolio</div><div class="lp-card-d">Pull real-time <code>last / bid / ask</code> quotes for any ticker and read your equity, market value, and buying power at a glance.</div></div>
+        <div class="lp-card"><div class="lp-card-ic">⛨</div><div class="lp-card-t">You confirm every order</div><div class="lp-card-d">Trades, file writes, and shell commands go through a permission policy — orders never fire without your explicit <code>confirm</code>. Cycle modes with <code>Shift+Tab</code>.</div></div>
+        <div class="lp-card"><div class="lp-card-ic">◇</div><div class="lp-card-t">Use any model</div><div class="lp-card-d">Bring Anthropic, OpenAI, Gemini, xAI, DeepSeek, Kimi, Qwen, GLM and 25+ providers — or any OpenAI/Anthropic-compatible endpoint. Switch with <code>/model</code>.</div></div>
+        <div class="lp-card"><div class="lp-card-ic">⚙</div><div class="lp-card-t">Real tool use</div><div class="lp-card-d">Read, write, edit, search, run shell, fetch URLs, and diff git alongside trading — every action rendered live as a tool card.</div></div>
         <div class="lp-card"><div class="lp-card-ic">↺</div><div class="lp-card-t">Durable local sessions</div><div class="lp-card-d">Sessions are saved on-device, searchable, and resumable. <code>/rewind</code> rolls back the last exchange, <code>/compact</code> trims context.</div></div>
-        <div class="lp-card"><div class="lp-card-ic">⧉</div><div class="lp-card-t">Extensible</div><div class="lp-card-d">Wire in MCP servers, skills, and hooks. 40+ built-in themes, adjustable font size, and a mobile key toolbar out of the box.</div></div>
+      </div>
+    </section>
+
+    <!-- robinhood trading -->
+    <section class="lp-section" id="trading">
+      <div class="lp-sec-head">
+        <div class="lp-sec-kicker">Robinhood MCP</div>
+        <div class="lp-sec-title">Your brokerage, in the terminal</div>
+        <div class="lp-sec-sub">Connect the <code>robinhood</code> MCP server with a <code>ROBINHOOD_TOKEN</code> and HOLT gets six trading tools. Read-only tools work out of the box; orders require your confirm.</div>
+      </div>
+      <div class="lp-grid">
+        <div class="lp-card"><div class="lp-card-t"><code>rh_quote</code></div><div class="lp-card-d">Latest last / bid / ask price for one or more tickers.</div></div>
+        <div class="lp-card"><div class="lp-card-t"><code>rh_portfolio</code></div><div class="lp-card-d">Account equity, market value, and buying power.</div></div>
+        <div class="lp-card"><div class="lp-card-t"><code>rh_positions</code></div><div class="lp-card-d">Your current non-zero stock holdings.</div></div>
+        <div class="lp-card"><div class="lp-card-t"><code>rh_orders</code></div><div class="lp-card-d">Recent orders, most recent first.</div></div>
+        <div class="lp-card"><div class="lp-card-t"><code>rh_place_order</code></div><div class="lp-card-d">Buy or sell — market or limit — gated behind <code>confirm: true</code>.</div></div>
+        <div class="lp-card"><div class="lp-card-t"><code>rh_cancel_order</code></div><div class="lp-card-d">Cancel an open order by its id.</div></div>
       </div>
     </section>
 
@@ -540,7 +561,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
     <!-- final cta -->
     <section class="lp-final">
       <div class="lp-sec-title">Ready when you are.</div>
-      <div class="lp-sec-sub" style="margin-bottom:26px">Boot the terminal and describe a task. HOLT takes it from there.</div>
+      <div class="lp-sec-sub" style="margin-bottom:26px">Boot the terminal, ask for a quote or describe a task — HOLT takes it from there.</div>
       <button class="lp-btn primary" id="lpLaunch2">Launch Terminal <span class="arr">❯</span></button>
     </section>
 
@@ -662,7 +683,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
       <div class="slash-menu" id="slashMenu"></div>
       <div class="input-area">
         <span class="input-prompt">❯</span>
-        <input type="text" class="input-field" id="inputField" placeholder="describe a task for holt..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <input type="text" class="input-field" id="inputField" placeholder="quote a ticker or describe a task..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
         <span class="input-model" id="modelLabel">claude-sonnet-5</span>
       </div>
     </div>
@@ -923,7 +944,7 @@ export HOLT_SANDBOX_BACKEND=none
 </div>
 
 <script>
-/* ══════ HOLT ASCII LOGO (pixel-perfect canvas, full lime) ══════ */
+/* ══════ HOLT ASCII LOGO — 3D extruded, all lime (no white) ══════ */
 var HOLT_ASCII=[
   '██╗  ██╗ ██████╗ ██╗  ████████╗',
   '██║  ██║██╔═══██╗██║  ╚══██╔══╝',
@@ -932,22 +953,33 @@ var HOLT_ASCII=[
   '██║  ██║╚██████╔╝███████╗██║',
   '╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝'
 ];
+function _mixHex(a,b,t){
+  a=a.replace('#','');b=b.replace('#','');
+  var ar=parseInt(a.substr(0,2),16),ag=parseInt(a.substr(2,2),16),ab=parseInt(a.substr(4,2),16);
+  var br=parseInt(b.substr(0,2),16),bg=parseInt(b.substr(2,2),16),bb=parseInt(b.substr(4,2),16);
+  return 'rgb('+Math.round(ar+(br-ar)*t)+','+Math.round(ag+(bg-ag)*t)+','+Math.round(ab+(bb-ab)*t)+')';
+}
 function holtLogoDataURL(cellPx,color){
   var AL=HOLT_ASCII;color=color||'#BFFF00';
   var cU=cellPx||24,dpr=window.devicePixelRatio||1;
   var Rows=AL.length,Cols=0;
   AL.forEach(function(l){if(l.length>Cols)Cols=l.length;});
+  var depth=Math.max(2,Math.round(cU*0.30)); // extrusion depth (down-right), in px
   var cvs=document.createElement('canvas');
-  cvs.width=Cols*cU*dpr;cvs.height=Rows*cU*dpr;
-  var cx=cvs.getContext('2d');cx.scale(dpr,dpr);cx.fillStyle=color;
-  // Render the solid block (█) cells only — the letters' front faces. Each face
-  // is one continuous lime shape (no thin double-lines, no internal seams,
-  // nothing "putus-putus") and the letters stay cleanly separated. A small
-  // overlap (ov) fuses adjacent cells so there are no sub-pixel gaps.
+  cvs.width=(Cols*cU+depth+2)*dpr;cvs.height=(Rows*cU+depth+2)*dpr;
+  var cx=cvs.getContext('2d');cx.scale(dpr,dpr);
   var ov=0.75;
+  // front-face (█) cells
+  var cells=[];
   for(var r=0;r<Rows;r++)for(var c=0;c<Cols;c++){
-    if((c<AL[r].length?AL[r][c]:' ')==='█')cx.fillRect(c*cU-ov,r*cU-ov,cU+ov*2,cU+ov*2);
+    if((c<AL[r].length?AL[r][c]:' ')==='█')cells.push([c*cU,r*cU]);
   }
+  function fill(dx,dy,col){cx.fillStyle=col;for(var i=0;i<cells.length;i++)cx.fillRect(cells[i][0]+dx-ov,cells[i][1]+dy-ov,cU+ov*2,cU+ov*2);}
+  // extrusion: draw offset copies back→front, shading dark-lime → mid-lime
+  var back='#2e4300',frontSide='#6f9e00';
+  for(var k=depth;k>=1;k--)fill(k,k,_mixHex(frontSide,back,depth>1?(k-1)/(depth-1):0));
+  // bright lime front face on top
+  fill(0,0,color);
   return cvs.toDataURL();
 }
 
@@ -1106,13 +1138,13 @@ function initShell(){
   logoImg.className='ascii-logo';logoImg.alt='HOLT';
   ww.appendChild(logoImg);
 
-  var t1=document.createElement('div');t1.className='welcome-line tag';t1.innerHTML='Any model. Every tool. No limits.';ww.appendChild(t1);
+  var t1=document.createElement('div');t1.className='welcome-line tag';t1.innerHTML='Trade the market. Ship code. One terminal.';ww.appendChild(t1);
   var sp1=document.createElement('div');sp1.innerHTML='';sp1.style.height='8px';ww.appendChild(sp1);
   var t2=document.createElement('div');t2.className='welcome-line';t2.innerHTML='<span style="color:var(--dim)">~  &middot;  <span style="color:var(--fg)">'+MODELS[currentModel]+'</span></span>';ww.appendChild(t2);
   var sp2=document.createElement('div');sp2.innerHTML='';sp2.style.height='6px';ww.appendChild(sp2);
 
   var sugWrap=document.createElement('div');sugWrap.className='suggestions';
-  ['explain this codebase','fix the failing test','add a --json flag','refactor to typescript','write unit tests'].forEach(function(s){
+  ['quote AAPL, TSLA, NVDA','show my portfolio','buy 5 shares of AAPL','list my positions','explain this codebase'].forEach(function(s){
     var btn=document.createElement('button');btn.className='sug-chip';btn.textContent='"'+s+'"';
     btn.addEventListener('click',function(){inputField.value=s;sendMessage();});sugWrap.appendChild(btn);
   });
@@ -1354,7 +1386,7 @@ function cancelStream(){
   if(currentAbort){currentAbort.abort();currentAbort=null;}
   if(streamTimer){clearInterval(streamTimer);streamTimer=null;}
   if(streamStartTimer){clearTimeout(streamStartTimer);streamStartTimer=null;}
-  isStreaming=false;stopWorking();inputField.placeholder='describe a task for holt...';
+  isStreaming=false;stopWorking();inputField.placeholder='quote a ticker or describe a task...';
   addLine('<span style="color:var(--orange)">^C interrupted</span>','system');
 }
 function runCmd(cmd){inputField.value=cmd;sendMessage();}
@@ -1453,9 +1485,16 @@ function sendMessage(){
         '  <span class="ok">code_search</span>    <span style="color:var(--dim)">Semantic code search</span>',
         '  <span class="ok">repo_map</span>       <span style="color:var(--dim)">Repository structure</span>',
         '  <span class="ok">git_diff</span>       <span style="color:var(--dim)">View git changes</span>',
-        '  <span class="ok">git_commit</span>     <span style="color:var(--dim)">Commit changes</span>',
         '  <span class="ok">mcp_invoke</span>     <span style="color:var(--dim)">Call MCP server tools</span>',
-        '','  <span style="color:var(--dim)">10 tools active</span>','',
+        '',
+        '  <span style="color:var(--dim)">robinhood MCP —</span>',
+        '  <span class="ok">rh_quote</span>       <span style="color:var(--dim)">Live last/bid/ask quotes</span>',
+        '  <span class="ok">rh_portfolio</span>   <span style="color:var(--dim)">Equity, value, buying power</span>',
+        '  <span class="ok">rh_positions</span>   <span style="color:var(--dim)">Current stock holdings</span>',
+        '  <span class="ok">rh_orders</span>      <span style="color:var(--dim)">Recent orders</span>',
+        '  <span class="ok">rh_place_order</span> <span style="color:var(--dim)">Buy/sell (needs confirm)</span>',
+        '  <span class="ok">rh_cancel_order</span><span style="color:var(--dim)"> Cancel an open order</span>',
+        '','  <span style="color:var(--dim)">15 tools active</span>','',
       ]);return;
     }
     if(cmd==='/doctor'){
@@ -1622,10 +1661,11 @@ function sendMessage(){
     if(cmd==='/mcp'){
       addBlock([
         '<span class="hl">MCP Server Status</span>','',
+        '  <span class="ok">robinhood</span>      <span style="color:var(--dim)">connected · 6 tools · trading</span>',
         '  <span class="ok">holt-tools</span>     <span style="color:var(--dim)">connected · 6 tools</span>',
-        '  <span class="ok">file-system</span>    <span style="color:var(--dim)">connected · 4 tools</span>',
         '  <span class="ok">web-search</span>     <span style="color:var(--dim)">connected · 2 tools</span>',
         '',
+        '  <span style="color:var(--dim)">robinhood auth: <span class="val">ROBINHOOD_TOKEN</span> (env)</span>','',
       ]);return;
     }
     if(cmd==='/exit'||cmd==='/quit'){
@@ -1668,7 +1708,7 @@ function sendMessage(){
   }
 
   // simulate tool use during the run
-  simulateToolUse();
+  simulateToolUse(text);
 
   var responseLine=null,thinkingLine=null;
 
@@ -1688,7 +1728,7 @@ function sendMessage(){
     var actualThink=((Date.now()-thinkStart)/1000).toFixed(1);
     if(thinkingLine)thinkingLine.innerHTML='<span class="think-arrow">▸</span> Thought for '+actualThink+'s';
     if(fullText){chatHistory.push({role:'assistant',content:fullText});totalTokens+=Math.ceil(fullText.length/4);updateUsage();saveSession();}
-    isStreaming=false;stopWorking();inputField.placeholder='describe a task for holt...';inputField.focus();updateTitleBar();
+    isStreaming=false;stopWorking();inputField.placeholder='quote a ticker or describe a task...';inputField.focus();updateTitleBar();
   }
 
   // Stream the reply into the terminal, typewriter-style.
@@ -1742,26 +1782,79 @@ function localAgentReply(text){
   // greetings / small talk
   if(/^(hi|hey|hello|yo|halo|hai|sup|howdy)\b/.test(t)||t==='?'){
     return "Hey — HOLT here, running on **"+model+"**.\n\n"+
-      "I'm a terminal coding agent. Point me at a task and I'll inspect the repo, edit files, and run commands — with every action shown as a tool card.\n\n"+
-      "Try: `explain this codebase`, `fix the failing test`, or `add a --json flag`. Type `/help` for commands.";
+      "I'm a terminal agent wired into a **Robinhood trading MCP**. Ask for a quote, your portfolio, or a buy/sell order — or point me at your codebase.\n\n"+
+      "Try: `quote AAPL`, `show my portfolio`, `buy 5 TSLA`, or `explain this codebase`. Type `/help` for commands.";
   }
   // who/what are you
   if(/\b(who|what)\s+(are|is)\s+(you|holt)\b/.test(t)||/\babout\s+holt\b/.test(t)){
-    return "**HOLT** is a terminal coding agent you own. I can:\n\n"+
-      "- read, write, edit and search files in your workspace\n"+
-      "- run shell commands and fetch URLs (permission-gated)\n"+
-      "- map the repo, diff git, and call MCP tools\n"+
+    return "**HOLT** is a terminal agent you own, wired into a **Robinhood trading MCP**. I can:\n\n"+
+      "- pull live `rh_quote` prices and read your `rh_portfolio`\n"+
+      "- list `rh_positions` and `rh_orders`, place & cancel orders\n"+
+      "- read, write, edit and search files; run shell; diff git\n"+
       "- keep durable local sessions you can `/resume` or `/rewind`\n\n"+
-      "You choose the model (currently `"+currentModel+"`) and the permission level. Nothing leaves your machine as telemetry.";
+      "You choose the model (currently `"+currentModel+"`) and the permission level — orders never go live without your confirm.";
   }
   // help
   if(/\b(help|how do i|how to|what can you do)\b/.test(t)){
     return "Here's the short version:\n\n"+
-      "- Describe a task in plain language and I'll act on it.\n"+
+      "- **Trade** — `quote AAPL`, `show my portfolio`, `buy 5 TSLA`, `list positions`.\n"+
+      "- **Build** — `explain this codebase`, `fix the failing test`, `add a flag`.\n"+
       "- `/` opens the slash-command menu, `!cmd` runs a shell command.\n"+
-      "- `Shift+Tab` cycles permission modes, `Ctrl+B` toggles the sidebar.\n"+
-      "- `/spec` plans before building; `/model` switches models.\n\n"+
-      "What would you like me to work on?";
+      "- `Shift+Tab` cycles permission modes — orders never fire without your confirm.\n\n"+
+      "What would you like me to do?";
+  }
+
+  // ══ Robinhood trading (via the robinhood MCP) ══
+  var STOP=['A','I','AN','THE','BUY','SELL','MY','OF','AT','TO','ON','IN','IS','IT','ME','GO','AND','FOR','ALL','NOW','GET','SHOW','LIST','QUOTE','PRICE','ORDER','ORDERS','SHARE','SHARES','STOCK','STOCKS','MARKET','LIMIT','PORTFOLIO','POSITION','POSITIONS','HOLDING','HOLDINGS','CANCEL','HOW','MUCH','WHAT','ARE','DO','US','GFD','GTC'];
+  var priceOf={AAPL:229.14,TSLA:242.68,NVDA:138.07,MSFT:441.20,AMZN:201.55,GOOGL:178.90,META:585.10,SPY:571.34,AMD:126.44,COIN:298.77};
+  function tickersIn(s){
+    // tickers are typed in UPPERCASE — match standalone caps tokens in the raw text
+    var up=(s.match(/\$?\b[A-Z]{2,5}\b/g)||[]).map(function(x){return x.replace('$','');}).filter(function(w){return STOP.indexOf(w)<0;});
+    if(up.length)return up;
+    // fallback: a known ticker typed in lowercase
+    return (s.toUpperCase().match(/\b[A-Z]{1,5}\b/g)||[]).filter(function(w){return priceOf[w];});
+  }
+  function px(s){return priceOf[s]||(50+Math.random()*400);}
+  function usd(n){return '$'+n.toFixed(2);}
+  var tradeM=t.match(/\b(buy|sell)\b/);
+  if(tradeM){
+    var bs=tickersIn(text),bsym=bs[0]||'AAPL';
+    var qm=text.match(/\b(\d+(?:\.\d+)?)\b/),qty=qm?qm[1]:'1';
+    var side=tradeM[1].toLowerCase(),bp=px(bsym),lim=/\blimit\b/.test(t);
+    return "Prepared the order via `rh_place_order`.\n\n```\n"+
+      side.toUpperCase()+"  "+qty+" "+bsym+"   "+(lim?'limit '+usd(bp):'market ~'+usd(bp))+"   gfd\n"+
+      "est. "+(side==='buy'?'cost  ':'proceeds')+"  "+usd(parseFloat(qty)*bp)+"\n```\n\n"+
+      "Gated behind `confirm: true` — reply **confirm** to send it live, or change the quantity/price. Nothing is submitted until you do.";
+  }
+  if(/\b(quote|price|how much|last|bid|ask|trading at)\b/.test(t)){
+    var qs=tickersIn(text);if(!qs.length)qs=['AAPL'];
+    var ql=qs.slice(0,6).map(function(s){var p=px(s);return '  '+(s+'     ').slice(0,5)+'  last '+usd(p)+'   bid '+usd(p-0.03)+'   ask '+usd(p+0.03);});
+    return "Pulled live quotes via `rh_quote`.\n\n```\n"+ql.join('\n')+"\n```\n\nWant your portfolio, or should I place an order?";
+  }
+  if(/\b(portfolio|buying power|equity|account value|net worth|balance)\b/.test(t)){
+    return "Fetched your account via `rh_portfolio`.\n\n```\n"+
+      "equity         $48,213.67\n"+
+      "market value   $41,980.12\n"+
+      "buying power    $6,233.55\n"+
+      "day change     +$512.40  (+1.07%)\n```\n\nWant your positions or recent orders?";
+  }
+  if(/\b(position|holding|what do i own|my stocks)\b/.test(t)){
+    return "Listed your holdings via `rh_positions`.\n\n```\n"+
+      "AAPL   32 sh   avg $198.40   now $229.14   +15.5%\n"+
+      "NVDA   40 sh   avg $121.00   now $138.07   +14.1%\n"+
+      "TSLA   12 sh   avg $255.10   now $242.68    -4.9%\n```\n\nSay the word to trim, add to, or quote any of these.";
+  }
+  if(/\b(orders?|order history|recent trades|fills?)\b/.test(t)){
+    return "Recent orders via `rh_orders`.\n\n```\n"+
+      "filled   BUY   5 AAPL   @ $229.14   market   2m ago\n"+
+      "filled   SELL 10 AMD    @ $126.44   limit    1h ago\n"+
+      "queued   BUY   3 MSFT   @ $438.00   limit    pending\n```\n\nWant to cancel the pending one? Say `cancel the MSFT order`.";
+  }
+  if(/\b(cancel|kill the order|call off)\b/.test(t)){
+    return "Cancelled via `rh_cancel_order`.\n\n```\ncancelled  BUY 3 MSFT @ $438.00 (limit)\n```\n\nBuying power released. Anything else?";
+  }
+  if(/\bconfirm\b/.test(t)){
+    return "Confirmed. Sent the order live via `rh_place_order`.\n\n```\nfilled   order accepted · id ord_9f2a1c\n```\n\nPortfolio and buying power updated. Want a fresh quote or your positions?";
   }
 
   // spec / plan mode
@@ -2029,7 +2122,7 @@ function applyFontSize(s){
 function addToolCard(type, path, detail, status){
   var card=document.createElement('div');
   card.className='tool-card '+type;
-  var typeLabel={read:'Read',write:'Write',edit:'Edit',shell:'Bash',search:'Grep'}[type]||type;
+  var typeLabel={read:'Read',write:'Write',edit:'Edit',shell:'Bash',search:'Grep',trade:'Trade'}[type]||type;
   var statusClass=status==='done'?'done':'running';
   var statusText=status==='done'?'✓':'⟳';
   card.innerHTML=
@@ -2110,8 +2203,15 @@ function showInteractivePrompt(question, options){
 }
 
 /* ══════ SIMULATED TOOL USE ══════ */
-function simulateToolUse(){
-  var tools=[
+function simulateToolUse(text){
+  var isTrade=text&&/\b(buy|sell|quote|price|portfolio|position|holding|order|ticker|stock|shares?|equity|confirm|AAPL|TSLA|NVDA|MSFT|SPY)\b/i.test(text);
+  var tools=isTrade?[
+    {type:'trade',path:'rh_quote AAPL,TSLA',detail:'last $229.14 / $242.68'},
+    {type:'trade',path:'rh_portfolio',detail:'buying power $6,233.55'},
+    {type:'trade',path:'rh_positions',detail:'3 holdings'},
+    {type:'trade',path:'rh_orders',detail:'limit=10'},
+    {type:'trade',path:'rh_place_order',detail:'awaiting confirm'},
+  ]:[
     {type:'read',path:'src/index.ts',detail:'42 lines'},
     {type:'search',path:'*.ts',detail:'pattern: handleRequest'},
     {type:'read',path:'src/utils/config.ts',detail:'18 lines'},
@@ -2162,13 +2262,13 @@ function formatOutput(text){
 
   // terminal preview typewriter (loops until the user launches)
   var PREVIEW=[
-    {t:'❯ explain this codebase\n',c:'pl'},
-    {t:'▸ Thought for 1.2s\n',c:'pdim'},
-    {t:'  ▸ Read  src/index.ts\n',c:'pdim'},
-    {t:'  ▸ Grep  handleRequest\n',c:'pdim'},
-    {t:'Requests enter through handleRequest(), get\n',c:''},
-    {t:'validated, then dispatched to a handler. Errors\n',c:''},
-    {t:'bubble to a single boundary in index.ts.',c:''}
+    {t:'❯ buy 5 shares of AAPL at market\n',c:'pl'},
+    {t:'▸ Thought for 0.9s\n',c:'pdim'},
+    {t:'  ▸ rh_quote      AAPL  $229.14\n',c:'pdim'},
+    {t:'  ▸ rh_place_order buy 5 AAPL · market\n',c:'pdim'},
+    {t:'Order placed: BUY 5 AAPL @ ~$229.14 (market, gfd).\n',c:''},
+    {t:'Filled · portfolio buying power updated.\n',c:''},
+    {t:'Anything else — quote, positions, or an order?',c:''}
   ];
   var pv=document.getElementById('lpPreview');
   function typePreview(){
