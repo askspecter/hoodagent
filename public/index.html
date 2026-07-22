@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>HOLT — Trade &amp; Build from Your Terminal</title>
 <meta name="description" content="HOLT — a terminal agent you own, wired into a Robinhood trading MCP. Live stock quotes, portfolio, and buy/sell orders in plain English. Any model. You confirm every trade.">
-<link rel="icon" type="image/png" href="/holt-h.png">
-<meta property="og:image" content="/holt-h.png">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<meta property="og:image" content="/favicon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#000000">
@@ -145,7 +146,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 #loader{position:fixed;inset:0;z-index:999;background:#000;display:none;align-items:center;justify-content:center;flex-direction:column;transition:opacity .5s}
 #loader.show{display:flex}
 #loader.done{opacity:0;pointer-events:none}
-.load-logo{height:132px;width:auto;margin-bottom:30px;filter:drop-shadow(0 0 22px rgba(191,255,0,.5));animation:hmarkFloat 4.5s ease-in-out infinite}
 .load-console{width:min(440px,86vw);border:1px solid #1c2810;border-radius:8px;background:#050604;padding:16px 18px;font-size:12px;line-height:1.9;min-height:150px}
 .load-log{color:var(--lime);white-space:pre-wrap;min-height:120px}
 .load-log .lg-ok{color:var(--lime)}
@@ -2269,10 +2269,6 @@ function formatOutput(text){
 
 /* ══════ LANDING + LOADER BOOTSTRAP ══════ */
 (function(){
-  // logos — ASCII wordmark in hero, H emblem on the boot screen
-  var lpLogo=document.getElementById('lpLogo');if(lpLogo)lpLogo.src=holtLogoDataURL(26,'#BFFF00');
-  var loadLogo=document.getElementById('loadLogo');if(loadLogo)loadLogo.src='/holt-h.png';
-
   // provider chips
   var prov=document.getElementById('lpProv');
   if(prov)prov.innerHTML=PROVIDERS.map(function(p){return '<span>'+p.name+'</span>';}).join('')+'<span>+16 more</span>';
