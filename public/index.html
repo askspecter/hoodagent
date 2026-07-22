@@ -128,6 +128,30 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
 .lp-cmd-row .k{color:var(--lime);font-weight:600;min-width:150px;flex-shrink:0}
 .lp-cmd-row .v{color:#7c8a4a;line-height:1.5}
 
+/* live desk (portfolio / board / executions) */
+.desk-panel{border:1px dashed #26361a;border-radius:10px;padding:16px 16px 14px;margin-bottom:16px;background:linear-gradient(180deg,rgba(191,255,0,.02),transparent)}
+.desk-panel-title{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--lime);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-weight:600}
+.desk-demo{font-size:8px;color:#5a6a2a;border:1px solid #2c3a12;border-radius:10px;padding:2px 7px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.desk-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px}
+.ds-k{font-size:9px;color:#5a6a2a;text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
+.ds-v{font-size:19px;color:#e6f2c0;font-weight:700;letter-spacing:.01em}
+.ds-v.up{color:var(--green)}.ds-v.dn{color:var(--red)}
+.desk-table-wrap{overflow-x:auto}
+.desk-table-wrap::-webkit-scrollbar{height:4px}.desk-table-wrap::-webkit-scrollbar-thumb{background:#1c2810;border-radius:2px}
+.desk-table{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}
+.desk-table th{text-align:left;font-size:9px;color:#5a6a2a;text-transform:uppercase;letter-spacing:.08em;padding:8px 12px;border-bottom:1px solid #1c2810;font-weight:600}
+.desk-table td{padding:10px 12px;border-bottom:1px solid #141c0b;color:#a9c26a}
+.desk-table tbody tr:last-child td,.desk-table tbody tr:last-child td{border-bottom:none}
+.desk-table .r{text-align:right}
+.desk-table .sym{color:#e6f2c0;font-weight:700}
+.desk-table .up{color:var(--green)}.desk-table .dn{color:var(--red)}
+.desk-table .side{font-weight:600;text-transform:lowercase}
+.desk-table .side.buy{color:var(--green)}.desk-table .side.sell{color:var(--red)}
+.desk-table .side.quote{color:var(--cyan)}.desk-table .side.cancel{color:var(--orange)}.desk-table .side.info{color:#7c8a4a}
+.desk-table .st-filled{color:var(--green)}.desk-table .st-cancelled{color:var(--orange)}.desk-table .st-dim{color:#5a6a2a}
+.desk-table tbody tr{transition:background .15s}
+.desk-table tbody tr:hover{background:rgba(191,255,0,.03)}
+
 /* bottom cta */
 .lp-final{margin-top:74px;text-align:center;border:1px solid #1c2810;border-radius:14px;padding:46px 22px;background:radial-gradient(ellipse at top,rgba(191,255,0,.06),transparent 70%)}
 .lp-final .lp-sec-title{margin-bottom:10px}
@@ -580,6 +604,45 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--fg);
         <div class="lp-card"><div class="lp-card-t"><code>rh_orders</code></div><div class="lp-card-d">Recent orders, most recent first.</div></div>
         <div class="lp-card"><div class="lp-card-t"><code>rh_place_order</code></div><div class="lp-card-d">Buy or sell — market or limit — gated behind <code>confirm: true</code>.</div></div>
         <div class="lp-card"><div class="lp-card-t"><code>rh_cancel_order</code></div><div class="lp-card-d">Cancel an open order by its id.</div></div>
+      </div>
+    </section>
+
+    <!-- live desk -->
+    <section class="lp-section" id="desk">
+      <div class="lp-sec-head">
+        <div class="lp-sec-kicker">✦ Live desk</div>
+        <div class="lp-sec-title">Your trading desk, at a glance</div>
+        <div class="lp-sec-sub">A <span style="color:var(--lime)">sample</span> of what HOLT surfaces from the Robinhood MCP — connect your <code>ROBINHOOD_TOKEN</code> for your real account.</div>
+      </div>
+
+      <div class="desk-panel">
+        <div class="desk-panel-title">◆ Portfolio <span class="desk-demo">sample</span></div>
+        <div class="desk-stats">
+          <div class="ds"><div class="ds-k">Equity</div><div class="ds-v">$48,213.67</div></div>
+          <div class="ds"><div class="ds-k">Buying power</div><div class="ds-v">$6,233.55</div></div>
+          <div class="ds"><div class="ds-k">Today's P&amp;L</div><div class="ds-v up">+$512.40 · +1.07%</div></div>
+          <div class="ds"><div class="ds-k">Open positions</div><div class="ds-v">3</div></div>
+        </div>
+      </div>
+
+      <div class="desk-panel">
+        <div class="desk-panel-title">▤ The board — live market <span class="desk-demo">sample</span></div>
+        <div class="desk-table-wrap">
+          <table class="desk-table" id="deskBoard">
+            <thead><tr><th>Ticker</th><th class="r">Price</th><th class="r">24h</th><th class="r">Vol</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="desk-panel">
+        <div class="desk-panel-title">⟐ Executions — recent <span class="desk-demo">sample</span></div>
+        <div class="desk-table-wrap">
+          <table class="desk-table" id="deskExec">
+            <thead><tr><th>Time</th><th>Side</th><th>Ticker</th><th class="r">Size</th><th class="r">Status</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -2342,6 +2405,38 @@ function formatOutput(text){
       var prEl=syms[i]&&syms[i].querySelector('.pr');
       if(prEl){var v=parseFloat(prEl.textContent.replace('$',''));v=Math.max(1,v+(Math.random()-0.5)*0.4);prEl.textContent='$'+v.toFixed(2);}
     },1400);
+  }
+
+  // live desk — market board + executions (sample data)
+  var boardEl=document.getElementById('deskBoard');
+  if(boardEl){
+    var BOARD=[['AAPL',229.14,0.87,'62.4m'],['HOOD',42.60,3.10,'88.1m'],['NVDA',138.07,2.15,'241m'],['TSLA',242.68,-1.42,'103m'],['MSFT',441.20,0.34,'18.7m'],['SPY',571.34,0.21,'44.9m'],['AMD',126.44,-2.03,'51.2m'],['COIN',298.77,4.61,'12.8m']];
+    var tb=boardEl.querySelector('tbody');
+    tb.innerHTML=BOARD.map(function(r){var up=r[2]>=0;return '<tr><td class="sym">'+r[0]+'</td><td class="r pr">$'+r[1].toFixed(2)+'</td><td class="r '+(up?'up':'dn')+'">'+(up?'▲':'▼')+' '+Math.abs(r[2]).toFixed(2)+'%</td><td class="r" style="color:#5a6a2a">'+r[3]+'</td></tr>';}).join('');
+    // subtle live flicker on a random price
+    setInterval(function(){
+      var rows=tb.querySelectorAll('tr');var row=rows[Math.floor(Math.random()*rows.length)];
+      var pr=row&&row.querySelector('.pr');if(!pr)return;
+      var v=parseFloat(pr.textContent.replace('$',''));v=Math.max(0.5,v+(Math.random()-0.5)*(v*0.002));
+      pr.textContent='$'+v.toFixed(2);pr.style.color='#e6f2c0';setTimeout(function(){pr.style.color='';},250);
+    },1600);
+  }
+  var execEl=document.getElementById('deskExec');
+  if(execEl){
+    var EXEC=[
+      ['21:03:44','buy','AAPL','$1,145.70','filled'],
+      ['19:26:08','quote','NVDA','—','ok'],
+      ['17:31:52','sell','AMD','$1,264.40','filled'],
+      ['16:44:19','buy','TSLA','$2,426.80','filled'],
+      ['14:02:11','info','—','portfolio','ok'],
+      ['13:47:36','buy','HOOD','$852.00','filled'],
+      ['11:20:04','cancel','MSFT','$1,314.00','cancelled'],
+      ['09:58:41','sell','COIN','$2,987.70','filled']
+    ];
+    var st=function(s){return s==='filled'?'st-filled':s==='cancelled'?'st-cancelled':'st-dim';};
+    execEl.querySelector('tbody').innerHTML=EXEC.map(function(r){
+      return '<tr><td style="color:#7c8a4a">'+r[0]+'</td><td><span class="side '+r[1]+'">'+r[1]+'</span></td><td class="sym">'+r[2]+'</td><td class="r">'+r[3]+'</td><td class="r '+st(r[4])+'">'+r[4]+'</td></tr>';
+    }).join('');
   }
 
   // terminal preview typewriter (loops until the user launches)
