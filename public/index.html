@@ -1108,18 +1108,24 @@ function holtLogoDataURL(cellPx,color){
   var cU=cellPx||24,dpr=window.devicePixelRatio||1;
   var Rows=AL.length,Cols=0,rMax=0;
   AL.forEach(function(l){if(l.length>Cols)Cols=l.length;});
-  // last row that has a front-face block (so we crop trailing empty rows -> tight, level)
+  // last row that has a front-face block (crop trailing empty rows so the
+  // baseline is tight and every letter stays level)
   for(var r=0;r<Rows;r++)for(var c=0;c<Cols;c++){if((c<AL[r].length?AL[r][c]:' ')==='█'&&r>rMax)rMax=r;}
   var H=rMax+1;
+  var depth=Math.max(2,Math.round(cU*0.30)); // clean 3D extrusion, down-right
   var cvs=document.createElement('canvas');
-  cvs.width=Cols*cU*dpr;cvs.height=H*cU*dpr;
-  var cx=cvs.getContext('2d');cx.scale(dpr,dpr);cx.fillStyle=color;
-  // FLAT wordmark — fill the solid (█) front faces only, all on one baseline.
-  // No 3D extrusion, so every letter sits perfectly level and aligned.
-  var ov=0.75;
+  cvs.width=(Cols*cU+depth+2)*dpr;cvs.height=(H*cU+depth+2)*dpr;
+  var cx=cvs.getContext('2d');cx.scale(dpr,dpr);
+  var ov=0.75,cells=[];
   for(var r=0;r<H;r++)for(var c=0;c<Cols;c++){
-    if((c<AL[r].length?AL[r][c]:' ')==='█')cx.fillRect(c*cU-ov,r*cU-ov,cU+ov*2,cU+ov*2);
+    if((c<AL[r].length?AL[r][c]:' ')==='█')cells.push([c*cU,r*cU]);
   }
+  function fill(dx,dy,col){cx.fillStyle=col;for(var i=0;i<cells.length;i++)cx.fillRect(cells[i][0]+dx-ov,cells[i][1]+dy-ov,cU+ov*2,cU+ov*2);}
+  // solid extrusion (uniform down-right offset), medium olive-lime side
+  var frontSide='#7fa312',back='#41590a';
+  for(var k=depth;k>=1;k--)fill(k,k,_mixHex(frontSide,back,depth>1?(k-1)/(depth-1):0));
+  // bright lime front face on top — its crisp top/left edge reads as the bevel
+  fill(0,0,color);
   return cvs.toDataURL();
 }
 
